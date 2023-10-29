@@ -24,18 +24,21 @@
     
 <link rel="stylesheet" href="/css/loader.css">
 
-    <meta name="description" content="hexo博客搭建记录目录跳转：      搭建hexo博客 1.前置环境 2.安装hexo 3.初始化hexo 4.hexo生成静态网页文件 5.开启hexo服务 6.部署博客        花了一下午把hexo博客搭好了，这里简单记录一下搭建的过程。 搭建hexo博客">
+    <meta name="description" content="hexo博客搭建记录目录跳转：      搭建hexo博客 1.前置环境 2.安装hexo 3.初始化hexo 4.hexo生成静态网页文件 5.开启hexo服务 6.部署博客   hexo入门操作 hexo更新 hexo 新建博文 hexo 主题 hexo 博文插入超链接 hexo 博文插入图片   hexo 添加标签页 其他页面的添加 页内跳转目录的设置   hexo 配置详解 hexo 博文">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hexo博客搭建记录">
 <meta property="og:url" content="https://t3uk1.github.io/2023/10/29/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/index.html">
 <meta property="og:site_name" content="T3uk1&#39;s hub">
-<meta property="og:description" content="hexo博客搭建记录目录跳转：      搭建hexo博客 1.前置环境 2.安装hexo 3.初始化hexo 4.hexo生成静态网页文件 5.开启hexo服务 6.部署博客        花了一下午把hexo博客搭好了，这里简单记录一下搭建的过程。 搭建hexo博客">
+<meta property="og:description" content="hexo博客搭建记录目录跳转：      搭建hexo博客 1.前置环境 2.安装hexo 3.初始化hexo 4.hexo生成静态网页文件 5.开启hexo服务 6.部署博客   hexo入门操作 hexo更新 hexo 新建博文 hexo 主题 hexo 博文插入超链接 hexo 博文插入图片   hexo 添加标签页 其他页面的添加 页内跳转目录的设置   hexo 配置详解 hexo 博文">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/29/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/image-20231029223951514.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/29/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/image-20231029224453329.png">
 <meta property="article:published_time" content="2023-10-29T12:25:01.000Z">
-<meta property="article:modified_time" content="2023-10-29T13:41:16.115Z">
+<meta property="article:modified_time" content="2023-10-29T14:55:32.908Z">
 <meta property="article:author" content="*月遇丛雲花遇風*">
 <meta property="article:tag" content="hexo">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://t3uk1.github.io/2023/10/29/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/image-20231029223951514.png">
     
         <link rel="alternate" href="/atom.xml" title="T3uk1's hub" type="application/atom+xml">
     
@@ -208,15 +211,44 @@
 <li><a href="#6-bu-shu-bo-ke">6.部署博客</a></li>
 </ul>
 </li>
+<li><a href="#hexo-ru-men-cao-zuo">hexo入门操作</a><ul>
+<li><a href="#hexo-geng-xin">hexo更新</a></li>
+<li><a href="#hexo-xin-jian-bo-wen">hexo 新建博文</a></li>
+<li><a href="#hexo-zhu-ti">hexo 主题</a></li>
+<li><a href="#hexo-bo-wen-cha-ru-chao-lian-jie">hexo 博文插入超链接</a></li>
+<li><a href="#hexo-bo-wen-cha-ru-tu-pian">hexo 博文插入图片</a></li>
+</ul>
+</li>
+<li><a href="#hexo-tian-jia-biao-qian-ye">hexo 添加标签页</a><ul>
+<li><a href="#qi-ta-ye-mian-de-tian-jia">其他页面的添加</a></li>
+<li><a href="#ye-nei-tiao-zhuan-mu-lu-de-she-zhi">页内跳转目录的设置</a></li>
+</ul>
+</li>
+<li><a href="#hexo-pei-zhi-xiang-jie">hexo 配置详解</a><ul>
+<li><a href="#hexo-bo-wen-tou-front-matter">hexo 博文头 - Front-matter</a></li>
+<li><a href="#hexo-zhan-dian-pei-zhi-wen-jian-xiang-jie">hexo 站点配置文件详解</a></li>
+<li><a href="#wang-zhan-site">网站 - Site</a></li>
+<li><a href="#wang-zhi-url">网址 - URL</a></li>
+<li><a href="#mu-lu-directory">目录 - Directory</a></li>
+<li><a href="#wen-zhang-writing">文章 - Writing</a></li>
+<li><a href="#shou-ye-she-zhi-home-page-setting">首页设置 - Home page setting</a></li>
+<li><a href="#fen-lei-biao-qian-category-tag">分类 &amp; 标签 - Category &amp; Tag</a></li>
+<li><a href="#ri-qi-shi-jian-ge-shi-date-time-format">日期 &#x2F; 时间格式 - Date &#x2F; Time format</a></li>
+<li><a href="#fen-ye-pagination">分页 - Pagination</a></li>
+<li><a href="#kuo-zhan-extensions">扩展 - Extensions</a></li>
+<li><a href="#bu-shu-deployment">部署 - Deployment</a></li>
+</ul>
+</li>
 </ul>
 <!-- tocstop -->
 
 </div>
 
 <p>花了一下午把hexo博客搭好了，这里简单记录一下搭建的过程。</p>
-<h2><span id="da-jian-hexo-bo-ke">搭建hexo博客</span><a href="#da-jian-hexo-bo-ke" class="header-anchor"></a></h2><span id="more"></span>
-
-<h3><span id="1-qian-zhi-huan-jing">1.前置环境</span><a href="#1-qian-zhi-huan-jing" class="header-anchor"></a></h3><ul>
+<blockquote>
+<p>本文的安装过程主要参考这位dalao的博客：<code>https://hasegawaazusa.github.io/hexo-note.html</code></p>
+</blockquote>
+<h2><span id="da-jian-hexo-bo-ke">搭建hexo博客</span><a href="#da-jian-hexo-bo-ke" class="header-anchor"></a></h2><h3><span id="1-qian-zhi-huan-jing">1.前置环境</span><a href="#1-qian-zhi-huan-jing" class="header-anchor"></a></h3><ul>
 <li><p><strong>Git</strong></p>
 <p>由于博客是搭在git上的，因此需要绑定好 Github 的账号与邮箱，并能够建立连接</p>
 <p>具体操作请参考：<a href="https://t3uk1.github.io/2023/10/29/Git的绑定与连接" target="_blank">Git的绑定与连接</a></p>
@@ -253,11 +285,11 @@
 <h3><span id="6-bu-shu-bo-ke">6.部署博客</span><a href="#6-bu-shu-bo-ke" class="header-anchor"></a></h3><p>这里使用Github仓库进行部署。</p>
 <p>首先在Github创建一个名为  <code>&lt;username&gt;.github.io</code>的仓库，例如我的就是<code>t3uk1.github.io</code>。</p>
 <p>在博客根目录下安装 <code>hexo-deployer-git</code> 部署插件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
 
 <p>更改 hexo 站点配置文件 (<code>~/_config.yml</code>) 中的 Deployment配置项</p>
 <p>以我为例更改的配置项结果为</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: git@github.com:t3uk1/t3uk1.github.io.git</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">git@github.com:t3uk1/t3uk1.github.io.git</span></span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>上面<code>repo</code> 使用 ssh 链接的原因：我的 git 使用 ssh 与 github 进行远程连接</p>
@@ -273,12 +305,196 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo g -d</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">clean 用于清除本地缓存</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">g自动化生成</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">-d部署</span></span><br></pre></td></tr></table></figure>
 
 <p>等待一段时间后，可以通过 <code>https://&lt;username&gt;.github.io</code> 访问自己的博客。</p>
-<p>例如我的链接就是：<a href="https://t3uk1.github.io/">https://t3uk1.github.io/</a></p>
+<p>例如我的链接就是：<a href="https://t3uk1.github.io/">https://t3uk1.github.io</a></p>
+<h2><span id="hexo-ru-men-cao-zuo">hexo入门操作</span><a href="#hexo-ru-men-cao-zuo" class="header-anchor"></a></h2><h3><span id="hexo-geng-xin">hexo更新</span><a href="#hexo-geng-xin" class="header-anchor"></a></h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm update -g hexo-cli		# 使用 npm 更新 hexo</span><br></pre></td></tr></table></figure>
+
+<h3><span id="hexo-xin-jian-bo-wen">hexo 新建博文</span><a href="#hexo-xin-jian-bo-wen" class="header-anchor"></a></h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new hello				# 新建博文</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>hello</strong>可自由更改，对应生成的md文件名</p>
+</blockquote>
+<p>可选的额外选项：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hexo n hello				# 简化指令</span><br><span class="line">hexo n post hello			# 新编博文并立即发布。默认 ~/source/_posts/hello.md</span><br><span class="line">hexo n draft hello			# 新编博文但暂不发布。默认 ~/source/_drafts/hello.md</span><br><span class="line">hexo n page hello			# 新建页面（标签页，分类页等）。默认 ~/source/hello</span><br></pre></td></tr></table></figure>
+
+<p>然后进入 <code>~/source/_posts/</code> 找到 <code>hello.md</code> ，打开文件，内容如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">title: hello</span><br><span class="line">date: 1970-1-1 8:00:00</span><br><span class="line">tags: [hello, demo]</span><br></pre></td></tr></table></figure>
+
+<p>该头为 <code>Front-matter</code> ，参数如下：</p>
+<ul>
+<li><strong><code>title</code></strong> → 博文标题</li>
+<li><strong><code>date</code></strong> → 发布日期，默认为文件创建日期</li>
+<li><strong><code>tags</code></strong> → 博文标签</li>
+</ul>
+<p>修改后，在正文处输入内容即可编辑博文内容。<code>.md</code>格式文本示例如下：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: hello</span><br><span class="line">date: 1970-1-1 8:00:00</span><br><span class="line"><span class="section">tags: [hello, demo]</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"><span class="section"># First Blog</span></span><br><span class="line">This is my <span class="strong">**first**</span> blog!</span><br></pre></td></tr></table></figure>
+
+<h3><span id="hexo-zhu-ti">hexo 主题</span><a href="#hexo-zhu-ti" class="header-anchor"></a></h3><p>进入 <a target="_blank" rel="noopener" href="https://hexo.io/themes/">https://hexo.io/themes/</a> 进行挑选合适的主题</p>
+<p>这里以配置 <code>NexT</code> 主题为例：</p>
+<p>打开 <code>Powershell</code> 输入以下命令，安装 <code>NexT</code> 主题</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-theme-next --save</span><br></pre></td></tr></table></figure>
+
+<p>更改 hexo 站点配置文件 (<code>~/_config.yml</code>) 中的Extensions配置项</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">theme: next</span><br></pre></td></tr></table></figure>
+
+<p>重新进行网页生成即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo clean					# 清除缓存</span><br><span class="line">hexo g -d					# 重新生成并部署</span><br></pre></td></tr></table></figure>
+
+<p>本博客使用了另一个主题，配置与NexT有些不一样，详情请看：<a href="https://t3uk1.github.io/2023/10/29/hexo主题配置--reimu" target="_blank">hexo主题配置–reimu</a></p>
+<h3><span id="hexo-bo-wen-cha-ru-chao-lian-jie">hexo 博文插入超链接</span><a href="#hexo-bo-wen-cha-ru-chao-lian-jie" class="header-anchor"></a></h3><p>对于站外的超链接，直接将外站的完整链接贴入括号内即可 (<code>[value](link)</code>)，例如</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">点击[<span class="string">这里</span>](<span class="link">https://t3uk1.github.io/</span>)进入博客</span><br></pre></td></tr></table></figure>
+
+<p>效果如下</p>
+<blockquote>
+<p>点击<a href="https://t3uk1.github.io/">这里</a>进入博客</p>
+</blockquote>
+<p>如果要使跳转后的页面在新页面中打开而不是在当前页面打开，可以直接使用html标签的形式实现：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;https://t3uk1.github.io/&quot;</span> <span class="attr">target</span>=<span class="string">&quot;_blank&quot;</span>&gt;</span>这里<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<p>点击<a href="https://t3uk1.github.io/" target="_blank">这里</a>在新页面打开博客</p>
+</blockquote>
+<h3><span id="hexo-bo-wen-cha-ru-tu-pian">hexo 博文插入图片</span><a href="#hexo-bo-wen-cha-ru-tu-pian" class="header-anchor"></a></h3><p>更改博客根目录下配置文件<code>~/_config.yml</code>中相关属性：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">marked:</span></span><br><span class="line">  <span class="attr">prependRoot:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">postAsset:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>在<strong>博客根目录</strong>下安装**<code>hexo-asset-image</code>**插件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-asset-image --save</span><br></pre></td></tr></table></figure>
+
+<p>将相关图片资源放进对应文件夹并直接使用文件夹内的资源即可。</p>
+<p>使用typora可以比较方便的实现图片的引用，具体操作如下：</p>
+<p>偏好设置→图像，插入图片选项选择复制到指定路径，下面勾选和下图一样，保存。</p>
+<p><img src="image-20231029223951514.png" alt="image"></p>
+<p>这样设置之后，当执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new &#x27;file&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>的时候，会顺带创建一个与md文件同名的文件夹，当 <code>Typora</code> 插入图片时，会自动将图片资源复制进入 hexo 可以检索的 asset 文件夹。</p>
+<h2><span id="hexo-tian-jia-biao-qian-ye">hexo 添加标签页</span><a href="#hexo-tian-jia-biao-qian-ye" class="header-anchor"></a></h2><p>在博客根目录下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure>
+
+<p>在 Front-matter 中添加：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">type: tags</span><br></pre></td></tr></table></figure>
+
+<p>完成后 hexo 便会自动生成标签页</p>
+<p><img src="image-20231029224453329.png" alt="tags"></p>
+<h3><span id="qi-ta-ye-mian-de-tian-jia">其他页面的添加</span><a href="#qi-ta-ye-mian-de-tian-jia" class="header-anchor"></a></h3><p>由于我现在用的主题里面关于页面、友链和404等已经添加好了，如果要手动添加的请参考其他dalao的博客。</p>
+<p>如果需要其他自定义页面，可以使用 <code>layout</code> 参数</p>
+<h3><span id="ye-nei-tiao-zhuan-mu-lu-de-she-zhi">页内跳转目录的设置</span><a href="#ye-nei-tiao-zhuan-mu-lu-de-she-zhi" class="header-anchor"></a></h3><p>安装toc插件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-toc --save</span><br></pre></td></tr></table></figure>
+
+<p>在根目录下配置文件中添加关于toc的设置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">toc:</span></span><br><span class="line">  <span class="attr">mindepth:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">maxdepth:</span> <span class="number">3</span></span><br><span class="line">  <span class="attr">class:</span> <span class="string">toc</span></span><br><span class="line">  <span class="attr">slugify:</span> <span class="string">transliteration</span></span><br><span class="line">  <span class="attr">decodeEntities:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">anchor:</span></span><br><span class="line">    <span class="attr">position:</span> <span class="string">after</span></span><br><span class="line">    <span class="attr">symbol:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="attr">style:</span> <span class="string">header-anchor</span></span><br></pre></td></tr></table></figure>
+
+<p>mindepth表示最低搜索深度，maxdepth表示最大搜索深度，搜索深度对应文章标题等级(h1-h…)，如上面的就是只显示h2标题到h3标题的目录。</p>
+<p>在markdown文件中使用toc插件：</p>
+<p>只需要在需要插入导航的地方加一句</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- toc --&gt;</span><br></pre></td></tr></table></figure>
+
+<p>就能自动创建能够实现页内跳转的目录。</p>
+<blockquote>
+<p>关于toc插件详情请参考: <code>https://github.com/bubkoo/hexo-toc</code></p>
+</blockquote>
+<h2><span id="hexo-pei-zhi-xiang-jie">hexo 配置详解</span><a href="#hexo-pei-zhi-xiang-jie" class="header-anchor"></a></h2><h3><span id="hexo-bo-wen-tou-front-matter">hexo 博文头 - Front-matter</span><a href="#hexo-bo-wen-tou-front-matter" class="header-anchor"></a></h3><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">意义</th>
+<th align="left">默认值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>layout</code></td>
+<td align="left">排版</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://hexo.io/docs/configuration#Writing"><code>config.default_layout</code></a></td>
+</tr>
+<tr>
+<td align="left"><code>title</code></td>
+<td align="left">标题</td>
+<td align="left">文件名</td>
+</tr>
+<tr>
+<td align="left"><code>date</code></td>
+<td align="left">发布日期</td>
+<td align="left">文件创建日期</td>
+</tr>
+<tr>
+<td align="left"><code>updated</code></td>
+<td align="left">更新日期</td>
+<td align="left">文件更新日期</td>
+</tr>
+<tr>
+<td align="left"><code>comments</code></td>
+<td align="left">简介</td>
+<td align="left"><code>true</code></td>
+</tr>
+<tr>
+<td align="left"><code>tags</code></td>
+<td align="left">标签</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>categories</code></td>
+<td align="left">分类</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>permalink</code></td>
+<td align="left">永久链接的相对路径 (如<code>/index.html</code>)</td>
+<td align="left"><code>null</code></td>
+</tr>
+<tr>
+<td align="left"><code>excerpt</code></td>
+<td align="left">纯文本摘录 (需要使用插件<a target="_blank" rel="noopener" href="https://hexo.io/docs/tag-plugins#Post-Excerpt">Post-Excerpt</a>)</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>disableNunjucks</code></td>
+<td align="left">是否禁用 Nunjucks 的宏 (<code>&#123;&#123; &#125;&#125;</code> &#x2F; <code>&#123;% %&#125;</code>) 和 <a target="_blank" rel="noopener" href="https://hexo.io/docs/tag-plugins">tag plugins</a> 插件</td>
+<td align="left"><code>false</code></td>
+</tr>
+<tr>
+<td align="left"><code>lang</code></td>
+<td align="left">指定语言</td>
+<td align="left"><code>_config.yml</code></td>
+</tr>
+</tbody></table>
+<h3><span id="hexo-zhan-dian-pei-zhi-wen-jian-xiang-jie">hexo 站点配置文件详解</span><a href="#hexo-zhan-dian-pei-zhi-wen-jian-xiang-jie" class="header-anchor"></a></h3><p>即 <code>~/_config.yml</code> 参数详解</p>
+<h3><span id="wang-zhan-site">网站 - Site</span><a href="#wang-zhan-site" class="header-anchor"></a></h3><ul>
+<li><code>title</code> → 博客标题</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># Site</span><br><span class="line">title: Hexo</span><br><span class="line">subtitle: &#x27;&#x27;				# 博客副标题</span><br><span class="line">description: &#x27;&#x27;				# 博客描述 (与搜索引擎的收录有关)</span><br><span class="line">keywords:					# 博客关键字，支持多个关键字 (与搜索引擎的收录有关)</span><br><span class="line">author: John Doe			# 博客作者名</span><br><span class="line">language: en				# 博客使用的语言 (可设置为zh-Hans或zh-CN以支持中文)</span><br><span class="line">timezone: &#x27;&#x27;				# 博客时区 (默认使用电脑时区)</span><br></pre></td></tr></table></figure>
+
+<h3><span id="wang-zhi-url">网址 - URL</span><a href="#wang-zhi-url" class="header-anchor"></a></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># URL</span><br><span class="line">## Set your site url here. For example, if you use GitHub Page, set url as &#x27;https://username.github.io/project&#x27;</span><br><span class="line">url: http://example.com						# 博客网址，必须以 http:// 或 https:// 开头</span><br><span class="line">permalink: :year/:month/:day/:title/		# 文章连接生成规则</span><br><span class="line">permalink_defaults:</span><br><span class="line">pretty_urls:</span><br><span class="line">  trailing_index: true # Set to false to remove trailing &#x27;index.html&#x27; from permalinks</span><br><span class="line">  trailing_html: true # Set to false to remove trailing &#x27;.html&#x27; from permalinks</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>一般只需要修改**<code>url</code>**</p>
+</blockquote>
+<h3><span id="mu-lu-directory">目录 - Directory</span><a href="#mu-lu-directory" class="header-anchor"></a></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># Directory</span><br><span class="line">source_dir: source			# 资源文件夹，这个文件夹用来存放内容。</span><br><span class="line">public_dir: public			# 公共文件夹，这个文件夹用于存放生成的站点文件。</span><br><span class="line">tag_dir: tags				# 标签文件夹。</span><br><span class="line">archive_dir: archives		# 归档文件夹。</span><br><span class="line">category_dir: categories	# 分类文件夹。</span><br><span class="line">code_dir: downloads/code	# Include code 文件夹， source_dir 下的子目录。</span><br><span class="line">i18n_dir: :lang				# 国际化（i18n）文件夹</span><br><span class="line">skip_render:				# 跳过指定文件的渲染。详见参考</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>一般无需修改</p>
+</blockquote>
+<h3><span id="wen-zhang-writing">文章 - Writing</span><a href="#wen-zhang-writing" class="header-anchor"></a></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"># Writing</span><br><span class="line">new_post_name: :title.md	# 新文章的文件名称</span><br><span class="line">default_layout: post		# 预设布局</span><br><span class="line">titlecase: false			# 把标题转换为 title case</span><br><span class="line">external_link:</span><br><span class="line">  enable: true				# 在新标签中打开链接</span><br><span class="line">  field: site				# 作用域，网站/文章 (site / post)</span><br><span class="line">  exclude: &#x27;&#x27;				# 需要排除的域名。主域名和子域名如 www 需分别配置</span><br><span class="line">filename_case: 0			# 把文件名称转换为 (1) 小写或 (2) 大写 (0 = 不转换) </span><br><span class="line">render_drafts: false		# 显示草稿</span><br><span class="line">post_asset_folder: false	# 启动 Asset 文件夹</span><br><span class="line">relative_link: false		# 把链接改为与根目录的相对位址</span><br><span class="line">future: true				# 显示未来的文章</span><br><span class="line">highlight:					# 代码块的设置, 请参考 Highlight.js 进行设置	</span><br><span class="line">  enable: true</span><br><span class="line">  line_number: true</span><br><span class="line">  auto_detect: false</span><br><span class="line">  tab_replace: &#x27;&#x27;</span><br><span class="line">  wrap: true</span><br><span class="line">  hljs: false</span><br><span class="line">prismjs:					# 代码块的设置, 请参考 PrismJS 进行设置</span><br><span class="line">  enable: false</span><br><span class="line">  preprocess: true</span><br><span class="line">  line_number: true</span><br><span class="line">  tab_replace: &#x27;&#x27;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong><a target="_blank" rel="noopener" href="https://hexo.io/docs/syntax-highlight#Highlight-js">Highlight.js</a></strong></p>
+<p><strong><a target="_blank" rel="noopener" href="https://hexo.io/docs/syntax-highlight#PrismJS">PrismJS</a></strong></p>
+</blockquote>
+<h3><span id="shou-ye-she-zhi-home-page-setting">首页设置 - Home page setting</span><a href="#shou-ye-she-zhi-home-page-setting" class="header-anchor"></a></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># Home page setting</span><br><span class="line"># per_page: Posts displayed per page. (0 = disable pagination)</span><br><span class="line"># order_by: Posts order. (Order by date descending by default)</span><br><span class="line">index_generator:</span><br><span class="line">  path: &#x27;&#x27;					# 首页的根目录。默认为&#x27;&#x27;</span><br><span class="line">  per_page: 10				# 每页显示文章的数量。默认为 10 (0 = 关闭分页功能)</span><br><span class="line">  order_by: -date			# 显示文章的顺序。默认为 -date (date 是按日期升序排序)</span><br></pre></td></tr></table></figure>
+
+<h3><span id="fen-lei-amp-biao-qian-category-amp-tag">分类 &amp; 标签 - Category &amp; Tag</span><a href="#fen-lei-amp-biao-qian-category-amp-tag" class="header-anchor"></a></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Category &amp; Tag</span><br><span class="line">default_category: uncategorized		# 默认分类</span><br><span class="line">category_map:						# 分类别名</span><br><span class="line">tag_map:							# 标签别名</span><br></pre></td></tr></table></figure>
+
+<h3><span id="ri-qi-x2f-shi-jian-ge-shi-date-x2f-time-format">日期 &#x2F; 时间格式 - Date &#x2F; Time format</span><a href="#ri-qi-x2f-shi-jian-ge-shi-date-x2f-time-format" class="header-anchor"></a></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># Date / Time format</span><br><span class="line">## Hexo uses Moment.js to parse and display date</span><br><span class="line">## You can customize the date format as defined in</span><br><span class="line">## http://momentjs.com/docs/#/displaying/format/</span><br><span class="line">date_format: YYYY-MM-DD			# 日期格式</span><br><span class="line">time_format: HH:mm:ss			# 时间格式</span><br><span class="line">## updated_option supports &#x27;mtime&#x27;, &#x27;date&#x27;, &#x27;empty&#x27;</span><br><span class="line">updated_option: &#x27;mtime&#x27;			# 当 Front Matter 中没有指定 updated 时 updated 的取值</span><br></pre></td></tr></table></figure>
+
+<h3><span id="fen-ye-pagination">分页 - Pagination</span><a href="#fen-ye-pagination" class="header-anchor"></a></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Pagination</span><br><span class="line">## Set per_page to 0 to disable pagination</span><br><span class="line">per_page: 10					# 每页显示的文章量 (0 = 关闭分页功能)</span><br><span class="line">pagination_dir: page			# 分页目录</span><br></pre></td></tr></table></figure>
+
+<h3><span id="kuo-zhan-extensions">扩展 - Extensions</span><a href="#kuo-zhan-extensions" class="header-anchor"></a></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Extensions</span><br><span class="line">## Plugins: https://hexo.io/plugins/</span><br><span class="line">## Themes: https://hexo.io/themes/</span><br><span class="line">theme: landscape				# 当前主题名称。值为 false 时禁用主题</span><br></pre></td></tr></table></figure>
+
+<h3><span id="bu-shu-deployment">部署 - Deployment</span><a href="#bu-shu-deployment" class="header-anchor"></a></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># Deployment</span><br><span class="line">## Docs: https://hexo.io/docs/one-command-deployment</span><br><span class="line">deploy:</span><br><span class="line">  type: git						# 部署方式</span><br><span class="line">  repo: 						# 库（Repository）地址，SSH比较好</span><br><span class="line">  branch: 						# 可选，分支名称（Github默认为master）</span><br><span class="line">  message: 						# 自定义提交信息（默认为Site updated: </span><br></pre></td></tr></table></figure>
 
             
         </div>
         <footer class="article-footer">
-            <a data-url="https://t3uk1.github.io/2023/10/29/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/" data-id="clobirsf10007awug0mgpcnwv" data-title="hexo博客搭建记录"
+            <a data-url="https://t3uk1.github.io/2023/10/29/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/" data-id="cloblfkoa0009xcugcqkygdec" data-title="hexo博客搭建记录"
                class="article-share-link">分享</a>
             
             
@@ -293,12 +509,28 @@
         
     <nav id="article-nav" class="wow fadeInUp">
         
+            <div class="article-nav-link-wrap article-nav-link-left">
+                
+                    
+                    
+                        <img data-src="/covers/QQ图片20221124115312.jpg" data-sizes="auto" alt="hexo主题配置--reimu" class="lazyload">
+                    
+                
+                <a href="/2023/10/29/hexo%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE-reimu/"></a>
+                <div class="article-nav-caption">前一篇</div>
+                <h3 class="article-nav-title">
+                    
+                        hexo主题配置--reimu
+                    
+                </h3>
+            </div>
+        
         
             <div class="article-nav-link-wrap article-nav-link-right">
                 
                     
                     
-                        <img data-src="/covers/QQ图片20211219112939.jpg" data-sizes="auto" alt="Git的绑定与连接" class="lazyload">
+                        <img data-src="/covers/微信图片_20210910164253.png" data-sizes="auto" alt="Git的绑定与连接" class="lazyload">
                     
                 
                 <a href="/2023/10/29/Git%E7%9A%84%E7%BB%91%E5%AE%9A%E4%B8%8E%E8%BF%9E%E6%8E%A5/"></a>
@@ -338,7 +570,7 @@
         <div class="sidebar-state">
             <div class="sidebar-state-article">
                 <div>文章</div>
-                <div class="sidebar-state-number">5</div>
+                <div class="sidebar-state-number">6</div>
             </div>
             <div class="sidebar-state-category">
                 <div>分类</div>
@@ -346,7 +578,7 @@
             </div>
             <div class="sidebar-state-tag">
                 <div>标签</div>
-                <div class="sidebar-state-number">5</div>
+                <div class="sidebar-state-number">6</div>
             </div>
         </div>
         <div class="sidebar-social">
@@ -399,7 +631,7 @@
     <div class="widget-wrap wow fadeInRight">
         <h3 class="widget-title">标签云</h3>
         <div class="widget tagcloud">
-            <a href="/tags/SSH%E8%BF%9E%E6%8E%A5/" style="font-size: 10px;">SSH连接</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/openGL/" style="font-size: 10px;">openGL</a> <a href="/tags/test/" style="font-size: 10px;">test</a>
+            <a href="/tags/SSH%E8%BF%9E%E6%8E%A5/" style="font-size: 10px;">SSH连接</a> <a href="/tags/algolia/" style="font-size: 10px;">algolia</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/hexo/" style="font-size: 20px;">hexo</a> <a href="/tags/openGL/" style="font-size: 10px;">openGL</a> <a href="/tags/test/" style="font-size: 10px;">test</a>
         </div>
     </div>
 
@@ -439,10 +671,10 @@
             
                 <div>
                     <span class="icon-brush"></span>
-                    1.7k
+                    5k
                     &nbsp;|&nbsp;
                     <span class="icon-coffee"></span>
-                    00:07
+                    00:20
                 </div>
             
             
@@ -469,7 +701,7 @@
         <div class="sidebar-state">
             <div class="sidebar-state-article">
                 <div>文章</div>
-                <div class="sidebar-state-number">5</div>
+                <div class="sidebar-state-number">6</div>
             </div>
             <div class="sidebar-state-category">
                 <div>分类</div>
@@ -477,7 +709,7 @@
             </div>
             <div class="sidebar-state-tag">
                 <div>标签</div>
-                <div class="sidebar-state-number">5</div>
+                <div class="sidebar-state-number">6</div>
             </div>
         </div>
         <div class="sidebar-social">

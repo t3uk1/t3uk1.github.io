@@ -153,6 +153,9 @@
                        title="RSS 订阅"></a>
                 
                 
+                    <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索">
+                    </a>
+                
             </nav>
             <div id="search-form-wrap">
                 <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://t3uk1.github.io"></form>
@@ -185,7 +188,7 @@
             
         </div>
         <footer class="article-footer">
-            <a data-url="https://t3uk1.github.io/about/index.html" data-id="clob6mb9e0000nkugdo4w5l9d" data-title=""
+            <a data-url="https://t3uk1.github.io/about/index.html" data-id="clob6zvao0001fwuge6wzfeuq" data-title=""
                class="article-share-link">分享</a>
             
             
@@ -426,6 +429,34 @@
 
 
 
+
+    
+<script src="https://unpkg.com/algoliasearch@4.17.1/dist/algoliasearch-lite.umd.js"></script>
+
+    
+<script src="https://unpkg.com/instantsearch.js@4.56.1/dist/instantsearch.production.min.js"></script>
+
+    
+<script src="/js/search.js"></script>
+
+    <script>
+        var CONFIG = {
+            root: '/',
+            algolia: {
+                applicationID: "LY6AZ6NLTL",
+                apiKey: "a4e057248aeb84947785a6f29600ea43",
+                indexName: "blog",
+                hits: {
+                    "per_page": parseInt("10")
+                },
+                labels: {
+                    "input_placeholder": "搜索.....",
+                    "hits_empty": "未发现与 「${query}」相关内容",
+                    "hits_stats": "找到${hits}条结果（用时 ${time} ms）"
+                }
+            }
+        };
+    </script>
 
 
     </div>

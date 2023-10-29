@@ -369,6 +369,22 @@
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install hexo-asset-image --save</span><br></pre></td></tr></table></figure>
 
 <p>将相关图片资源放进对应文件夹并直接使用文件夹内的资源即可。</p>
+<p><strong>修改插件</strong>：</p>
+<p>在装好插件更新博客之后，发现图片加载不出来，查看网页中图片的路径的时候发现路径有点不对劲，一查发现是插件有bug，需要修改插件才能使图片路径正常。</p>
+<ul>
+<li><p>进入博客的根目录，然后下面顺序找到<code>index.js</code>:<br><code>node_modules</code> –&gt; <code>hexo-asset-image</code> –&gt; <code>index.js</code></p>
+</li>
+<li><p>用VS Code 或者 记事本打开 <code>index.js</code></p>
+</li>
+<li><p>在第 58 行，可以找到这么一行代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">$(<span class="variable language_">this</span>).<span class="title function_">attr</span>(<span class="string">&#x27;src&#x27;</span>, config.<span class="property">root</span> + link + src);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将其改为:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">$(<span class="variable language_">this</span>).<span class="title function_">attr</span>(<span class="string">&#x27;src&#x27;</span>, src);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>保存文件</p>
+</li>
+</ul>
 <p>使用typora可以比较方便的实现图片的引用，具体操作如下：</p>
 <p>偏好设置→图像，插入图片选项选择复制到指定路径，下面勾选和下图一样，保存。</p>
 <p><img src="image-20231029223951514.png" alt="image"></p>
@@ -580,11 +596,6 @@
       </tags>
   </entry>
   <entry>
-    <title></title>
-    <url>/about/index.html</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>分类</title>
     <url>/categories/index.html</url>
     <content><![CDATA[]]></content>
@@ -592,6 +603,11 @@
   <entry>
     <title></title>
     <url>/friend/index.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/about/index.html</url>
     <content><![CDATA[]]></content>
   </entry>
 </search>

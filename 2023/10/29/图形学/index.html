@@ -24,19 +24,19 @@
     
 <link rel="stylesheet" href="/css/loader.css">
 
-    <meta name="description" content="OpenGL环境手动安装配置记录 1、安装VS2019 2、安装cmake 3、安装Git 4、安装OpenGL库与在VS2019的配置        OpenGL环境手动安装配置记录由于一键安装时vcpkg的傻逼报错修了一晚上修不好于是综合了好几个安装教程博客手动添加库才成功跑起来 1、安装VS2019这个直接略过 2、安装cmakehttps:&#x2F;&#x2F;cmake.org&#x2F;download">
+    <meta name="description" content="OpenGL环境手动安装配置记录     1、安装VS2019 2、安装cmake 3、安装Git 4、安装OpenGL库与在VS2019的配置      由于一键安装时vcpkg的傻逼报错修了一晚上修不好于是综合了好几个安装教程博客手动添加库才成功跑起来 1、安装VS2019这个直接略过 2、安装cmakehttps:&#x2F;&#x2F;cmake.org&#x2F;download&#x2F; 在上述网址下载对应平台安装包即可，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="图形学">
 <meta property="og:url" content="https://t3uk1.github.io/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/index.html">
 <meta property="og:site_name" content="T3uk1&#39;s hub">
-<meta property="og:description" content="OpenGL环境手动安装配置记录 1、安装VS2019 2、安装cmake 3、安装Git 4、安装OpenGL库与在VS2019的配置        OpenGL环境手动安装配置记录由于一键安装时vcpkg的傻逼报错修了一晚上修不好于是综合了好几个安装教程博客手动添加库才成功跑起来 1、安装VS2019这个直接略过 2、安装cmakehttps:&#x2F;&#x2F;cmake.org&#x2F;download">
+<meta property="og:description" content="OpenGL环境手动安装配置记录     1、安装VS2019 2、安装cmake 3、安装Git 4、安装OpenGL库与在VS2019的配置      由于一键安装时vcpkg的傻逼报错修了一晚上修不好于是综合了好几个安装教程博客手动添加库才成功跑起来 1、安装VS2019这个直接略过 2、安装cmakehttps:&#x2F;&#x2F;cmake.org&#x2F;download&#x2F; 在上述网址下载对应平台安装包即可，">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://t3uk1.github.io/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/image-20230912105714270-16985808329371.png">
 <meta property="og:image" content="https://t3uk1.github.io/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/image-20230912105914220-16985808329372.png">
 <meta property="og:image" content="https://t3uk1.github.io/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/image-20230912111603093-16985808329383.png">
 <meta property="og:image" content="https://t3uk1.github.io/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/image-20230912112352987-16985808329384.png">
 <meta property="article:published_time" content="2023-10-29T11:05:36.000Z">
-<meta property="article:modified_time" content="2023-10-29T12:14:48.075Z">
+<meta property="article:modified_time" content="2023-10-29T12:19:02.356Z">
 <meta property="article:author" content="*月遇丛雲花遇風*">
 <meta property="article:tag" content="openGL">
 <meta name="twitter:card" content="summary">
@@ -198,24 +198,21 @@
 
         <div class="e-content article-entry" itemprop="articleBody">
             
-                <div class="toc">
+                <h1><span id="opengl-huan-jing-shou-dong-an-zhuang-pei-zhi-ji-lu">OpenGL环境手动安装配置记录</span><a href="#opengl-huan-jing-shou-dong-an-zhuang-pei-zhi-ji-lu" class="header-anchor"></a></h1><div class="toc">
 
 <!-- toc -->
 
 <ul>
-<li><a href="#opengl-huan-jing-shou-dong-an-zhuang-pei-zhi-ji-lu">OpenGL环境手动安装配置记录</a><ul>
 <li><a href="#1-an-zhuang-vs2019">1、安装VS2019</a></li>
 <li><a href="#2-an-zhuang-cmake">2、安装cmake</a></li>
 <li><a href="#3-an-zhuang-git">3、安装Git</a></li>
 <li><a href="#4-an-zhuang-opengl-ku-yu-zai-vs2019-de-pei-zhi">4、安装OpenGL库与在VS2019的配置</a></li>
 </ul>
-</li>
-</ul>
 <!-- tocstop -->
 
 </div>
 
-<h1><span id="opengl-huan-jing-shou-dong-an-zhuang-pei-zhi-ji-lu">OpenGL环境手动安装配置记录</span><a href="#opengl-huan-jing-shou-dong-an-zhuang-pei-zhi-ji-lu" class="header-anchor"></a></h1><p><del>由于一键安装时vcpkg的傻逼报错修了一晚上修不好于是综合了好几个安装教程博客手动添加库才成功跑起来</del></p>
+<p><del>由于一键安装时vcpkg的傻逼报错修了一晚上修不好于是综合了好几个安装教程博客手动添加库才成功跑起来</del></p>
 <h3><span id="1-an-zhuang-vs2019">1、安装VS2019</span><a href="#1-an-zhuang-vs2019" class="header-anchor"></a></h3><p>这个直接略过</p>
 <h3><span id="2-an-zhuang-cmake">2、安装cmake</span><a href="#2-an-zhuang-cmake" class="header-anchor"></a></h3><p><a target="_blank" rel="noopener" href="https://cmake.org/download/">https://cmake.org/download/</a></p>
 <p>在上述网址下载对应平台安装包即可，注意在安装时关于修改系统环境变量的选项中选择添加到所有用户的PATH</p>
@@ -267,7 +264,7 @@
             
         </div>
         <footer class="article-footer">
-            <a data-url="https://t3uk1.github.io/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/" data-id="clobfp2us0007pcug11a1e6aa" data-title="图形学"
+            <a data-url="https://t3uk1.github.io/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/" data-id="clobfu70p0007moug98lqc95x" data-title="图形学"
                class="article-share-link">分享</a>
             
             
@@ -287,7 +284,7 @@
                 
                     
                     
-                        <img data-src="/covers/QQ图片20220222181627.jpg" data-sizes="auto" alt="functiontest" class="lazyload">
+                        <img data-src="/covers/QQ图片20211103201723.jpg" data-sizes="auto" alt="functiontest" class="lazyload">
                     
                 
                 <a href="/2023/10/29/functiontest/"></a>
@@ -428,10 +425,10 @@
             
                 <div>
                     <span class="icon-brush"></span>
-                    921
+                    911
                     &nbsp;|&nbsp;
                     <span class="icon-coffee"></span>
-                    00:05
+                    00:04
                 </div>
             
             

@@ -31,16 +31,16 @@
 <meta property="og:site_name" content="T3uk1&#39;s hub">
 <meta property="og:description" content="计算机图形学从零开始的OpenGL环境安装配置由于vcpkg的傻逼报错修了一晚上修不好于是综合了好几个安装教程博客才成功跑起来 1、安装VS2019这个直接略过 2、安装cmakehttps:&#x2F;&#x2F;cmake.org&#x2F;download&#x2F; 在上述网址下载对应平台安装包即可，注意在安装时关于修改系统环境变量的选项中选择添加到所有用户的PATH 3、安装Git这个装过了 4、安装OpenGL库与在VS20">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="d:\blog\source_posts\%E5%9B%BE%E5%BD%A2%E5%AD%A6.assets\image-20230912105714270.png">
-<meta property="og:image" content="d:\blog\source\_posts\%E5%9B%BE%E5%BD%A2%E5%AD%A6.assets\image-20230912105914220.png">
-<meta property="og:image" content="d:\blog\source_posts\%E5%9B%BE%E5%BD%A2%E5%AD%A6.assets\image-20230912111603093.png">
-<meta property="og:image" content="d:\blog\source_posts\%E5%9B%BE%E5%BD%A2%E5%AD%A6.assets\image-20230912112352987.png">
+<meta property="og:image" content="https://t3uk1.github.io/%E5%9B%BE%E5%BD%A2%E5%AD%A6.assets/image-20230912105714270-16985780012981.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/%E5%9B%BE%E5%BD%A2%E5%AD%A6.assets/image-20230912105914220-16985780012992.png">
+<meta property="og:image" content="https://t3uk1.github.io/%E5%9B%BE%E5%BD%A2%E5%AD%A6.assets/image-20230912111603093-16985780012993.png">
+<meta property="og:image" content="https://t3uk1.github.io/%E5%9B%BE%E5%BD%A2%E5%AD%A6.assets/image-20230912112352987-16985780012994.png">
 <meta property="article:published_time" content="2023-10-29T11:05:36.000Z">
-<meta property="article:modified_time" content="2023-10-29T11:06:24.464Z">
+<meta property="article:modified_time" content="2023-10-29T11:13:34.809Z">
 <meta property="article:author" content="*月遇丛雲花遇風*">
 <meta property="article:tag" content="计算机图形学">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="d:\blog\source_posts\%E5%9B%BE%E5%BD%A2%E5%AD%A6.assets\image-20230912105714270.png">
+<meta name="twitter:image" content="https://t3uk1.github.io/%E5%9B%BE%E5%BD%A2%E5%AD%A6.assets/image-20230912105714270-16985780012981.png">
     
         <link rel="alternate" href="/atom.xml" title="T3uk1's hub" type="application/atom+xml">
     
@@ -201,9 +201,9 @@
 <h5><span id="3-an-zhuang-git">3、安装Git</span><a href="#3-an-zhuang-git" class="header-anchor"></a></h5><p>这个装过了</p>
 <h5><span id="4-an-zhuang-opengl-ku-yu-zai-vs2019-de-pei-zhi">4、安装OpenGL库与在VS2019的配置</span><a href="#4-an-zhuang-opengl-ku-yu-zai-vs2019-de-pei-zhi" class="header-anchor"></a></h5><h6><span id="glfw">GLFW</span><a href="#glfw" class="header-anchor"></a></h6><p><a target="_blank" rel="noopener" href="https://www.glfw.org/download.html">https://www.glfw.org/download.html</a></p>
 <p>windows端选择pre-compiled binaries，这是已经预编译的文件，可以直接使用</p>
-<p><img src="D:\blog\source_posts\图形学.assets\image-20230912105714270.png" alt="image-20230912105714270"></p>
+<p><img src="/%E5%9B%BE%E5%BD%A2%E5%AD%A6.assets/image-20230912105714270-16985780012981.png" alt="image-20230912105714270"></p>
 <p>将下载好的文件解压，将对应文件拷贝到vs2019安装目录中的文件夹中，本机的安装目录如下，根据自己的安装情况找到对应文件夹</p>
-<img src="D:\blog\source\_posts\图形学.assets\image-20230912105914220.png" alt="image-20230912105914220" style="zoom: 67%;">
+<img src="图形学.assets/image-20230912105914220-16985780012992.png" alt="image-20230912105914220" style="zoom: 67%;">
 
 <p>头文件：在下载好的GLFW文件夹中，将头文件拷贝到vs目录中的include目录中的GL文件夹，若没有则先创建一个GL文件夹，这个文件夹用于专门存储OpenGL库的头文件。</p>
 <p>bin文件：将对应dll文件拷贝到vs目录下的bin文件夹中，拷贝到最小目录，注意将x86文件拷贝到x86目录下，x64文件拷贝到x64目录下。</p>
@@ -213,7 +213,7 @@
 <h6><span id="freeglut">FreeGLUT</span><a href="#freeglut" class="header-anchor"></a></h6><p><a target="_blank" rel="noopener" href="https://www.transmissionzero.co.uk/software/freeglut-devel/">https://www.transmissionzero.co.uk/software/freeglut-devel/</a></p>
 <h6><span id="glad">glad</span><a href="#glad" class="header-anchor"></a></h6><p><a target="_blank" rel="noopener" href="https://glad.dav1d.de/">https://glad.dav1d.de/</a></p>
 <p>API gl version直接选4.6即可，将include部分直接拷贝到vs头文件GL目录下</p>
-<p><img src="D:\blog\source_posts\图形学.assets\image-20230912111603093.png" alt="image-20230912111603093"></p>
+<p><img src="/%E5%9B%BE%E5%BD%A2%E5%AD%A6.assets/image-20230912111603093-16985780012993.png" alt="image-20230912111603093"></p>
 <h6><span id="glm">glm</span><a href="#glm" class="header-anchor"></a></h6><p><a target="_blank" rel="noopener" href="https://github.com/g-truc/glm/releases/tag/0.9.8.0">https://github.com/g-truc/glm/releases/tag/0.9.8.0</a></p>
 <p>解压后把子文件夹中的glm文件夹直接整个拷贝到vs目录中的include中，导入头文件的方式为：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;glm/glm.hpp&gt;</span></span></span><br></pre></td></tr></table></figure>
@@ -226,7 +226,7 @@
 <p>进入vs2019，点击项目，管理NuGet程序包，搜索nupengl，安装两个相关的组件</p>
 <p>链接配置：运行前，将几个dll文件拷贝到系统文件夹（C:\Windows\SysWOW64   C:\Windows\System32）</p>
 <p>右键项目，点进属性-&gt;连接器-&gt;输入-&gt;附加依赖项</p>
-<p><img src="D:\blog\source_posts\图形学.assets\image-20230912112352987.png" alt="image-20230912112352987"></p>
+<p><img src="/%E5%9B%BE%E5%BD%A2%E5%AD%A6.assets/image-20230912112352987-16985780012994.png" alt="image-20230912112352987"></p>
 <p>将 freeglut.lib;glew32.lib;glfw3.lib;OpenGL32.lib;复制到附加依赖项中。</p>
 <ul>
 <li><p>Debug时可以正常运行但Release模式无法正常执行？</p>
@@ -246,7 +246,7 @@
             
         </div>
         <footer class="article-footer">
-            <a data-url="https://t3uk1.github.io/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/" data-id="clobddd1u00084gug5gjy19i3" data-title="图形学"
+            <a data-url="https://t3uk1.github.io/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/" data-id="clobdhx6s00081ougg8wafdh5" data-title="图形学"
                class="article-share-link">分享</a>
             
             
@@ -266,7 +266,7 @@
                 
                     
                     
-                        <img data-src="/covers/QQ图片20220222181627.jpg" data-sizes="auto" alt="create_hexo" class="lazyload">
+                        <img data-src="/covers/QQ图片20211103201656.jpg" data-sizes="auto" alt="create_hexo" class="lazyload">
                     
                 
                 <a href="/2023/10/29/create-hexo/"></a>

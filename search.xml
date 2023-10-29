@@ -1,112 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search> 
-  
-  
-    
-    <entry>
-      <title>图形学</title>
-      <link href="/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/"/>
-      <url>/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/</url>
-      
-        <content type="html"><![CDATA[<h1><span id="ji-suan-ji-tu-xing-xue">计算机图形学</span><a href="#ji-suan-ji-tu-xing-xue" class="header-anchor"></a></h1><h2><span id="cong-ling-kai-shi-de-opengl-huan-jing-an-zhuang-pei-zhi">从零开始的OpenGL环境安装配置</span><a href="#cong-ling-kai-shi-de-opengl-huan-jing-an-zhuang-pei-zhi" class="header-anchor"></a></h2><p><del>由于vcpkg的傻逼报错修了一晚上修不好于是综合了好几个安装教程博客才成功跑起来</del></p><h5><span id="1-an-zhuang-vs2019">1、安装VS2019</span><a href="#1-an-zhuang-vs2019" class="header-anchor"></a></h5><p>这个直接略过</p><h5><span id="2-an-zhuang-cmake">2、安装cmake</span><a href="#2-an-zhuang-cmake" class="header-anchor"></a></h5><p><a href="https://cmake.org/download/">https://cmake.org/download/</a></p><p>在上述网址下载对应平台安装包即可，注意在安装时关于修改系统环境变量的选项中选择添加到所有用户的PATH</p><h5><span id="3-an-zhuang-git">3、安装Git</span><a href="#3-an-zhuang-git" class="header-anchor"></a></h5><p>这个装过了</p><h5><span id="4-an-zhuang-opengl-ku-yu-zai-vs2019-de-pei-zhi">4、安装OpenGL库与在VS2019的配置</span><a href="#4-an-zhuang-opengl-ku-yu-zai-vs2019-de-pei-zhi" class="header-anchor"></a></h5><h6><span id="glfw">GLFW</span><a href="#glfw" class="header-anchor"></a></h6><p><a href="https://www.glfw.org/download.html">https://www.glfw.org/download.html</a></p><p>windows端选择pre-compiled binaries，这是已经预编译的文件，可以直接使用</p><p><img src="D:\blog\source_posts\图形学.assets\image-20230912105714270.png" alt="image-20230912105714270"></p><p>将下载好的文件解压，将对应文件拷贝到vs2019安装目录中的文件夹中，本机的安装目录如下，根据自己的安装情况找到对应文件夹</p><img src="D:\blog\source\_posts\图形学.assets\image-20230912105914220.png" alt="image-20230912105914220" style="zoom: 67%;"><p>头文件：在下载好的GLFW文件夹中，将头文件拷贝到vs目录中的include目录中的GL文件夹，若没有则先创建一个GL文件夹，这个文件夹用于专门存储OpenGL库的头文件。</p><p>bin文件：将对应dll文件拷贝到vs目录下的bin文件夹中，拷贝到最小目录，注意将x86文件拷贝到x86目录下，x64文件拷贝到x64目录下。</p><p>.lib文件：与bin同理，拷贝到lib目录下的文件夹中，注意x86和x64都要拷贝。</p><h6><span id="glew">GLEW</span><a href="#glew" class="header-anchor"></a></h6><p><a href="https://glew.sourceforge.net/">https://glew.sourceforge.net/</a></p><p>下载最新版本即可，相关配置同上</p><h6><span id="freeglut">FreeGLUT</span><a href="#freeglut" class="header-anchor"></a></h6><p><a href="https://www.transmissionzero.co.uk/software/freeglut-devel/">https://www.transmissionzero.co.uk/software/freeglut-devel/</a></p><h6><span id="glad">glad</span><a href="#glad" class="header-anchor"></a></h6><p><a href="https://glad.dav1d.de/">https://glad.dav1d.de/</a></p><p>API gl version直接选4.6即可，将include部分直接拷贝到vs头文件GL目录下</p><p><img src="D:\blog\source_posts\图形学.assets\image-20230912111603093.png" alt="image-20230912111603093"></p><h6><span id="glm">glm</span><a href="#glm" class="header-anchor"></a></h6><p><a href="https://github.com/g-truc/glm/releases/tag/0.9.8.0">https://github.com/g-truc/glm/releases/tag/0.9.8.0</a></p><p>解压后把子文件夹中的glm文件夹直接整个拷贝到vs目录中的include中，导入头文件的方式为：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;glm/glm.hpp&gt;</span></span></span><br></pre></td></tr></table></figure><h6><span id="vs-zhong-pei-zhi">vs中配置</span><a href="#vs-zhong-pei-zhi" class="header-anchor"></a></h6><p>在目标目录新建一个项目</p><p>进入vs2019，点击项目，管理NuGet程序包，搜索nupengl，安装两个相关的组件</p><p>链接配置：运行前，将几个dll文件拷贝到系统文件夹（C:\Windows\SysWOW64   C:\Windows\System32）</p><p>右键项目，点进属性-&gt;连接器-&gt;输入-&gt;附加依赖项</p><p><img src="D:\blog\source_posts\图形学.assets\image-20230912112352987.png" alt="image-20230912112352987"></p><p>将 freeglut.lib;glew32.lib;glfw3.lib;OpenGL32.lib;复制到附加依赖项中。</p><ul><li><p>Debug时可以正常运行但Release模式无法正常执行？</p><p>在项目设置中配置为Release的菜单中再导入一次上面的依赖项即可</p></li></ul><p><em><strong>注意一定要执行上面的操作，否则会报无法解析外部符号的错误</strong></em></p><p>保存设置，基本配置就差不多了，使用的时候只需导入对应头文件即可。</p><p>注意：</p><ul><li><p>导入glad的时候只导入头文件运行的话会出现未识别的外部符号问题，因此要将glad.c文件导入到项目中。</p></li><li><p>若出现 #error : OpenGL header already included,remove this include, glad already provides it报错，将glad头文件的导入放在其他所有OpenGL库导入的前面即可解决。</p></li></ul>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> 计算机图形学 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>create_hexo</title>
-      <link href="/2023/10/29/create-hexo/"/>
-      <url>/2023/10/29/create-hexo/</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>functiontest</title>
-      <link href="/2023/10/29/functiontest/"/>
-      <url>/2023/10/29/functiontest/</url>
-      
-        <content type="html"><![CDATA[<div class="toc"><!-- toc --><ul><li><a href="#chao-lian-jie">超链接：</a><ul><li><a href="#tu-pian-yu-lan">图片预览</a></li></ul></li></ul><!-- tocstop --></div><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;hello.&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2><span id="chao-lian-jie">超链接：</span><a href="#chao-lian-jie" class="header-anchor"></a></h2><p><a href="https://www.baidu.com/">这是一个超链接</a></p><h3><span id="tu-pian-yu-lan">图片预览</span><a href="#tu-pian-yu-lan" class="header-anchor"></a></h3><h4><span id="si-ji-biao-ti">四级标题</span><a href="#si-ji-biao-ti" class="header-anchor"></a></h4><h5><span id="wu-ji-biao-ti">五级标题</span><a href="#wu-ji-biao-ti" class="header-anchor"></a></h5>]]></content>
-      
-      
+<search>
+  <entry>
+    <title>create_hexo</title>
+    <url>/2023/10/29/create-hexo/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>functiontest</title>
+    <url>/2023/10/29/functiontest/</url>
+    <content><![CDATA[<div class="toc">
+
+<!-- toc -->
+
+<ul>
+<li><a href="#chao-lian-jie">超链接：</a><ul>
+<li><a href="#tu-pian-yu-lan">图片预览</a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+
+</div>
+
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;hello.&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2><span id="chao-lian-jie">超链接：</span><a href="#chao-lian-jie" class="header-anchor"></a></h2><p><a href="https://www.baidu.com/">这是一个超链接</a></p>
+<h3><span id="tu-pian-yu-lan">图片预览</span><a href="#tu-pian-yu-lan" class="header-anchor"></a></h3><h4><span id="si-ji-biao-ti">四级标题</span><a href="#si-ji-biao-ti" class="header-anchor"></a></h4><h5><span id="wu-ji-biao-ti">五级标题</span><a href="#wu-ji-biao-ti" class="header-anchor"></a></h5>]]></content>
       <categories>
-          
-          <category> 测试 </category>
-          
+        <category>测试</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> test </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Hello World</title>
-      <link href="/2023/10/29/hello-world/"/>
-      <url>/2023/10/29/hello-world/</url>
-      
-        <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2><span id="quick-start">Quick Start</span><a href="#quick-start" class="header-anchor"></a></h2><h3><span id="create-a-new-post">Create a new post</span><a href="#create-a-new-post" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3><span id="run-server">Run server</span><a href="#run-server" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3><span id="generate-static-files">Generate static files</span><a href="#generate-static-files" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3><span id="deploy-to-remote-sites">Deploy to remote sites</span><a href="#deploy-to-remote-sites" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
-      
-      
-      
-    </entry>
-    
-    
-  
-  
-    
-    
-    <entry>
-      <title></title>
-      <link href="/about/index.html"/>
-      <url>/about/index.html</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>分类</title>
-      <link href="/categories/index.html"/>
-      <url>/categories/index.html</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title></title>
-      <link href="/friend/index.html"/>
-      <url>/friend/index.html</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-    </entry>
-    
-    
-  
+      <tags>
+        <tag>test</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2023/10/29/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2><span id="quick-start">Quick Start</span><a href="#quick-start" class="header-anchor"></a></h2><h3><span id="create-a-new-post">Create a new post</span><a href="#create-a-new-post" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3><span id="run-server">Run server</span><a href="#run-server" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3><span id="generate-static-files">Generate static files</span><a href="#generate-static-files" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3><span id="deploy-to-remote-sites">Deploy to remote sites</span><a href="#deploy-to-remote-sites" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>图形学</title>
+    <url>/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/</url>
+    <content><![CDATA[<h1><span id="ji-suan-ji-tu-xing-xue">计算机图形学</span><a href="#ji-suan-ji-tu-xing-xue" class="header-anchor"></a></h1><h2><span id="cong-ling-kai-shi-de-opengl-huan-jing-an-zhuang-pei-zhi">从零开始的OpenGL环境安装配置</span><a href="#cong-ling-kai-shi-de-opengl-huan-jing-an-zhuang-pei-zhi" class="header-anchor"></a></h2><p><del>由于vcpkg的傻逼报错修了一晚上修不好于是综合了好几个安装教程博客才成功跑起来</del></p>
+<h5><span id="1-an-zhuang-vs2019">1、安装VS2019</span><a href="#1-an-zhuang-vs2019" class="header-anchor"></a></h5><p>这个直接略过</p>
+<h5><span id="2-an-zhuang-cmake">2、安装cmake</span><a href="#2-an-zhuang-cmake" class="header-anchor"></a></h5><p><a href="https://cmake.org/download/">https://cmake.org/download/</a></p>
+<p>在上述网址下载对应平台安装包即可，注意在安装时关于修改系统环境变量的选项中选择添加到所有用户的PATH</p>
+<h5><span id="3-an-zhuang-git">3、安装Git</span><a href="#3-an-zhuang-git" class="header-anchor"></a></h5><p>这个装过了</p>
+<h5><span id="4-an-zhuang-opengl-ku-yu-zai-vs2019-de-pei-zhi">4、安装OpenGL库与在VS2019的配置</span><a href="#4-an-zhuang-opengl-ku-yu-zai-vs2019-de-pei-zhi" class="header-anchor"></a></h5><h6><span id="glfw">GLFW</span><a href="#glfw" class="header-anchor"></a></h6><p><a href="https://www.glfw.org/download.html">https://www.glfw.org/download.html</a></p>
+<p>windows端选择pre-compiled binaries，这是已经预编译的文件，可以直接使用</p>
+<p><img src="/%E5%9B%BE%E5%BD%A2%E5%AD%A6.assets/image-20230912105714270-16985780012981.png" alt="image-20230912105714270"></p>
+<p>将下载好的文件解压，将对应文件拷贝到vs2019安装目录中的文件夹中，本机的安装目录如下，根据自己的安装情况找到对应文件夹</p>
+<img src="图形学.assets/image-20230912105914220-16985780012992.png" alt="image-20230912105914220" style="zoom: 67%;">
+
+<p>头文件：在下载好的GLFW文件夹中，将头文件拷贝到vs目录中的include目录中的GL文件夹，若没有则先创建一个GL文件夹，这个文件夹用于专门存储OpenGL库的头文件。</p>
+<p>bin文件：将对应dll文件拷贝到vs目录下的bin文件夹中，拷贝到最小目录，注意将x86文件拷贝到x86目录下，x64文件拷贝到x64目录下。</p>
+<p>.lib文件：与bin同理，拷贝到lib目录下的文件夹中，注意x86和x64都要拷贝。</p>
+<h6><span id="glew">GLEW</span><a href="#glew" class="header-anchor"></a></h6><p><a href="https://glew.sourceforge.net/">https://glew.sourceforge.net/</a></p>
+<p>下载最新版本即可，相关配置同上</p>
+<h6><span id="freeglut">FreeGLUT</span><a href="#freeglut" class="header-anchor"></a></h6><p><a href="https://www.transmissionzero.co.uk/software/freeglut-devel/">https://www.transmissionzero.co.uk/software/freeglut-devel/</a></p>
+<h6><span id="glad">glad</span><a href="#glad" class="header-anchor"></a></h6><p><a href="https://glad.dav1d.de/">https://glad.dav1d.de/</a></p>
+<p>API gl version直接选4.6即可，将include部分直接拷贝到vs头文件GL目录下</p>
+<p><img src="/%E5%9B%BE%E5%BD%A2%E5%AD%A6.assets/image-20230912111603093-16985780012993.png" alt="image-20230912111603093"></p>
+<h6><span id="glm">glm</span><a href="#glm" class="header-anchor"></a></h6><p><a href="https://github.com/g-truc/glm/releases/tag/0.9.8.0">https://github.com/g-truc/glm/releases/tag/0.9.8.0</a></p>
+<p>解压后把子文件夹中的glm文件夹直接整个拷贝到vs目录中的include中，导入头文件的方式为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;glm/glm.hpp&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h6><span id="vs-zhong-pei-zhi">vs中配置</span><a href="#vs-zhong-pei-zhi" class="header-anchor"></a></h6><p>在目标目录新建一个项目</p>
+<p>进入vs2019，点击项目，管理NuGet程序包，搜索nupengl，安装两个相关的组件</p>
+<p>链接配置：运行前，将几个dll文件拷贝到系统文件夹（C:\Windows\SysWOW64   C:\Windows\System32）</p>
+<p>右键项目，点进属性-&gt;连接器-&gt;输入-&gt;附加依赖项</p>
+<p><img src="/%E5%9B%BE%E5%BD%A2%E5%AD%A6.assets/image-20230912112352987-16985780012994.png" alt="image-20230912112352987"></p>
+<p>将 freeglut.lib;glew32.lib;glfw3.lib;OpenGL32.lib;复制到附加依赖项中。</p>
+<ul>
+<li><p>Debug时可以正常运行但Release模式无法正常执行？</p>
+<p>在项目设置中配置为Release的菜单中再导入一次上面的依赖项即可</p>
+</li>
+</ul>
+<p><em><strong>注意一定要执行上面的操作，否则会报无法解析外部符号的错误</strong></em></p>
+<p>保存设置，基本配置就差不多了，使用的时候只需导入对应头文件即可。</p>
+<p>注意：</p>
+<ul>
+<li><p>导入glad的时候只导入头文件运行的话会出现未识别的外部符号问题，因此要将glad.c文件导入到项目中。</p>
+</li>
+<li><p>若出现 #error : OpenGL header already included,remove this include, glad already provides it报错，将glad头文件的导入放在其他所有OpenGL库导入的前面即可解决。</p>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>计算机图形学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/about/index.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>分类</title>
+    <url>/categories/index.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/friend/index.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
 </search>

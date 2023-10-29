@@ -5,9 +5,8 @@
     <url>/2023/10/29/functiontest/</url>
     <content><![CDATA[<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;hello.&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>超链接：</p>
+<p>[toc]超链接：</p>
 <p><a href="https://www.baidu.com/">这是一个超链接</a></p>
-<!--toc-->
 ]]></content>
       <categories>
         <category>测试</category>
@@ -35,13 +34,13 @@
 ]]></content>
   </entry>
   <entry>
-    <title></title>
-    <url>/about/index.html</url>
+    <title>分类</title>
+    <url>/categories/index.html</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>
-    <title>分类</title>
-    <url>/categories/index.html</url>
+    <title></title>
+    <url>/about/index.html</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>

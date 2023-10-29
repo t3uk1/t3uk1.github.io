@@ -1,60 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Git的绑定与连接</title>
-    <url>/2023/10/29/Git%E7%9A%84%E7%BB%91%E5%AE%9A%E4%B8%8E%E8%BF%9E%E6%8E%A5/</url>
-    <content><![CDATA[<h1><span id="git-de-bang-ding-yu-lian-jie">Git的绑定与连接</span><a href="#git-de-bang-ding-yu-lian-jie" class="header-anchor"></a></h1><div class="toc">
-
-<!-- toc -->
-
-<ul>
-<li><a href="#pei-zhi-git-de-user">配置Git的User</a></li>
-<li><a href="#shi-yong-ssh-fang-shi-yuan-cheng-lian-jie-git">使用SSH方式远程连接Git</a></li>
-</ul>
-<!-- tocstop -->
-
-</div>
-
-<h2><span id="pei-zhi-git-de-user">配置Git的User</span><a href="#pei-zhi-git-de-user" class="header-anchor"></a></h2><p>打开Git Bash（或命令行）</p>
-<p>配置全局name：</p>
-<ul>
-<li><p>github用户名</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name name</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>配置全局email：</p>
-<ul>
-<li><p>github邮箱：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.email email</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>以我自己的github账户为例：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name t3uk1</span><br><span class="line">git config --global user.email xxx@qq.com</span><br></pre></td></tr></table></figure>
-
-
-
-<h2><span id="shi-yong-ssh-fang-shi-yuan-cheng-lian-jie-git">使用SSH方式远程连接Git</span><a href="#shi-yong-ssh-fang-shi-yuan-cheng-lian-jie-git" class="header-anchor"></a></h2><p>打开Git Bash（或命令行）</p>
-<p>在本地生成对应邮箱的<strong>SSH RSA公钥密钥</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
-
-<p>使用<strong>默认生成路径</strong>，<strong>默认空key</strong>，这样就可以无需认证直接连接，如果想要设置秘钥也可以设置。</p>
-<p>前往 <code>~/.ssh</code> 目录下寻找密钥（其中默认**<code>id_rsa</code><strong>是密钥信息，</strong><code>id_rsa.pub</code>**为公钥信息）</p>
-<p>在 <strong>Github</strong> 中新建 <strong>SSH keys</strong>：</p>
-<p>github→ Settings→SSH and GPG keys→右上角new SSH key， 打开界面如下：</p>
-<p><img src="image-20231029205623302.png" alt="新增SSH"></p>
-<p>其中<em>Title</em>可以随意填，<em>Key</em>中内容填的是前面生成的(<strong>id_rsa.pub</strong>)的文件内容即公钥信息。</p>
-<p>创建完成后，运行下面的指令，若出现下图情况则说明成功。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh git@github.com</span><br></pre></td></tr></table></figure>
-
-<p><img src="image-20231029205914245.png" alt="success"></p>
-]]></content>
-      <categories>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>github</tag>
-        <tag>SSH连接</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>functiontest</title>
     <url>/2023/10/29/functiontest/</url>
     <content><![CDATA[<div class="toc">
@@ -173,22 +119,58 @@
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2023/10/29/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2><span id="quick-start">Quick Start</span><a href="#quick-start" class="header-anchor"></a></h2><h3><span id="create-a-new-post">Create a new post</span><a href="#create-a-new-post" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+    <title>Git的绑定与连接</title>
+    <url>/2023/10/29/Git%E7%9A%84%E7%BB%91%E5%AE%9A%E4%B8%8E%E8%BF%9E%E6%8E%A5/</url>
+    <content><![CDATA[<h1><span id="git-de-bang-ding-yu-lian-jie">Git的绑定与连接</span><a href="#git-de-bang-ding-yu-lian-jie" class="header-anchor"></a></h1><div class="toc">
 
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3><span id="run-server">Run server</span><a href="#run-server" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<!-- toc -->
 
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3><span id="generate-static-files">Generate static files</span><a href="#generate-static-files" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<ul>
+<li><a href="#pei-zhi-git-de-user">配置Git的User</a></li>
+<li><a href="#shi-yong-ssh-fang-shi-yuan-cheng-lian-jie-git">使用SSH方式远程连接Git</a></li>
+</ul>
+<!-- tocstop -->
 
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3><span id="deploy-to-remote-sites">Deploy to remote sites</span><a href="#deploy-to-remote-sites" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+</div>
 
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<h2><span id="pei-zhi-git-de-user">配置Git的User</span><a href="#pei-zhi-git-de-user" class="header-anchor"></a></h2><p>打开Git Bash（或命令行）</p>
+<p>配置全局name：</p>
+<ul>
+<li><p>github用户名</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name name</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>配置全局email：</p>
+<ul>
+<li><p>github邮箱：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.email email</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>以我自己的github账户为例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name t3uk1</span><br><span class="line">git config --global user.email xxx@qq.com</span><br></pre></td></tr></table></figure>
+
+
+
+<h2><span id="shi-yong-ssh-fang-shi-yuan-cheng-lian-jie-git">使用SSH方式远程连接Git</span><a href="#shi-yong-ssh-fang-shi-yuan-cheng-lian-jie-git" class="header-anchor"></a></h2><p>打开Git Bash（或命令行）</p>
+<p>在本地生成对应邮箱的<strong>SSH RSA公钥密钥</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
+
+<p>使用<strong>默认生成路径</strong>，<strong>默认空key</strong>，这样就可以无需认证直接连接，如果想要设置秘钥也可以设置。</p>
+<p>前往 <code>~/.ssh</code> 目录下寻找密钥（其中默认**<code>id_rsa</code><strong>是密钥信息，</strong><code>id_rsa.pub</code>**为公钥信息）</p>
+<p>在 <strong>Github</strong> 中新建 <strong>SSH keys</strong>：</p>
+<p>github→ Settings→SSH and GPG keys→右上角new SSH key， 打开界面如下：</p>
+<p><img src="image-20231029205623302.png" alt="新增SSH"></p>
+<p>其中<em>Title</em>可以随意填，<em>Key</em>中内容填的是前面生成的(<strong>id_rsa.pub</strong>)的文件内容即公钥信息。</p>
+<p>创建完成后，运行下面的指令，若出现下图情况则说明成功。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh git@github.com</span><br></pre></td></tr></table></figure>
+
+<p><img src="image-20231029205914245.png" alt="success"></p>
 ]]></content>
+      <categories>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>github</tag>
+        <tag>SSH连接</tag>
+      </tags>
   </entry>
   <entry>
     <title>OpenGL环境手动安装配置记录</title>
@@ -264,8 +246,26 @@
       </tags>
   </entry>
   <entry>
+    <title>Hello World</title>
+    <url>/2023/10/29/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2><span id="quick-start">Quick Start</span><a href="#quick-start" class="header-anchor"></a></h2><h3><span id="create-a-new-post">Create a new post</span><a href="#create-a-new-post" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3><span id="run-server">Run server</span><a href="#run-server" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3><span id="generate-static-files">Generate static files</span><a href="#generate-static-files" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3><span id="deploy-to-remote-sites">Deploy to remote sites</span><a href="#deploy-to-remote-sites" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
     <title></title>
-    <url>/friend/index.html</url>
+    <url>/about/index.html</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>
@@ -275,7 +275,7 @@
   </entry>
   <entry>
     <title></title>
-    <url>/about/index.html</url>
+    <url>/friend/index.html</url>
     <content><![CDATA[]]></content>
   </entry>
 </search>

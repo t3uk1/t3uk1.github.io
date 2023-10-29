@@ -243,7 +243,7 @@
             
         </div>
         <footer class="article-footer">
-            <a data-url="https://t3uk1.github.io/2023/10/29/Git%E7%9A%84%E7%BB%91%E5%AE%9A%E4%B8%8E%E8%BF%9E%E6%8E%A5/" data-id="clobim3s60003doug3hbkb4xk" data-title="Git的绑定与连接"
+            <a data-url="https://t3uk1.github.io/2023/10/29/Git%E7%9A%84%E7%BB%91%E5%AE%9A%E4%B8%8E%E8%BF%9E%E6%8E%A5/" data-id="clobiocvj0007hgug91bufkb9" data-title="Git的绑定与连接"
                class="article-share-link">分享</a>
             
             
@@ -262,7 +262,7 @@
                 
                     
                     
-                        <img data-src="/covers/QQ图片20221019125535.jpg" data-sizes="auto" alt="hexo博客搭建记录" class="lazyload">
+                        <img data-src="/covers/QQ图片20220316222859.jpg" data-sizes="auto" alt="hexo博客搭建记录" class="lazyload">
                     
                 
                 <a href="/2023/10/29/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/"></a>
@@ -279,7 +279,7 @@
                 
                     
                     
-                        <img data-src="/covers/QQ图片20221124115312.jpg" data-sizes="auto" alt="OpenGL环境手动安装配置记录" class="lazyload">
+                        <img data-src="/covers/QQ图片20220316222859.jpg" data-sizes="auto" alt="OpenGL环境手动安装配置记录" class="lazyload">
                     
                 
                 <a href="/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/"></a>
@@ -576,59 +576,6 @@
 	
     </script>
 
-
-
-<script>
-$(function(){
-    // 切换TOC目录展开收缩的相关操作.
-  const expandedClass = 'expanded';
-        let $tocAside = $('#toc-aside');
-        let $mainContent = $('#main-content');
-        $('#floating-toc-btn .btn-floating').click(function () {
-            if ($tocAside.hasClass(expandedClass)) {
-                $tocAside.removeClass(expandedClass).hide();
-                $mainContent.removeClass('l9');
-            } else {
-                $tocAside.addClass(expandedClass).show();
-                $mainContent.addClass('l9');
-            }
-            fixPostCardWidth('artDetail', 'prenext-posts');
-        });
-        let $itemHasChild = $(".toc-list-item:has(> .toc-list)");
-        $itemHasChild.prepend("<i class='fa fa-caret-down'></i><i class='fa fa-caret-right'></i><span>&nbsp;</span>");
-        let $iconToFold = $(".toc-list-item > .fa-caret-down");
-        let $iconToExpand = $(".toc-list-item > .fa-caret-right");
-        $iconToFold.addClass("hide");
-
-        const targetNodes = document.getElementsByClassName("toc-list-item");
-        const config = { attributes: true, childList: false, subtree: false };
-        const callback = function(mutationsList, observer) {
-          for(let mutation of mutationsList) {
-            if (mutation.type === "attributes") {
-              let target = $(mutation.target)
-              if (target.hasClass("is-active-li")) {
-                let $toFold = $(".toc-list-item > .fa-caret-down");
-                let $toExpand = $(".toc-list-item > .fa-caret-right");
-                $toFold.addClass("hide");
-                $toExpand.removeClass("hide");
-                target.children(".fa-caret-right").first().addClass("hide")
-                target.children(".fa-caret-down").first().removeClass("hide")
-                let parents = target.parents(".toc-list-item")
-                for (p of parents) {
-                  $(p).children(".fa-caret-right").first().addClass("hide")
-                  $(p).children(".fa-caret-down").first().removeClass("hide")
-                }
-              }
-            }
-          }
-        };
-        const observer = new MutationObserver(callback);
-        for (node of targetNodes) {
-          observer.observe(node, config)
-        }
-  });
-  });
-  </script>
 
     </div>
     <div class="site-search">

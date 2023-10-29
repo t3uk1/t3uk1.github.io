@@ -1,22 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2023/10/29/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2><span id="quick-start">Quick Start</span><a href="#quick-start" class="header-anchor"></a></h2><h3><span id="create-a-new-post">Create a new post</span><a href="#create-a-new-post" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+    <title>Git的绑定与连接</title>
+    <url>/2023/10/29/Git%E7%9A%84%E7%BB%91%E5%AE%9A%E4%B8%8E%E8%BF%9E%E6%8E%A5/</url>
+    <content><![CDATA[<h1><span id="git-de-bang-ding-yu-lian-jie">Git的绑定与连接</span><a href="#git-de-bang-ding-yu-lian-jie" class="header-anchor"></a></h1><div class="toc">
 
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3><span id="run-server">Run server</span><a href="#run-server" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<!-- toc -->
 
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3><span id="generate-static-files">Generate static files</span><a href="#generate-static-files" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<ul>
+<li><a href="#pei-zhi-git-de-user">配置Git的User</a></li>
+<li><a href="#shi-yong-ssh-fang-shi-yuan-cheng-lian-jie-git">使用SSH方式远程连接Git</a></li>
+</ul>
+<!-- tocstop -->
 
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3><span id="deploy-to-remote-sites">Deploy to remote sites</span><a href="#deploy-to-remote-sites" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+</div>
 
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<h2><span id="pei-zhi-git-de-user">配置Git的User</span><a href="#pei-zhi-git-de-user" class="header-anchor"></a></h2><p>打开Git Bash（或命令行）</p>
+<p>配置全局name：</p>
+<ul>
+<li><p>github用户名</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name name</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>配置全局email：</p>
+<ul>
+<li><p>github邮箱：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.email email</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>以我自己的github账户为例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name t3uk1</span><br><span class="line">git config --global user.email xxx@qq.com</span><br></pre></td></tr></table></figure>
+
+
+
+<h2><span id="shi-yong-ssh-fang-shi-yuan-cheng-lian-jie-git">使用SSH方式远程连接Git</span><a href="#shi-yong-ssh-fang-shi-yuan-cheng-lian-jie-git" class="header-anchor"></a></h2><p>打开Git Bash（或命令行）</p>
+<p>在本地生成对应邮箱的<strong>SSH RSA公钥密钥</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
+
+<p>使用<strong>默认生成路径</strong>，<strong>默认空key</strong></p>
 ]]></content>
+      <categories>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>github</tag>
+        <tag>SSH连接</tag>
+      </tags>
   </entry>
   <entry>
     <title>functiontest</title>
@@ -45,6 +72,54 @@
       <tags>
         <tag>test</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>hexo博客搭建记录</title>
+    <url>/2023/10/29/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<h1><span id="hexo-bo-ke-da-jian-ji-lu">hexo博客搭建记录</span><a href="#hexo-bo-ke-da-jian-ji-lu" class="header-anchor"></a></h1><p>目录跳转：</p>
+<div class="toc">
+
+<!-- toc -->
+
+<ul>
+<li><a href="#qian-zhi-huan-jing">前置环境</a></li>
+</ul>
+<!-- tocstop -->
+
+</div>
+
+<p>花了一下午把hexo博客搭好了，这里简单记录一下搭建的过程。</p>
+<h2><span id="qian-zhi-huan-jing">前置环境</span><a href="#qian-zhi-huan-jing" class="header-anchor"></a></h2><ul>
+<li><p>Git</p>
+<p>由于博客是搭在git上的，因此需要绑定好 Github 的账号与邮箱，并能够建立连接</p>
+<p>具体操作请参考：<a href="https://t3uk1.github.io/2023/10/29/Git%E7%9A%84%E7%BB%91%E5%AE%9A%E4%B8%8E%E8%BF%9E%E6%8E%A5">Git的绑定与连接</a></p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2023/10/29/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2><span id="quick-start">Quick Start</span><a href="#quick-start" class="header-anchor"></a></h2><h3><span id="create-a-new-post">Create a new post</span><a href="#create-a-new-post" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3><span id="run-server">Run server</span><a href="#run-server" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3><span id="generate-static-files">Generate static files</span><a href="#generate-static-files" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3><span id="deploy-to-remote-sites">Deploy to remote sites</span><a href="#deploy-to-remote-sites" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
   </entry>
   <entry>
     <title>OpenGL环境手动安装配置记录</title>

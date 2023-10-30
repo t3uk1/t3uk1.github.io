@@ -605,6 +605,11 @@
       </tags>
   </entry>
   <entry>
+    <title>分类</title>
+    <url>/categories/index.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title></title>
     <url>/about/index.html</url>
     <content><![CDATA[]]></content>
@@ -612,11 +617,6 @@
   <entry>
     <title></title>
     <url>/friend/index.html</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>分类</title>
-    <url>/categories/index.html</url>
     <content><![CDATA[]]></content>
   </entry>
 </search>

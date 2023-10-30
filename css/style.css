@@ -1546,6 +1546,7 @@ a.article-title:hover {
   margin-top: 2em;
   border-left: 3px solid #ff1700;
   padding: 0.5em 1em;
+  line-height: 2em;
 }
 .post-link {
   position: absolute;

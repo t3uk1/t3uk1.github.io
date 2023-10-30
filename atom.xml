@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>T3uk1&#39;s hub</title>
+  <icon>https://t3uk1.github.io/icon.png</icon>
+  
+  <link href="https://t3uk1.github.io/atom.xml" rel="self"/>
+  
+  <link href="https://t3uk1.github.io/"/>
+  <updated>2023-10-30T11:29:31.679Z</updated>
+  <id>https://t3uk1.github.io/</id>
+  
+  <author>
+    <name>*月遇丛雲花遇風*</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>hexo主题配置--reimu</title>
+    <link href="https://t3uk1.github.io/2023/10/29/hexo%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE-reimu/"/>
+    <id>https://t3uk1.github.io/2023/10/29/hexo%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE-reimu/</id>
+    <published>2023-10-29T13:56:29.000Z</published>
+    <updated>2023-10-30T11:29:31.679Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;&lt;span id=&quot;hexo-zhu-ti-pei-zhi-reimu&quot;&gt;hexo主题配置–reimu&lt;/span&gt;&lt;a href=&quot;#hexo-zhu-ti-pei-zhi-reimu&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="hexo" scheme="https://t3uk1.github.io/categories/hexo/"/>
+    
+    
+    <category term="hexo" scheme="https://t3uk1.github.io/tags/hexo/"/>
+    
+    <category term="algolia" scheme="https://t3uk1.github.io/tags/algolia/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>hexo博客搭建记录</title>
+    <link href="https://t3uk1.github.io/2023/10/29/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/"/>
+    <id>https://t3uk1.github.io/2023/10/29/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/</id>
+    <published>2023-10-29T12:25:01.000Z</published>
+    <updated>2023-10-30T11:29:06.842Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;&lt;span id=&quot;hexo-bo-ke-da-jian-ji-lu&quot;&gt;hexo博客搭建记录&lt;/span&gt;&lt;a href=&quot;#hexo-bo-ke-da-jian-ji-lu&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="hexo" scheme="https://t3uk1.github.io/categories/hexo/"/>
+    
+    
+    <category term="hexo" scheme="https://t3uk1.github.io/tags/hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Git的绑定与连接</title>
+    <link href="https://t3uk1.github.io/2023/10/29/Git%E7%9A%84%E7%BB%91%E5%AE%9A%E4%B8%8E%E8%BF%9E%E6%8E%A5/"/>
+    <id>https://t3uk1.github.io/2023/10/29/Git%E7%9A%84%E7%BB%91%E5%AE%9A%E4%B8%8E%E8%BF%9E%E6%8E%A5/</id>
+    <published>2023-10-29T12:20:40.000Z</published>
+    <updated>2023-10-30T08:43:19.415Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;&lt;span id=&quot;git-de-bang-ding-yu-lian-jie&quot;&gt;Git的绑定与连接&lt;/span&gt;&lt;a href=&quot;#git-de-bang-ding-yu-lian-jie&quot; class=&quot;header-anchor&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;div</summary>
+        
+      
+    
+    
+    
+    <category term="Git" scheme="https://t3uk1.github.io/categories/Git/"/>
+    
+    
+    <category term="github" scheme="https://t3uk1.github.io/tags/github/"/>
+    
+    <category term="SSH连接" scheme="https://t3uk1.github.io/tags/SSH%E8%BF%9E%E6%8E%A5/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>OpenGL环境手动安装配置记录</title>
+    <link href="https://t3uk1.github.io/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/"/>
+    <id>https://t3uk1.github.io/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/</id>
+    <published>2023-10-29T11:05:36.000Z</published>
+    <updated>2023-10-30T11:29:22.509Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;&lt;span id=&quot;opengl-huan-jing-shou-dong-an-zhuang-pei-zhi-ji-lu&quot;&gt;OpenGL环境手动安装配置记录&lt;/span&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="计算机图形学" scheme="https://t3uk1.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/"/>
+    
+    
+    <category term="openGL" scheme="https://t3uk1.github.io/tags/openGL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="https://t3uk1.github.io/2023/10/29/hello-world/"/>
+    <id>https://t3uk1.github.io/2023/10/29/hello-world/</id>
+    <published>2023-10-29T05:15:00.639Z</published>
+    <updated>2023-10-29T05:41:07.795Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+</feed>

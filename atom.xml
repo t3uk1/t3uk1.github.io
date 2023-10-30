@@ -6,7 +6,7 @@
   <link href="https://t3uk1.github.io/atom.xml" rel="self"/>
   
   <link href="https://t3uk1.github.io/"/>
-  <updated>2023-10-30T11:29:31.679Z</updated>
+  <updated>2023-10-30T11:51:05.284Z</updated>
   <id>https://t3uk1.github.io/</id>
   
   <author>
@@ -17,11 +17,36 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>hexo添加版权声明</title>
+    <link href="https://t3uk1.github.io/2023/10/30/hexo%E6%B7%BB%E5%8A%A0%E7%89%88%E6%9D%83%E5%A3%B0%E6%98%8E/"/>
+    <id>https://t3uk1.github.io/2023/10/30/hexo%E6%B7%BB%E5%8A%A0%E7%89%88%E6%9D%83%E5%A3%B0%E6%98%8E/</id>
+    <published>2023-10-30T11:36:32.000Z</published>
+    <updated>2023-10-30T11:51:05.284Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;&lt;span id=&quot;hexo-tian-jia-ban-quan-sheng-ming&quot;&gt;hexo添加版权声明&lt;/span&gt;&lt;a href=&quot;#hexo-tian-jia-ban-quan-sheng-ming&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="hexo" scheme="https://t3uk1.github.io/categories/hexo/"/>
+    
+    
+    <category term="hexo" scheme="https://t3uk1.github.io/tags/hexo/"/>
+    
+  </entry>
+  
+  <entry>
     <title>hexo主题配置--reimu</title>
     <link href="https://t3uk1.github.io/2023/10/29/hexo%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE-reimu/"/>
     <id>https://t3uk1.github.io/2023/10/29/hexo%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE-reimu/</id>
     <published>2023-10-29T13:56:29.000Z</published>
-    <updated>2023-10-30T11:29:31.679Z</updated>
+    <updated>2023-10-30T11:39:52.125Z</updated>
     
     
       
@@ -125,14 +150,14 @@
     <link href="https://t3uk1.github.io/2023/10/29/hello-world/"/>
     <id>https://t3uk1.github.io/2023/10/29/hello-world/</id>
     <published>2023-10-29T05:15:00.639Z</published>
-    <updated>2023-10-29T05:41:07.795Z</updated>
+    <updated>2023-10-30T11:34:47.439Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt;</summary>
+    <summary type="html">&lt;h1&gt;&lt;span id=&quot;this-is-my-first-blog&quot;&gt;This is my first blog&lt;/span&gt;&lt;a href=&quot;#this-is-my-first-blog&quot;</summary>
         
       
     

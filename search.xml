@@ -1,22 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2023/10/29/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2><span id="quick-start">Quick Start</span><a href="#quick-start" class="header-anchor"></a></h2><h3><span id="create-a-new-post">Create a new post</span><a href="#create-a-new-post" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+    <title>Git的绑定与连接</title>
+    <url>/2023/10/29/Git%E7%9A%84%E7%BB%91%E5%AE%9A%E4%B8%8E%E8%BF%9E%E6%8E%A5/</url>
+    <content><![CDATA[<h1><span id="git-de-bang-ding-yu-lian-jie">Git的绑定与连接</span><a href="#git-de-bang-ding-yu-lian-jie" class="header-anchor"></a></h1><div class="toc">
 
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3><span id="run-server">Run server</span><a href="#run-server" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<!-- toc -->
 
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3><span id="generate-static-files">Generate static files</span><a href="#generate-static-files" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<ul>
+<li><a href="#pei-zhi-git-de-user">配置Git的User</a></li>
+<li><a href="#shi-yong-ssh-fang-shi-yuan-cheng-lian-jie-git">使用SSH方式远程连接Git</a></li>
+</ul>
+<!-- tocstop -->
 
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3><span id="deploy-to-remote-sites">Deploy to remote sites</span><a href="#deploy-to-remote-sites" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+</div>
 
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<h2><span id="pei-zhi-git-de-user">配置Git的User</span><a href="#pei-zhi-git-de-user" class="header-anchor"></a></h2><p>打开Git Bash（或命令行）</p>
+<p>配置全局name：</p>
+<ul>
+<li><p>github用户名</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name name</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>配置全局email：</p>
+<ul>
+<li><p>github邮箱：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.email email</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>以我自己的github账户为例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name t3uk1</span><br><span class="line">git config --global user.email xxx@qq.com</span><br></pre></td></tr></table></figure>
+
+
+
+<h2><span id="shi-yong-ssh-fang-shi-yuan-cheng-lian-jie-git">使用SSH方式远程连接Git</span><a href="#shi-yong-ssh-fang-shi-yuan-cheng-lian-jie-git" class="header-anchor"></a></h2><p>打开Git Bash（或命令行）</p>
+<p>在本地生成对应邮箱的<strong>SSH RSA公钥密钥</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
+
+<p>使用<strong>默认生成路径</strong>，<strong>默认空key</strong>，这样就可以无需认证直接连接，如果想要设置秘钥也可以设置。</p>
+<p>前往 <code>~/.ssh</code> 目录下寻找密钥（其中默认**<code>id_rsa</code><strong>是密钥信息，</strong><code>id_rsa.pub</code>**为公钥信息）</p>
+<p>在 <strong>Github</strong> 中新建 <strong>SSH keys</strong>：</p>
+<p>github→ Settings→SSH and GPG keys→右上角new SSH key， 打开界面如下：</p>
+<p><img src="image-20231029205623302.png" alt="新增SSH"></p>
+<p>其中<em>Title</em>可以随意填，<em>Key</em>中内容填的是前面生成的(<strong>id_rsa.pub</strong>)的文件内容即公钥信息。</p>
+<p>创建完成后，运行下面的指令，若出现下图情况则说明成功。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh git@github.com</span><br></pre></td></tr></table></figure>
+
+<p><img src="image-20231029205914245.png" alt="success"></p>
 ]]></content>
+      <categories>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>github</tag>
+        <tag>SSH连接</tag>
+      </tags>
   </entry>
   <entry>
     <title>hexo主题配置--reimu</title>
@@ -169,57 +205,94 @@
       </tags>
   </entry>
   <entry>
-    <title>Git的绑定与连接</title>
-    <url>/2023/10/29/Git%E7%9A%84%E7%BB%91%E5%AE%9A%E4%B8%8E%E8%BF%9E%E6%8E%A5/</url>
-    <content><![CDATA[<h1><span id="git-de-bang-ding-yu-lian-jie">Git的绑定与连接</span><a href="#git-de-bang-ding-yu-lian-jie" class="header-anchor"></a></h1><div class="toc">
+    <title>Hello World</title>
+    <url>/2023/10/29/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2><span id="quick-start">Quick Start</span><a href="#quick-start" class="header-anchor"></a></h2><h3><span id="create-a-new-post">Create a new post</span><a href="#create-a-new-post" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3><span id="run-server">Run server</span><a href="#run-server" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3><span id="generate-static-files">Generate static files</span><a href="#generate-static-files" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3><span id="deploy-to-remote-sites">Deploy to remote sites</span><a href="#deploy-to-remote-sites" class="header-anchor"></a></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>OpenGL环境手动安装配置记录</title>
+    <url>/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/</url>
+    <content><![CDATA[<h1><span id="opengl-huan-jing-shou-dong-an-zhuang-pei-zhi-ji-lu">OpenGL环境手动安装配置记录</span><a href="#opengl-huan-jing-shou-dong-an-zhuang-pei-zhi-ji-lu" class="header-anchor"></a></h1><div class="toc">
 
 <!-- toc -->
 
 <ul>
-<li><a href="#pei-zhi-git-de-user">配置Git的User</a></li>
-<li><a href="#shi-yong-ssh-fang-shi-yuan-cheng-lian-jie-git">使用SSH方式远程连接Git</a></li>
+<li><a href="#1-an-zhuang-vs2019">1、安装VS2019</a></li>
+<li><a href="#2-an-zhuang-cmake">2、安装cmake</a></li>
+<li><a href="#3-an-zhuang-git">3、安装Git</a></li>
+<li><a href="#4-an-zhuang-opengl-ku-yu-zai-vs2019-de-pei-zhi">4、安装OpenGL库与在VS2019的配置</a></li>
 </ul>
 <!-- tocstop -->
 
 </div>
 
-<h2><span id="pei-zhi-git-de-user">配置Git的User</span><a href="#pei-zhi-git-de-user" class="header-anchor"></a></h2><p>打开Git Bash（或命令行）</p>
-<p>配置全局name：</p>
+<p><del>由于一键安装时vcpkg的傻逼报错修了一晚上修不好于是综合了好几个安装教程博客手动添加库才成功跑起来</del></p>
+<h3><span id="1-an-zhuang-vs2019">1、安装VS2019</span><a href="#1-an-zhuang-vs2019" class="header-anchor"></a></h3><p>这个直接略过</p>
+<h3><span id="2-an-zhuang-cmake">2、安装cmake</span><a href="#2-an-zhuang-cmake" class="header-anchor"></a></h3><p><a href="https://cmake.org/download/">https://cmake.org/download/</a></p>
+<p>在上述网址下载对应平台安装包即可，注意在安装时关于修改系统环境变量的选项中选择添加到所有用户的PATH</p>
+<h3><span id="3-an-zhuang-git">3、安装Git</span><a href="#3-an-zhuang-git" class="header-anchor"></a></h3><p>这个装过了，安装直接搜索网络教程就行。</p>
+<h3><span id="4-an-zhuang-opengl-ku-yu-zai-vs2019-de-pei-zhi">4、安装OpenGL库与在VS2019的配置</span><a href="#4-an-zhuang-opengl-ku-yu-zai-vs2019-de-pei-zhi" class="header-anchor"></a></h3><h6><span id="glfw">GLFW</span><a href="#glfw" class="header-anchor"></a></h6><p><a href="https://www.glfw.org/download.html">https://www.glfw.org/download.html</a></p>
+<p>windows端选择pre-compiled binaries，这是已经预编译的文件，可以直接使用</p>
+<p><img src="image-20230912105714270-16985808329371.png" alt="glfw下载"></p>
+<p>将下载好的文件解压，将对应文件拷贝到vs2019安装目录中的文件夹中，本机的安装目录如下，根据自己的安装情况找到对应文件夹</p>
+<img src="image-20230912105914220-16985808329372.png" alt="vs安装目录" style="zoom: 67%;">
+
+<p>头文件：在下载好的GLFW文件夹中，将头文件拷贝到vs目录中的include目录中的GL文件夹，若没有则先创建一个GL文件夹，这个文件夹用于专门存储OpenGL库的头文件。</p>
+<p>bin文件：将对应dll文件拷贝到vs目录下的bin文件夹中，拷贝到最小目录，注意将x86文件拷贝到x86目录下，x64文件拷贝到x64目录下。</p>
+<p>.lib文件：与bin同理，拷贝到lib目录下的文件夹中，注意x86和x64都要拷贝。</p>
+<h6><span id="glew">GLEW</span><a href="#glew" class="header-anchor"></a></h6><p><a href="https://glew.sourceforge.net/">https://glew.sourceforge.net/</a></p>
+<p>下载最新版本即可，相关配置同上</p>
+<h6><span id="freeglut">FreeGLUT</span><a href="#freeglut" class="header-anchor"></a></h6><p><a href="https://www.transmissionzero.co.uk/software/freeglut-devel/">https://www.transmissionzero.co.uk/software/freeglut-devel/</a></p>
+<h6><span id="glad">glad</span><a href="#glad" class="header-anchor"></a></h6><p><a href="https://glad.dav1d.de/">https://glad.dav1d.de/</a></p>
+<p>API gl version直接选4.6即可，将include部分直接拷贝到vs头文件GL目录下</p>
+<p><img src="image-20230912111603093-16985808329383.png" alt="glad下载"></p>
+<h6><span id="glm">glm</span><a href="#glm" class="header-anchor"></a></h6><p><a href="https://github.com/g-truc/glm/releases/tag/0.9.8.0">https://github.com/g-truc/glm/releases/tag/0.9.8.0</a></p>
+<p>解压后把子文件夹中的glm文件夹直接整个拷贝到vs目录中的include中，导入头文件的方式为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;glm/glm.hpp&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h6><span id="vs-zhong-pei-zhi">vs中配置</span><a href="#vs-zhong-pei-zhi" class="header-anchor"></a></h6><p>在目标目录新建一个项目</p>
+<p>进入vs2019，点击项目，管理NuGet程序包，搜索nupengl，安装两个相关的组件</p>
+<p>链接配置：运行前，将几个dll文件拷贝到系统文件夹（C:\Windows\SysWOW64   C:\Windows\System32）</p>
+<p>右键项目，点进属性-&gt;连接器-&gt;输入-&gt;附加依赖项</p>
+<p><img src="image-20230912112352987-16985808329384.png" alt="vs2019中对项目添加依赖项"></p>
+<p>将 freeglut.lib;glew32.lib;glfw3.lib;OpenGL32.lib;复制到附加依赖项中。</p>
 <ul>
-<li><p>github用户名</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name name</span><br></pre></td></tr></table></figure></li>
+<li><p>Debug时可以正常运行但Release模式无法正常执行？</p>
+<p>在项目设置中配置为Release的菜单中再导入一次上面的依赖项即可</p>
+</li>
 </ul>
-<p>配置全局email：</p>
+<p><em><strong>注意一定要执行上面的操作，否则会报无法解析外部符号的错误</strong></em></p>
+<p>保存设置，基本配置就差不多了，使用的时候只需导入对应头文件即可。</p>
+<p>注意：</p>
 <ul>
-<li><p>github邮箱：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.email email</span><br></pre></td></tr></table></figure></li>
+<li><p>导入glad的时候只导入头文件运行的话会出现未识别的外部符号问题，因此要将glad.c文件导入到项目中。</p>
+</li>
+<li><p>若出现 #error : OpenGL header already included,remove this include, glad already provides it报错，将glad头文件的导入放在其他所有OpenGL库导入的前面即可解决。</p>
+</li>
 </ul>
-<p>以我自己的github账户为例：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name t3uk1</span><br><span class="line">git config --global user.email xxx@qq.com</span><br></pre></td></tr></table></figure>
-
-
-
-<h2><span id="shi-yong-ssh-fang-shi-yuan-cheng-lian-jie-git">使用SSH方式远程连接Git</span><a href="#shi-yong-ssh-fang-shi-yuan-cheng-lian-jie-git" class="header-anchor"></a></h2><p>打开Git Bash（或命令行）</p>
-<p>在本地生成对应邮箱的<strong>SSH RSA公钥密钥</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
-
-<p>使用<strong>默认生成路径</strong>，<strong>默认空key</strong>，这样就可以无需认证直接连接，如果想要设置秘钥也可以设置。</p>
-<p>前往 <code>~/.ssh</code> 目录下寻找密钥（其中默认**<code>id_rsa</code><strong>是密钥信息，</strong><code>id_rsa.pub</code>**为公钥信息）</p>
-<p>在 <strong>Github</strong> 中新建 <strong>SSH keys</strong>：</p>
-<p>github→ Settings→SSH and GPG keys→右上角new SSH key， 打开界面如下：</p>
-<p><img src="image-20231029205623302.png" alt="新增SSH"></p>
-<p>其中<em>Title</em>可以随意填，<em>Key</em>中内容填的是前面生成的(<strong>id_rsa.pub</strong>)的文件内容即公钥信息。</p>
-<p>创建完成后，运行下面的指令，若出现下图情况则说明成功。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh git@github.com</span><br></pre></td></tr></table></figure>
-
-<p><img src="image-20231029205914245.png" alt="success"></p>
 ]]></content>
       <categories>
-        <category>Git</category>
+        <category>计算机图形学</category>
       </categories>
       <tags>
-        <tag>github</tag>
-        <tag>SSH连接</tag>
+        <tag>openGL</tag>
       </tags>
   </entry>
   <entry>
@@ -532,86 +605,13 @@
       </tags>
   </entry>
   <entry>
-    <title>OpenGL环境手动安装配置记录</title>
-    <url>/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/</url>
-    <content><![CDATA[<h1><span id="opengl-huan-jing-shou-dong-an-zhuang-pei-zhi-ji-lu">OpenGL环境手动安装配置记录</span><a href="#opengl-huan-jing-shou-dong-an-zhuang-pei-zhi-ji-lu" class="header-anchor"></a></h1><div class="toc">
-
-<!-- toc -->
-
-<ul>
-<li><a href="#1-an-zhuang-vs2019">1、安装VS2019</a></li>
-<li><a href="#2-an-zhuang-cmake">2、安装cmake</a></li>
-<li><a href="#3-an-zhuang-git">3、安装Git</a></li>
-<li><a href="#4-an-zhuang-opengl-ku-yu-zai-vs2019-de-pei-zhi">4、安装OpenGL库与在VS2019的配置</a></li>
-</ul>
-<!-- tocstop -->
-
-</div>
-
-<p><del>由于一键安装时vcpkg的傻逼报错修了一晚上修不好于是综合了好几个安装教程博客手动添加库才成功跑起来</del></p>
-<h3><span id="1-an-zhuang-vs2019">1、安装VS2019</span><a href="#1-an-zhuang-vs2019" class="header-anchor"></a></h3><p>这个直接略过</p>
-<h3><span id="2-an-zhuang-cmake">2、安装cmake</span><a href="#2-an-zhuang-cmake" class="header-anchor"></a></h3><p><a href="https://cmake.org/download/">https://cmake.org/download/</a></p>
-<p>在上述网址下载对应平台安装包即可，注意在安装时关于修改系统环境变量的选项中选择添加到所有用户的PATH</p>
-<h3><span id="3-an-zhuang-git">3、安装Git</span><a href="#3-an-zhuang-git" class="header-anchor"></a></h3><p>这个装过了，安装直接搜索网络教程就行。</p>
-<h3><span id="4-an-zhuang-opengl-ku-yu-zai-vs2019-de-pei-zhi">4、安装OpenGL库与在VS2019的配置</span><a href="#4-an-zhuang-opengl-ku-yu-zai-vs2019-de-pei-zhi" class="header-anchor"></a></h3><h6><span id="glfw">GLFW</span><a href="#glfw" class="header-anchor"></a></h6><p><a href="https://www.glfw.org/download.html">https://www.glfw.org/download.html</a></p>
-<p>windows端选择pre-compiled binaries，这是已经预编译的文件，可以直接使用</p>
-<p><img src="image-20230912105714270-16985808329371.png" alt="glfw下载"></p>
-<p>将下载好的文件解压，将对应文件拷贝到vs2019安装目录中的文件夹中，本机的安装目录如下，根据自己的安装情况找到对应文件夹</p>
-<img src="image-20230912105914220-16985808329372.png" alt="vs安装目录" style="zoom: 67%;">
-
-<p>头文件：在下载好的GLFW文件夹中，将头文件拷贝到vs目录中的include目录中的GL文件夹，若没有则先创建一个GL文件夹，这个文件夹用于专门存储OpenGL库的头文件。</p>
-<p>bin文件：将对应dll文件拷贝到vs目录下的bin文件夹中，拷贝到最小目录，注意将x86文件拷贝到x86目录下，x64文件拷贝到x64目录下。</p>
-<p>.lib文件：与bin同理，拷贝到lib目录下的文件夹中，注意x86和x64都要拷贝。</p>
-<h6><span id="glew">GLEW</span><a href="#glew" class="header-anchor"></a></h6><p><a href="https://glew.sourceforge.net/">https://glew.sourceforge.net/</a></p>
-<p>下载最新版本即可，相关配置同上</p>
-<h6><span id="freeglut">FreeGLUT</span><a href="#freeglut" class="header-anchor"></a></h6><p><a href="https://www.transmissionzero.co.uk/software/freeglut-devel/">https://www.transmissionzero.co.uk/software/freeglut-devel/</a></p>
-<h6><span id="glad">glad</span><a href="#glad" class="header-anchor"></a></h6><p><a href="https://glad.dav1d.de/">https://glad.dav1d.de/</a></p>
-<p>API gl version直接选4.6即可，将include部分直接拷贝到vs头文件GL目录下</p>
-<p><img src="image-20230912111603093-16985808329383.png" alt="glad下载"></p>
-<h6><span id="glm">glm</span><a href="#glm" class="header-anchor"></a></h6><p><a href="https://github.com/g-truc/glm/releases/tag/0.9.8.0">https://github.com/g-truc/glm/releases/tag/0.9.8.0</a></p>
-<p>解压后把子文件夹中的glm文件夹直接整个拷贝到vs目录中的include中，导入头文件的方式为：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;glm/glm.hpp&gt;</span></span></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h6><span id="vs-zhong-pei-zhi">vs中配置</span><a href="#vs-zhong-pei-zhi" class="header-anchor"></a></h6><p>在目标目录新建一个项目</p>
-<p>进入vs2019，点击项目，管理NuGet程序包，搜索nupengl，安装两个相关的组件</p>
-<p>链接配置：运行前，将几个dll文件拷贝到系统文件夹（C:\Windows\SysWOW64   C:\Windows\System32）</p>
-<p>右键项目，点进属性-&gt;连接器-&gt;输入-&gt;附加依赖项</p>
-<p><img src="image-20230912112352987-16985808329384.png" alt="vs2019中对项目添加依赖项"></p>
-<p>将 freeglut.lib;glew32.lib;glfw3.lib;OpenGL32.lib;复制到附加依赖项中。</p>
-<ul>
-<li><p>Debug时可以正常运行但Release模式无法正常执行？</p>
-<p>在项目设置中配置为Release的菜单中再导入一次上面的依赖项即可</p>
-</li>
-</ul>
-<p><em><strong>注意一定要执行上面的操作，否则会报无法解析外部符号的错误</strong></em></p>
-<p>保存设置，基本配置就差不多了，使用的时候只需导入对应头文件即可。</p>
-<p>注意：</p>
-<ul>
-<li><p>导入glad的时候只导入头文件运行的话会出现未识别的外部符号问题，因此要将glad.c文件导入到项目中。</p>
-</li>
-<li><p>若出现 #error : OpenGL header already included,remove this include, glad already provides it报错，将glad头文件的导入放在其他所有OpenGL库导入的前面即可解决。</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>计算机图形学</category>
-      </categories>
-      <tags>
-        <tag>openGL</tag>
-      </tags>
+    <title></title>
+    <url>/about/index.html</url>
+    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>分类</title>
     <url>/categories/index.html</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title></title>
-    <url>/about/index.html</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>

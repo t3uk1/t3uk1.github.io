@@ -1541,7 +1541,7 @@ a.article-title:hover {
   overflow-x: auto;
   overflow-y: hidden;
 }
-.declare {
+#declare {
   background-color: #eaeaea;
   margin-top: 2em;
   border-left: 3px solid #ff1700;

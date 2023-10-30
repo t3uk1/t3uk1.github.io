@@ -1541,6 +1541,12 @@ a.article-title:hover {
   overflow-x: auto;
   overflow-y: hidden;
 }
+.declare {
+  background-color: #eaeaea;
+  margin-top: 2em;
+  border-left: 3px solid #ff1700;
+  padding: 0.5em 1em;
+}
 .post-link {
   position: absolute;
   top: 0;

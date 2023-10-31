@@ -6,7 +6,7 @@
   <link href="https://t3uk1.github.io/atom.xml" rel="self"/>
   
   <link href="https://t3uk1.github.io/"/>
-  <updated>2023-10-30T12:00:45.386Z</updated>
+  <updated>2023-10-31T02:28:19.317Z</updated>
   <id>https://t3uk1.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>记第一次出Pwn题——AuroraCTF2023第一批Pwn</title>
+    <link href="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/"/>
+    <id>https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/</id>
+    <published>2023-10-31T02:28:19.000Z</published>
+    <updated>2023-10-31T02:28:19.317Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;&lt;span id=&quot;ji-di-yi-ci-chu-pwn-ti-auroractf2023-di-yi-pi-pwn&quot;&gt;记第一次出Pwn题——AuroraCTF2023第一批Pwn&lt;/span&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="CTF" scheme="https://t3uk1.github.io/categories/CTF/"/>
+    
+    <category term="pwn" scheme="https://t3uk1.github.io/categories/CTF/pwn/"/>
+    
+    
+    <category term="pwn" scheme="https://t3uk1.github.io/tags/pwn/"/>
+    
+  </entry>
   
   <entry>
     <title>hexo添加版权声明</title>

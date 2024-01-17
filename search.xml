@@ -1,9 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2023/10/29/hello-world/</url>
-    <content><![CDATA[<h1><span id="this-is-my-first-blog">This is my first blog</span><a href="#this-is-my-first-blog" class="header-anchor"></a></h1>]]></content>
+    <title>git相关报错的解决方法汇总</title>
+    <url>/2024/01/17/git%E7%9B%B8%E5%85%B3%E6%8A%A5%E9%94%99%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%E6%B1%87%E6%80%BB/</url>
+    <content><![CDATA[<h1><span id="git-xiang-guan-bao-cuo-de-jie-jue-fang-fa-hui-zong">git相关报错的解决方法汇总</span><a href="#git-xiang-guan-bao-cuo-de-jie-jue-fang-fa-hui-zong" class="header-anchor"></a></h1><p>本文为git使用遇到的相关报错的解决方法汇总，后面遇到新的报错解决会更新到这里。</p>
+<div class="toc">
+
+<!-- toc -->
+
+<ul>
+<li><a href="#bao-cuo-ssh-connect-to-host-github-com-port-22-connection-timed-out">报错“ssh:connect to host github.com port 22: Connection timed out“</a></li>
+</ul>
+<!-- tocstop -->
+
+</div>
+
+<h2><span id="bao-cuo-ssh-connect-to-host-github-com-port-22-connection-timed-out">报错“ssh:connect to host github.com port 22: Connection timed out“</span><a href="#bao-cuo-ssh-connect-to-host-github-com-port-22-connection-timed-out" class="header-anchor"></a></h2><p><strong>1、首先检验22端口是否出问题</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+
+<p>如果执行上面的命令仍然出现timed out，则说明可能是22端口出问题了。</p>
+<p><strong>2、更改ssh配置文件</strong></p>
+<p>进入~&#x2F;.ssh&#x2F;目录（C:\users\username.ssh\），如果没有config文件，则创建一个，打开config文件，添加或更改为以下配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Host github.com</span><br><span class="line">  HostName ssh.github.com</span><br><span class="line">  Port 443</span><br><span class="line">  IdentityFile ~/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
+
+<p>大致意思为更改默认端口为443。</p>
+<p>再次执行<code>ssh -T git@github.com</code>指令，若出现如下图信息则说明问题解决：</p>
+<p><img src="image-20240117144427614.png" alt="image-20240117144427614"></p>
+]]></content>
+      <categories>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>github</tag>
+      </tags>
   </entry>
   <entry>
     <title>Git的绑定与连接</title>
@@ -58,6 +87,11 @@
         <tag>github</tag>
         <tag>SSH连接</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2022/05/14/hello-world/</url>
+    <content><![CDATA[<h1><span id="this-is-my-first-blog">This is my first blog</span><a href="#this-is-my-first-blog" class="header-anchor"></a></h1>]]></content>
   </entry>
   <entry>
     <title>hexo主题配置--reimu</title>
@@ -259,258 +293,6 @@
       </categories>
       <tags>
         <tag>hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>使用docker部署pwn题</title>
-    <url>/2023/10/31/%E4%BD%BF%E7%94%A8docker%E9%83%A8%E7%BD%B2pwn%E9%A2%98/</url>
-    <content><![CDATA[<h1><span id="shi-yong-docker-bu-shu-pwn-ti">使用docker部署pwn题</span><a href="#shi-yong-docker-bu-shu-pwn-ti" class="header-anchor"></a></h1><div class="toc">
-
-<!-- toc -->
-
-<ul>
-<li><a href="#step-0-zhun-bei-hao-yao-yong-de-ti-mu-wen-jian">Step 0 准备好要用的题目文件</a></li>
-<li><a href="#step-1-docker-an-zhuang">Step 1 Docker安装</a></li>
-<li><a href="#step-2-an-zhuang-bing-pei-zhi-ctf-xinted">Step 2 安装并配置ctf_xinted</a></li>
-<li><a href="#step-3-shi-yong-docker-bu-shu-ti-mu">Step 3 使用Docker部署题目</a></li>
-<li><a href="#she-zhi-ti-mu-dong-tai-flag-de-fang-fa">*设置题目动态flag的方法</a></li>
-<li><a href="#qi-ta-wen-ti">其他问题</a><ul>
-<li><a href="#zai-zhi-ding-glibc-ban-ben-bian-yi-wen-jian">在指定glibc版本编译文件</a></li>
-<li><a href="#jiang-wen-jian-zai-docker-rong-qi-yu-ben-ji-zhong-hu-xiang-chuan-shu">将文件在docker容器与本机中互相传输</a></li>
-<li><a href="#cong-docker-bian-yi-de-wen-jian-fu-zhi-dao-ben-ji-hou-patch-bu-cheng-gong">从docker编译的文件复制到本机后patch不成功</a></li>
-</ul>
-</li>
-</ul>
-<!-- tocstop -->
-
-</div>
-
-<p>本文的配置过程不一定是规范的，不过至少我按照下面的流程做是能够正常部署的。如有缺漏或错误请见谅。</p>
-<h2><span id="step-0-zhun-bei-hao-yao-yong-de-ti-mu-wen-jian">Step 0 准备好要用的题目文件</span><a href="#step-0-zhun-bei-hao-yao-yong-de-ti-mu-wen-jian" class="header-anchor"></a></h2><p>示例代码pwn.c</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="comment">//对应的基本头文件</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">initialize</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    setbuf(<span class="built_in">stdin</span>, <span class="literal">NULL</span>);</span><br><span class="line">    setbuf(<span class="built_in">stdout</span>, <span class="literal">NULL</span>);</span><br><span class="line">    setbuf(<span class="built_in">stderr</span>, <span class="literal">NULL</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//初始化，可以解决在远程连接时不会自动输出前面的内容的问题</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">g1ft</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;W0w, you have found Yuyuko&#x27;s food!&quot;</span>);</span><br><span class="line">    system(<span class="string">&quot;/bin/sh&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">char</span> s[<span class="number">40</span>];</span><br><span class="line">    initialize();</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Yuyuko sama lose her food.&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Can you find it?&quot;</span>);</span><br><span class="line">    read(<span class="number">0</span>, s, <span class="number">0x100</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Zannen desu ne.&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Wish you can find it next time.&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>编译：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gcc -o ./pwn -g -fno-stack-protector -no-pie ./pwn.c</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">-fno-stack-protector 关闭canary</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">-no-pie 关闭PIE保护</span></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h2><span id="step-1-docker-an-zhuang">Step 1 Docker安装</span><a href="#step-1-docker-an-zhuang" class="header-anchor"></a></h2><p>首先sudo apt update 一下</p>
-<p>安装docker：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt install docker.io      </span><br></pre></td></tr></table></figure>
-
-<p>检查安装情况：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo systemctl status docker</span><br></pre></td></tr></table></figure>
-
-<p>出现如下图所示的状态说明成功安装</p>
-<p><img src="image-20230913150652699.png" alt="install docker"></p>
-<h2><span id="step-2-an-zhuang-bing-pei-zhi-ctf-xinted">Step 2 安装并配置ctf_xinted</span><a href="#step-2-an-zhuang-bing-pei-zhi-ctf-xinted" class="header-anchor"></a></h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/Eadom/ctf_xinetd.git</span><br></pre></td></tr></table></figure>
-
-<p>将代码克隆下来后，可能需要修改一下Dockerfile。</p>
-<p>具体来说，包含换源、在运行路径末尾添加斜杠等操作以防止某些错误的发生</p>
-<p>下面提供一个本次使用的Dockerfile：</p>
-<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:jammy</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> sed -i <span class="string">&#x27;s@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g&#x27;</span> /etc/apt/sources.list &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    apt-get update &amp;&amp; apt-get -y dist-upgrade &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    apt-get install -y lib32z1 xinetd</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> useradd -m ctf</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /home/ctf/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">cp</span> -R /lib*/ /home/ctf/ &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">cp</span> -R /usr/lib*/ /home/ctf/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">mkdir</span> /home/ctf/dev/ &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">mknod</span> /home/ctf/dev/null c 1 3 &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">mknod</span> /home/ctf/dev/zero c 1 5 &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">mknod</span> /home/ctf/dev/random c 1 8 &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">mknod</span> /home/ctf/dev/urandom c 1 9 &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">chmod</span> 666 /home/ctf/dev/*</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">mkdir</span> /home/ctf/bin/ &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">cp</span> /bin/sh /home/ctf/bin/ &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">cp</span> /bin/ls /home/ctf/bin/ &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">cp</span> /bin/cat /home/ctf/bin/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./ctf.xinetd /etc/xinetd.d/ctf</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./start.sh /start.sh</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">echo</span> <span class="string">&quot;Blocked by ctf_xinetd&quot;</span> &gt; /etc/banner_fail</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">chmod</span> +x /start.sh</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./bin/ /home/ctf/</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">chown</span> -R root:ctf /home/ctf &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">chmod</span> -R 755 /home/ctf</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;/start.sh&quot;</span>]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">9999</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2><span id="step-3-shi-yong-docker-bu-shu-ti-mu">Step 3 使用Docker部署题目</span><a href="#step-3-shi-yong-docker-bu-shu-ti-mu" class="header-anchor"></a></h2><ul>
-<li>注意：关于docker的操作要使用sudo</li>
-</ul>
-<p>导入ubuntu</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker pull ubuntu:jammy</span><br></pre></td></tr></table></figure>
-
-<p>构建Docker镜像：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd ./ctf_xinetd   #进入ctf_xinted目录下才能执行下面的指令</span><br><span class="line">sudo docker build ./ -t $name</span><br></pre></td></tr></table></figure>
-
-<p>创建容器：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker run -d -p 9999:9999 $name</span><br></pre></td></tr></table></figure>
-
-<p>出现如下就应该成功了：</p>
-<p><img src="image-20230913164033738.png" alt="docker run"></p>
-<p>连接到靶机：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">nc localhost 9999</span><br></pre></td></tr></table></figure>
-
-
-
-<p>将外部文件导入到Docker中：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker pull $filename</span><br></pre></td></tr></table></figure>
-
-<p>将外部文件复制到Docker容器中：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker cp ctf_xinetd/Dockerfile a68f4951ca21:/</span><br></pre></td></tr></table></figure>
-
-
-
-<p>查看镜像中的容器：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker ps</span><br></pre></td></tr></table></figure>
-
-<p><img src="image-20230913165053078.png" alt="docker ps"></p>
-<p>操作容器：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker exec -it a68f4951ca21  bash</span><br></pre></td></tr></table></figure>
-
-
-
-<p>将题目部署到远程</p>
-<p>注册dockerhub账号，其中username作为将要使用的镜像源的名字</p>
-<p><img src="image-20230913232458703.png" alt="docker name"></p>
-<p>创建存储库：Repositories-&gt;Create repository</p>
-<p><img src="image-20230913232548016.png" alt="docker repository"></p>
-<p><img src="image-20230913232616321.png" alt="image-20230913232616321"></p>
-<p>镜像源名称格式（推荐）：小写英文，中间用-分割</p>
-<p>创建完成后，在虚拟机操作</p>
-<p><strong>首先要登录到dockerhub：</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker login</span><br></pre></td></tr></table></figure>
-
-<p>输入对应已经注册的dockerhub账号的用户名和密码</p>
-<p>build</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker build ./ -t $username/所用镜像名</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">sudo docker build ./ -t t3uk1/yuyukos-food</span></span><br></pre></td></tr></table></figure>
-
-<p>将本地内容传到docker</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker push t3uk1/yuyukos-food</span><br></pre></td></tr></table></figure>
-
-<p>运行容器</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker run -d -p 9999:9999 t3uk1/yuyukos-food</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">参数解析：</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将容器的9999端口绑定到主机9999端口，前面的是主机端口，后面的是容器对应端口</span></span><br></pre></td></tr></table></figure>
-
-
-
-<p>ctf_xinted&#x2F;bin中的两个文件分别是题目对应可执行文件和flag.txt</p>
-<p>在ctf_xinted文档中对应设置如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">service ctf</span><br><span class="line">&#123;</span><br><span class="line">    disable = no</span><br><span class="line">    socket_type = stream</span><br><span class="line">    protocol    = tcp</span><br><span class="line">    wait        = no</span><br><span class="line">    user        = root</span><br><span class="line">    type        = UNLISTED</span><br><span class="line">    port        = 9999</span><br><span class="line">    bind        = 0.0.0.0</span><br><span class="line">    server      = /usr/sbin/chroot</span><br><span class="line">    # replace helloworld to your program</span><br><span class="line">    server_args = --userspec=1000:1000 /home/ctf ./pwn</span><br><span class="line">    banner_fail = /etc/banner_fail</span><br><span class="line">    # safety options</span><br><span class="line">    per_source	= 10 # the maximum instances of this service per source IP address</span><br><span class="line">    rlimit_cpu	= 20 # the maximum number of CPU seconds that the service may use</span><br><span class="line">    #rlimit_as  = 1024M # the Address Space resource limit for the service</span><br><span class="line">    #access_times = 2:00-9:00 12:00-24:00</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>push成功之后应该就能远程访问了</p>
-<p>测试:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">nc localhost 9999 #前面设置的端口是9999</span><br></pre></td></tr></table></figure>
-
-
-
-<p>docker查看标签：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker image ls</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">sudo docker image <span class="built_in">rm</span> xxx</span></span><br></pre></td></tr></table></figure>
-
-<p>docker查看容器情况：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker container ls</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">sudo docker container <span class="built_in">rm</span> xxx</span></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h2><span id="she-zhi-ti-mu-dong-tai-flag-de-fang-fa">*设置题目动态flag的方法</span><a href="#she-zhi-ti-mu-dong-tai-flag-de-fang-fa" class="header-anchor"></a></h2><p>对于每一个创建的动态实例，每次创建的环境变量$FLAG是不同的，因此我们可以将这个环境变量作为题目flag的内容。</p>
-<p>一种实现方式是更改**<u>start.sh</u>**文件，在执行start命令前将$FLAG写入flag文件然后将 $ FLAG取消环境变量。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/sh</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Add your startup script</span></span><br><span class="line">echo $FLAG &gt; /home/ctf/flag</span><br><span class="line">chmod 644 /home/ctf/flag</span><br><span class="line">unset FLAG</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">DO NOT DELETE</span></span><br><span class="line">/etc/init.d/xinetd start</span><br><span class="line">sleep infinity</span><br></pre></td></tr></table></figure>
-
-
-
-<ul>
-<li><p>在Aurora靶场格式化设置动态flag</p>
-<p>Whale-&gt;设置flag格式：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;&#123; &quot;Aurora&#123;&quot;+uuid.uuid4()|string+&quot;&#125;&quot; &#125;&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2><span id="qi-ta-wen-ti">其他问题</span><a href="#qi-ta-wen-ti" class="header-anchor"></a></h2><h3><span id="zai-zhi-ding-glibc-ban-ben-bian-yi-wen-jian">在指定glibc版本编译文件</span><a href="#zai-zhi-ding-glibc-ban-ben-bian-yi-wen-jian" class="header-anchor"></a></h3><p>以ubuntu18为例</p>
-<p>运行docker容器：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker run -it -v &lt;本地绝对路径&gt;:/mnt/ ubuntu:bionic </span><br><span class="line">sudo docker run -it -v /home/yuyuko/mypwn/challenges/ret2libc/:/mnt/ ubuntu:bionic </span><br></pre></td></tr></table></figure>
-
-<p>安装gcc：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">apt update</span><br><span class="line">apt-get install gcc</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">gcc编译</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h3><span id="jiang-wen-jian-zai-docker-rong-qi-yu-ben-ji-zhong-hu-xiang-chuan-shu">将文件在docker容器与本机中互相传输</span><a href="#jiang-wen-jian-zai-docker-rong-qi-yu-ben-ji-zhong-hu-xiang-chuan-shu" class="header-anchor"></a></h3><p>本机传输到docker容器：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker cp &lt;本地文件绝对路径&gt; &lt;容器名称/容器id&gt;:/</span><br><span class="line">sudo docker cp /home/yuyuko/mypwn/challenges/ret2libc/pwn.c 1e239edbeed0:/</span><br></pre></td></tr></table></figure>
-
-<p>docker容器传输到本机：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker cp &lt;容器名称/容器id&gt;:/  &lt;本地文件绝对路径&gt;</span><br><span class="line">sudo docker cp  1e239edbeed0:/pwn /home/yuyuko/mypwn/challenges/ret2libc/</span><br></pre></td></tr></table></figure>
-
-
-
-<h3><span id="cong-docker-bian-yi-de-wen-jian-fu-zhi-dao-ben-ji-hou-patch-bu-cheng-gong">从docker编译的文件复制到本机后patch不成功</span><a href="#cong-docker-bian-yi-de-wen-jian-fu-zhi-dao-ben-ji-hou-patch-bu-cheng-gong" class="header-anchor"></a></h3><p>原因：编译的时候权限是在docker中的root</p>
-<p>首先更改群组：</p>
-<p><img src="image-20231016233521857.png" alt="chown"></p>
-<p>在当前群组(yuyuko)权限下chmod</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">chmod 755 ./pwn </span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>CTF</category>
-        <category>pwn</category>
-      </categories>
-      <tags>
-        <tag>pwn</tag>
-        <tag>docker</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>OpenGL环境手动安装配置记录</title>
-    <url>/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/</url>
-    <content><![CDATA[<h1><span id="opengl-huan-jing-shou-dong-an-zhuang-pei-zhi-ji-lu">OpenGL环境手动安装配置记录</span><a href="#opengl-huan-jing-shou-dong-an-zhuang-pei-zhi-ji-lu" class="header-anchor"></a></h1><div class="toc">
-
-<!-- toc -->
-
-<ul>
-<li><a href="#1-an-zhuang-vs2019">1、安装VS2019</a></li>
-<li><a href="#2-an-zhuang-cmake">2、安装cmake</a></li>
-<li><a href="#3-an-zhuang-git">3、安装Git</a></li>
-<li><a href="#4-an-zhuang-opengl-ku-yu-zai-vs2019-de-pei-zhi">4、安装OpenGL库与在VS2019的配置</a></li>
-</ul>
-<!-- tocstop -->
-
-</div>
-
-<p><del>由于一键安装时vcpkg的傻逼报错修了一晚上修不好于是综合了好几个安装教程博客手动添加库才成功跑起来</del></p>
-<h3><span id="1-an-zhuang-vs2019">1、安装VS2019</span><a href="#1-an-zhuang-vs2019" class="header-anchor"></a></h3><p>这个直接略过</p>
-<h3><span id="2-an-zhuang-cmake">2、安装cmake</span><a href="#2-an-zhuang-cmake" class="header-anchor"></a></h3><p><a href="https://cmake.org/download/">https://cmake.org/download/</a></p>
-<p>在上述网址下载对应平台安装包即可，注意在安装时关于修改系统环境变量的选项中选择添加到所有用户的PATH</p>
-<h3><span id="3-an-zhuang-git">3、安装Git</span><a href="#3-an-zhuang-git" class="header-anchor"></a></h3><p>这个装过了，安装直接搜索网络教程就行。</p>
-<h3><span id="4-an-zhuang-opengl-ku-yu-zai-vs2019-de-pei-zhi">4、安装OpenGL库与在VS2019的配置</span><a href="#4-an-zhuang-opengl-ku-yu-zai-vs2019-de-pei-zhi" class="header-anchor"></a></h3><h6><span id="glfw">GLFW</span><a href="#glfw" class="header-anchor"></a></h6><p><a href="https://www.glfw.org/download.html">https://www.glfw.org/download.html</a></p>
-<p>windows端选择pre-compiled binaries，这是已经预编译的文件，可以直接使用</p>
-<p><img src="image-20230912105714270-16985808329371.png" alt="glfw下载"></p>
-<p>将下载好的文件解压，将对应文件拷贝到vs2019安装目录中的文件夹中，本机的安装目录如下，根据自己的安装情况找到对应文件夹</p>
-<img src="image-20230912105914220-16985808329372.png" alt="vs安装目录" style="zoom: 67%;">
-
-<p>头文件：在下载好的GLFW文件夹中，将头文件拷贝到vs目录中的include目录中的GL文件夹，若没有则先创建一个GL文件夹，这个文件夹用于专门存储OpenGL库的头文件。</p>
-<p>bin文件：将对应dll文件拷贝到vs目录下的bin文件夹中，拷贝到最小目录，注意将x86文件拷贝到x86目录下，x64文件拷贝到x64目录下。</p>
-<p>.lib文件：与bin同理，拷贝到lib目录下的文件夹中，注意x86和x64都要拷贝。</p>
-<h6><span id="glew">GLEW</span><a href="#glew" class="header-anchor"></a></h6><p><a href="https://glew.sourceforge.net/">https://glew.sourceforge.net/</a></p>
-<p>下载最新版本即可，相关配置同上</p>
-<h6><span id="freeglut">FreeGLUT</span><a href="#freeglut" class="header-anchor"></a></h6><p><a href="https://www.transmissionzero.co.uk/software/freeglut-devel/">https://www.transmissionzero.co.uk/software/freeglut-devel/</a></p>
-<h6><span id="glad">glad</span><a href="#glad" class="header-anchor"></a></h6><p><a href="https://glad.dav1d.de/">https://glad.dav1d.de/</a></p>
-<p>API gl version直接选4.6即可，将include部分直接拷贝到vs头文件GL目录下</p>
-<p><img src="image-20230912111603093-16985808329383.png" alt="glad下载"></p>
-<h6><span id="glm">glm</span><a href="#glm" class="header-anchor"></a></h6><p><a href="https://github.com/g-truc/glm/releases/tag/0.9.8.0">https://github.com/g-truc/glm/releases/tag/0.9.8.0</a></p>
-<p>解压后把子文件夹中的glm文件夹直接整个拷贝到vs目录中的include中，导入头文件的方式为：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;glm/glm.hpp&gt;</span></span></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h6><span id="vs-zhong-pei-zhi">vs中配置</span><a href="#vs-zhong-pei-zhi" class="header-anchor"></a></h6><p>在目标目录新建一个项目</p>
-<p>进入vs2019，点击项目，管理NuGet程序包，搜索nupengl，安装两个相关的组件</p>
-<p>链接配置：运行前，将几个dll文件拷贝到系统文件夹（C:\Windows\SysWOW64   C:\Windows\System32）</p>
-<p>右键项目，点进属性-&gt;连接器-&gt;输入-&gt;附加依赖项</p>
-<p><img src="image-20230912112352987-16985808329384.png" alt="vs2019中对项目添加依赖项"></p>
-<p>将 freeglut.lib;glew32.lib;glfw3.lib;OpenGL32.lib;复制到附加依赖项中。</p>
-<ul>
-<li><p>Debug时可以正常运行但Release模式无法正常执行？</p>
-<p>在项目设置中配置为Release的菜单中再导入一次上面的依赖项即可</p>
-</li>
-</ul>
-<p><em><strong>注意一定要执行上面的操作，否则会报无法解析外部符号的错误</strong></em></p>
-<p>保存设置，基本配置就差不多了，使用的时候只需导入对应头文件即可。</p>
-<p>注意：</p>
-<ul>
-<li><p>导入glad的时候只导入头文件运行的话会出现未识别的外部符号问题，因此要将glad.c文件导入到项目中。</p>
-</li>
-<li><p>若出现 #error : OpenGL header already included,remove this include, glad already provides it报错，将glad头文件的导入放在其他所有OpenGL库导入的前面即可解决。</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>计算机图形学</category>
-      </categories>
-      <tags>
-        <tag>openGL</tag>
       </tags>
   </entry>
   <entry>
@@ -820,6 +602,258 @@
       </categories>
       <tags>
         <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>OpenGL环境手动安装配置记录</title>
+    <url>/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/</url>
+    <content><![CDATA[<h1><span id="opengl-huan-jing-shou-dong-an-zhuang-pei-zhi-ji-lu">OpenGL环境手动安装配置记录</span><a href="#opengl-huan-jing-shou-dong-an-zhuang-pei-zhi-ji-lu" class="header-anchor"></a></h1><div class="toc">
+
+<!-- toc -->
+
+<ul>
+<li><a href="#1-an-zhuang-vs2019">1、安装VS2019</a></li>
+<li><a href="#2-an-zhuang-cmake">2、安装cmake</a></li>
+<li><a href="#3-an-zhuang-git">3、安装Git</a></li>
+<li><a href="#4-an-zhuang-opengl-ku-yu-zai-vs2019-de-pei-zhi">4、安装OpenGL库与在VS2019的配置</a></li>
+</ul>
+<!-- tocstop -->
+
+</div>
+
+<p><del>由于一键安装时vcpkg的傻逼报错修了一晚上修不好于是综合了好几个安装教程博客手动添加库才成功跑起来</del></p>
+<h3><span id="1-an-zhuang-vs2019">1、安装VS2019</span><a href="#1-an-zhuang-vs2019" class="header-anchor"></a></h3><p>这个直接略过</p>
+<h3><span id="2-an-zhuang-cmake">2、安装cmake</span><a href="#2-an-zhuang-cmake" class="header-anchor"></a></h3><p><a href="https://cmake.org/download/">https://cmake.org/download/</a></p>
+<p>在上述网址下载对应平台安装包即可，注意在安装时关于修改系统环境变量的选项中选择添加到所有用户的PATH</p>
+<h3><span id="3-an-zhuang-git">3、安装Git</span><a href="#3-an-zhuang-git" class="header-anchor"></a></h3><p>这个装过了，安装直接搜索网络教程就行。</p>
+<h3><span id="4-an-zhuang-opengl-ku-yu-zai-vs2019-de-pei-zhi">4、安装OpenGL库与在VS2019的配置</span><a href="#4-an-zhuang-opengl-ku-yu-zai-vs2019-de-pei-zhi" class="header-anchor"></a></h3><h6><span id="glfw">GLFW</span><a href="#glfw" class="header-anchor"></a></h6><p><a href="https://www.glfw.org/download.html">https://www.glfw.org/download.html</a></p>
+<p>windows端选择pre-compiled binaries，这是已经预编译的文件，可以直接使用</p>
+<p><img src="image-20230912105714270-16985808329371.png" alt="glfw下载"></p>
+<p>将下载好的文件解压，将对应文件拷贝到vs2019安装目录中的文件夹中，本机的安装目录如下，根据自己的安装情况找到对应文件夹</p>
+<img src="image-20230912105914220-16985808329372.png" alt="vs安装目录" style="zoom: 67%;">
+
+<p>头文件：在下载好的GLFW文件夹中，将头文件拷贝到vs目录中的include目录中的GL文件夹，若没有则先创建一个GL文件夹，这个文件夹用于专门存储OpenGL库的头文件。</p>
+<p>bin文件：将对应dll文件拷贝到vs目录下的bin文件夹中，拷贝到最小目录，注意将x86文件拷贝到x86目录下，x64文件拷贝到x64目录下。</p>
+<p>.lib文件：与bin同理，拷贝到lib目录下的文件夹中，注意x86和x64都要拷贝。</p>
+<h6><span id="glew">GLEW</span><a href="#glew" class="header-anchor"></a></h6><p><a href="https://glew.sourceforge.net/">https://glew.sourceforge.net/</a></p>
+<p>下载最新版本即可，相关配置同上</p>
+<h6><span id="freeglut">FreeGLUT</span><a href="#freeglut" class="header-anchor"></a></h6><p><a href="https://www.transmissionzero.co.uk/software/freeglut-devel/">https://www.transmissionzero.co.uk/software/freeglut-devel/</a></p>
+<h6><span id="glad">glad</span><a href="#glad" class="header-anchor"></a></h6><p><a href="https://glad.dav1d.de/">https://glad.dav1d.de/</a></p>
+<p>API gl version直接选4.6即可，将include部分直接拷贝到vs头文件GL目录下</p>
+<p><img src="image-20230912111603093-16985808329383.png" alt="glad下载"></p>
+<h6><span id="glm">glm</span><a href="#glm" class="header-anchor"></a></h6><p><a href="https://github.com/g-truc/glm/releases/tag/0.9.8.0">https://github.com/g-truc/glm/releases/tag/0.9.8.0</a></p>
+<p>解压后把子文件夹中的glm文件夹直接整个拷贝到vs目录中的include中，导入头文件的方式为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;glm/glm.hpp&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h6><span id="vs-zhong-pei-zhi">vs中配置</span><a href="#vs-zhong-pei-zhi" class="header-anchor"></a></h6><p>在目标目录新建一个项目</p>
+<p>进入vs2019，点击项目，管理NuGet程序包，搜索nupengl，安装两个相关的组件</p>
+<p>链接配置：运行前，将几个dll文件拷贝到系统文件夹（C:\Windows\SysWOW64   C:\Windows\System32）</p>
+<p>右键项目，点进属性-&gt;连接器-&gt;输入-&gt;附加依赖项</p>
+<p><img src="image-20230912112352987-16985808329384.png" alt="vs2019中对项目添加依赖项"></p>
+<p>将 freeglut.lib;glew32.lib;glfw3.lib;OpenGL32.lib;复制到附加依赖项中。</p>
+<ul>
+<li><p>Debug时可以正常运行但Release模式无法正常执行？</p>
+<p>在项目设置中配置为Release的菜单中再导入一次上面的依赖项即可</p>
+</li>
+</ul>
+<p><em><strong>注意一定要执行上面的操作，否则会报无法解析外部符号的错误</strong></em></p>
+<p>保存设置，基本配置就差不多了，使用的时候只需导入对应头文件即可。</p>
+<p>注意：</p>
+<ul>
+<li><p>导入glad的时候只导入头文件运行的话会出现未识别的外部符号问题，因此要将glad.c文件导入到项目中。</p>
+</li>
+<li><p>若出现 #error : OpenGL header already included,remove this include, glad already provides it报错，将glad头文件的导入放在其他所有OpenGL库导入的前面即可解决。</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>计算机图形学</category>
+      </categories>
+      <tags>
+        <tag>openGL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用docker部署pwn题</title>
+    <url>/2023/10/31/%E4%BD%BF%E7%94%A8docker%E9%83%A8%E7%BD%B2pwn%E9%A2%98/</url>
+    <content><![CDATA[<h1><span id="shi-yong-docker-bu-shu-pwn-ti">使用docker部署pwn题</span><a href="#shi-yong-docker-bu-shu-pwn-ti" class="header-anchor"></a></h1><div class="toc">
+
+<!-- toc -->
+
+<ul>
+<li><a href="#step-0-zhun-bei-hao-yao-yong-de-ti-mu-wen-jian">Step 0 准备好要用的题目文件</a></li>
+<li><a href="#step-1-docker-an-zhuang">Step 1 Docker安装</a></li>
+<li><a href="#step-2-an-zhuang-bing-pei-zhi-ctf-xinted">Step 2 安装并配置ctf_xinted</a></li>
+<li><a href="#step-3-shi-yong-docker-bu-shu-ti-mu">Step 3 使用Docker部署题目</a></li>
+<li><a href="#she-zhi-ti-mu-dong-tai-flag-de-fang-fa">*设置题目动态flag的方法</a></li>
+<li><a href="#qi-ta-wen-ti">其他问题</a><ul>
+<li><a href="#zai-zhi-ding-glibc-ban-ben-bian-yi-wen-jian">在指定glibc版本编译文件</a></li>
+<li><a href="#jiang-wen-jian-zai-docker-rong-qi-yu-ben-ji-zhong-hu-xiang-chuan-shu">将文件在docker容器与本机中互相传输</a></li>
+<li><a href="#cong-docker-bian-yi-de-wen-jian-fu-zhi-dao-ben-ji-hou-patch-bu-cheng-gong">从docker编译的文件复制到本机后patch不成功</a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+
+</div>
+
+<p>本文的配置过程不一定是规范的，不过至少我按照下面的流程做是能够正常部署的。如有缺漏或错误请见谅。</p>
+<h2><span id="step-0-zhun-bei-hao-yao-yong-de-ti-mu-wen-jian">Step 0 准备好要用的题目文件</span><a href="#step-0-zhun-bei-hao-yao-yong-de-ti-mu-wen-jian" class="header-anchor"></a></h2><p>示例代码pwn.c</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="comment">//对应的基本头文件</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">initialize</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    setbuf(<span class="built_in">stdin</span>, <span class="literal">NULL</span>);</span><br><span class="line">    setbuf(<span class="built_in">stdout</span>, <span class="literal">NULL</span>);</span><br><span class="line">    setbuf(<span class="built_in">stderr</span>, <span class="literal">NULL</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//初始化，可以解决在远程连接时不会自动输出前面的内容的问题</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">g1ft</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;W0w, you have found Yuyuko&#x27;s food!&quot;</span>);</span><br><span class="line">    system(<span class="string">&quot;/bin/sh&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">char</span> s[<span class="number">40</span>];</span><br><span class="line">    initialize();</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Yuyuko sama lose her food.&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Can you find it?&quot;</span>);</span><br><span class="line">    read(<span class="number">0</span>, s, <span class="number">0x100</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Zannen desu ne.&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Wish you can find it next time.&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>编译：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gcc -o ./pwn -g -fno-stack-protector -no-pie ./pwn.c</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">-fno-stack-protector 关闭canary</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">-no-pie 关闭PIE保护</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2><span id="step-1-docker-an-zhuang">Step 1 Docker安装</span><a href="#step-1-docker-an-zhuang" class="header-anchor"></a></h2><p>首先sudo apt update 一下</p>
+<p>安装docker：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt install docker.io      </span><br></pre></td></tr></table></figure>
+
+<p>检查安装情况：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo systemctl status docker</span><br></pre></td></tr></table></figure>
+
+<p>出现如下图所示的状态说明成功安装</p>
+<p><img src="image-20230913150652699.png" alt="install docker"></p>
+<h2><span id="step-2-an-zhuang-bing-pei-zhi-ctf-xinted">Step 2 安装并配置ctf_xinted</span><a href="#step-2-an-zhuang-bing-pei-zhi-ctf-xinted" class="header-anchor"></a></h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/Eadom/ctf_xinetd.git</span><br></pre></td></tr></table></figure>
+
+<p>将代码克隆下来后，可能需要修改一下Dockerfile。</p>
+<p>具体来说，包含换源、在运行路径末尾添加斜杠等操作以防止某些错误的发生</p>
+<p>下面提供一个本次使用的Dockerfile：</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:jammy</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> sed -i <span class="string">&#x27;s@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g&#x27;</span> /etc/apt/sources.list &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    apt-get update &amp;&amp; apt-get -y dist-upgrade &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    apt-get install -y lib32z1 xinetd</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> useradd -m ctf</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /home/ctf/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">cp</span> -R /lib*/ /home/ctf/ &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">cp</span> -R /usr/lib*/ /home/ctf/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">mkdir</span> /home/ctf/dev/ &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">mknod</span> /home/ctf/dev/null c 1 3 &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">mknod</span> /home/ctf/dev/zero c 1 5 &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">mknod</span> /home/ctf/dev/random c 1 8 &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">mknod</span> /home/ctf/dev/urandom c 1 9 &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">chmod</span> 666 /home/ctf/dev/*</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">mkdir</span> /home/ctf/bin/ &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">cp</span> /bin/sh /home/ctf/bin/ &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">cp</span> /bin/ls /home/ctf/bin/ &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">cp</span> /bin/cat /home/ctf/bin/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./ctf.xinetd /etc/xinetd.d/ctf</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./start.sh /start.sh</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">echo</span> <span class="string">&quot;Blocked by ctf_xinetd&quot;</span> &gt; /etc/banner_fail</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">chmod</span> +x /start.sh</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./bin/ /home/ctf/</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">chown</span> -R root:ctf /home/ctf &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">chmod</span> -R 755 /home/ctf</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;/start.sh&quot;</span>]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">9999</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2><span id="step-3-shi-yong-docker-bu-shu-ti-mu">Step 3 使用Docker部署题目</span><a href="#step-3-shi-yong-docker-bu-shu-ti-mu" class="header-anchor"></a></h2><ul>
+<li>注意：关于docker的操作要使用sudo</li>
+</ul>
+<p>导入ubuntu</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker pull ubuntu:jammy</span><br></pre></td></tr></table></figure>
+
+<p>构建Docker镜像：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd ./ctf_xinetd   #进入ctf_xinted目录下才能执行下面的指令</span><br><span class="line">sudo docker build ./ -t $name</span><br></pre></td></tr></table></figure>
+
+<p>创建容器：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker run -d -p 9999:9999 $name</span><br></pre></td></tr></table></figure>
+
+<p>出现如下就应该成功了：</p>
+<p><img src="image-20230913164033738.png" alt="docker run"></p>
+<p>连接到靶机：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">nc localhost 9999</span><br></pre></td></tr></table></figure>
+
+
+
+<p>将外部文件导入到Docker中：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker pull $filename</span><br></pre></td></tr></table></figure>
+
+<p>将外部文件复制到Docker容器中：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker cp ctf_xinetd/Dockerfile a68f4951ca21:/</span><br></pre></td></tr></table></figure>
+
+
+
+<p>查看镜像中的容器：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker ps</span><br></pre></td></tr></table></figure>
+
+<p><img src="image-20230913165053078.png" alt="docker ps"></p>
+<p>操作容器：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker exec -it a68f4951ca21  bash</span><br></pre></td></tr></table></figure>
+
+
+
+<p>将题目部署到远程</p>
+<p>注册dockerhub账号，其中username作为将要使用的镜像源的名字</p>
+<p><img src="image-20230913232458703.png" alt="docker name"></p>
+<p>创建存储库：Repositories-&gt;Create repository</p>
+<p><img src="image-20230913232548016.png" alt="docker repository"></p>
+<p><img src="image-20230913232616321.png" alt="image-20230913232616321"></p>
+<p>镜像源名称格式（推荐）：小写英文，中间用-分割</p>
+<p>创建完成后，在虚拟机操作</p>
+<p><strong>首先要登录到dockerhub：</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker login</span><br></pre></td></tr></table></figure>
+
+<p>输入对应已经注册的dockerhub账号的用户名和密码</p>
+<p>build</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker build ./ -t $username/所用镜像名</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">sudo docker build ./ -t t3uk1/yuyukos-food</span></span><br></pre></td></tr></table></figure>
+
+<p>将本地内容传到docker</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker push t3uk1/yuyukos-food</span><br></pre></td></tr></table></figure>
+
+<p>运行容器</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker run -d -p 9999:9999 t3uk1/yuyukos-food</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">参数解析：</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将容器的9999端口绑定到主机9999端口，前面的是主机端口，后面的是容器对应端口</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>ctf_xinted&#x2F;bin中的两个文件分别是题目对应可执行文件和flag.txt</p>
+<p>在ctf_xinted文档中对应设置如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">service ctf</span><br><span class="line">&#123;</span><br><span class="line">    disable = no</span><br><span class="line">    socket_type = stream</span><br><span class="line">    protocol    = tcp</span><br><span class="line">    wait        = no</span><br><span class="line">    user        = root</span><br><span class="line">    type        = UNLISTED</span><br><span class="line">    port        = 9999</span><br><span class="line">    bind        = 0.0.0.0</span><br><span class="line">    server      = /usr/sbin/chroot</span><br><span class="line">    # replace helloworld to your program</span><br><span class="line">    server_args = --userspec=1000:1000 /home/ctf ./pwn</span><br><span class="line">    banner_fail = /etc/banner_fail</span><br><span class="line">    # safety options</span><br><span class="line">    per_source	= 10 # the maximum instances of this service per source IP address</span><br><span class="line">    rlimit_cpu	= 20 # the maximum number of CPU seconds that the service may use</span><br><span class="line">    #rlimit_as  = 1024M # the Address Space resource limit for the service</span><br><span class="line">    #access_times = 2:00-9:00 12:00-24:00</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>push成功之后应该就能远程访问了</p>
+<p>测试:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">nc localhost 9999 #前面设置的端口是9999</span><br></pre></td></tr></table></figure>
+
+
+
+<p>docker查看标签：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker image ls</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">sudo docker image <span class="built_in">rm</span> xxx</span></span><br></pre></td></tr></table></figure>
+
+<p>docker查看容器情况：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker container ls</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">sudo docker container <span class="built_in">rm</span> xxx</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2><span id="she-zhi-ti-mu-dong-tai-flag-de-fang-fa">*设置题目动态flag的方法</span><a href="#she-zhi-ti-mu-dong-tai-flag-de-fang-fa" class="header-anchor"></a></h2><p>对于每一个创建的动态实例，每次创建的环境变量$FLAG是不同的，因此我们可以将这个环境变量作为题目flag的内容。</p>
+<p>一种实现方式是更改**<u>start.sh</u>**文件，在执行start命令前将$FLAG写入flag文件然后将 $ FLAG取消环境变量。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/sh</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Add your startup script</span></span><br><span class="line">echo $FLAG &gt; /home/ctf/flag</span><br><span class="line">chmod 644 /home/ctf/flag</span><br><span class="line">unset FLAG</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">DO NOT DELETE</span></span><br><span class="line">/etc/init.d/xinetd start</span><br><span class="line">sleep infinity</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><p>在Aurora靶场格式化设置动态flag</p>
+<p>Whale-&gt;设置flag格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;&#123; &quot;Aurora&#123;&quot;+uuid.uuid4()|string+&quot;&#125;&quot; &#125;&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2><span id="qi-ta-wen-ti">其他问题</span><a href="#qi-ta-wen-ti" class="header-anchor"></a></h2><h3><span id="zai-zhi-ding-glibc-ban-ben-bian-yi-wen-jian">在指定glibc版本编译文件</span><a href="#zai-zhi-ding-glibc-ban-ben-bian-yi-wen-jian" class="header-anchor"></a></h3><p>以ubuntu18为例</p>
+<p>运行docker容器：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker run -it -v &lt;本地绝对路径&gt;:/mnt/ ubuntu:bionic </span><br><span class="line">sudo docker run -it -v /home/yuyuko/mypwn/challenges/ret2libc/:/mnt/ ubuntu:bionic </span><br></pre></td></tr></table></figure>
+
+<p>安装gcc：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">apt update</span><br><span class="line">apt-get install gcc</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">gcc编译</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3><span id="jiang-wen-jian-zai-docker-rong-qi-yu-ben-ji-zhong-hu-xiang-chuan-shu">将文件在docker容器与本机中互相传输</span><a href="#jiang-wen-jian-zai-docker-rong-qi-yu-ben-ji-zhong-hu-xiang-chuan-shu" class="header-anchor"></a></h3><p>本机传输到docker容器：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker cp &lt;本地文件绝对路径&gt; &lt;容器名称/容器id&gt;:/</span><br><span class="line">sudo docker cp /home/yuyuko/mypwn/challenges/ret2libc/pwn.c 1e239edbeed0:/</span><br></pre></td></tr></table></figure>
+
+<p>docker容器传输到本机：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker cp &lt;容器名称/容器id&gt;:/  &lt;本地文件绝对路径&gt;</span><br><span class="line">sudo docker cp  1e239edbeed0:/pwn /home/yuyuko/mypwn/challenges/ret2libc/</span><br></pre></td></tr></table></figure>
+
+
+
+<h3><span id="cong-docker-bian-yi-de-wen-jian-fu-zhi-dao-ben-ji-hou-patch-bu-cheng-gong">从docker编译的文件复制到本机后patch不成功</span><a href="#cong-docker-bian-yi-de-wen-jian-fu-zhi-dao-ben-ji-hou-patch-bu-cheng-gong" class="header-anchor"></a></h3><p>原因：编译的时候权限是在docker中的root</p>
+<p>首先更改群组：</p>
+<p><img src="image-20231016233521857.png" alt="chown"></p>
+<p>在当前群组(yuyuko)权限下chmod</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">chmod 755 ./pwn </span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>CTF</category>
+        <category>pwn</category>
+      </categories>
+      <tags>
+        <tag>pwn</tag>
+        <tag>docker</tag>
       </tags>
   </entry>
   <entry>
@@ -3229,12 +3263,12 @@
   </entry>
   <entry>
     <title></title>
-    <url>/friend/index.html</url>
+    <url>/about/index.html</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title></title>
-    <url>/about/index.html</url>
+    <url>/friend/index.html</url>
     <content><![CDATA[]]></content>
   </entry>
 </search>

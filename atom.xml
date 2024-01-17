@@ -6,7 +6,7 @@
   <link href="https://t3uk1.github.io/atom.xml" rel="self"/>
   
   <link href="https://t3uk1.github.io/"/>
-  <updated>2024-01-17T05:43:48.996Z</updated>
+  <updated>2024-01-17T06:44:43.415Z</updated>
   <id>https://t3uk1.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>git相关报错的解决方法汇总</title>
+    <link href="https://t3uk1.github.io/2024/01/17/git%E7%9B%B8%E5%85%B3%E6%8A%A5%E9%94%99%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%E6%B1%87%E6%80%BB/"/>
+    <id>https://t3uk1.github.io/2024/01/17/git%E7%9B%B8%E5%85%B3%E6%8A%A5%E9%94%99%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%E6%B1%87%E6%80%BB/</id>
+    <published>2024-01-17T06:00:00.000Z</published>
+    <updated>2024-01-17T06:44:43.415Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;&lt;span id=&quot;git-xiang-guan-bao-cuo-de-jie-jue-fang-fa-hui-zong&quot;&gt;git相关报错的解决方法汇总&lt;/span&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="Git" scheme="https://t3uk1.github.io/categories/Git/"/>
+    
+    
+    <category term="github" scheme="https://t3uk1.github.io/tags/github/"/>
+    
+  </entry>
   
   <entry>
     <title>形式语言与自动机期末复习总结</title>
@@ -252,27 +277,6 @@
   </entry>
   
   <entry>
-    <title>Hello World</title>
-    <link href="https://t3uk1.github.io/2023/10/29/hello-world/"/>
-    <id>https://t3uk1.github.io/2023/10/29/hello-world/</id>
-    <published>2023-10-29T05:15:00.639Z</published>
-    <updated>2023-10-30T11:34:47.439Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1&gt;&lt;span id=&quot;this-is-my-first-blog&quot;&gt;This is my first blog&lt;/span&gt;&lt;a href=&quot;#this-is-my-first-blog&quot;</summary>
-        
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
     <title>深圳大学数据结构期末复习与实验代码</title>
     <link href="https://t3uk1.github.io/2022/12/25/%E6%B7%B1%E5%9C%B3%E5%A4%A7%E5%AD%A6%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E4%B8%8E%E5%AE%9E%E9%AA%8C%E4%BB%A3%E7%A0%81/"/>
     <id>https://t3uk1.github.io/2022/12/25/%E6%B7%B1%E5%9C%B3%E5%A4%A7%E5%AD%A6%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E4%B8%8E%E5%AE%9E%E9%AA%8C%E4%BB%A3%E7%A0%81/</id>
@@ -294,6 +298,27 @@
     
     
     <category term="数据结构" scheme="https://t3uk1.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="https://t3uk1.github.io/2022/05/14/hello-world/"/>
+    <id>https://t3uk1.github.io/2022/05/14/hello-world/</id>
+    <published>2022-05-13T16:00:00.000Z</published>
+    <updated>2024-01-17T06:46:43.810Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;&lt;span id=&quot;this-is-my-first-blog&quot;&gt;This is my first blog&lt;/span&gt;&lt;a href=&quot;#this-is-my-first-blog&quot;</summary>
+        
+      
+    
+    
+    
     
   </entry>
   

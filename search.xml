@@ -1,40 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>git相关报错的解决方法汇总</title>
-    <url>/2024/01/17/git%E7%9B%B8%E5%85%B3%E6%8A%A5%E9%94%99%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%E6%B1%87%E6%80%BB/</url>
-    <content><![CDATA[<h1><span id="git-xiang-guan-bao-cuo-de-jie-jue-fang-fa-hui-zong">git相关报错的解决方法汇总</span><a href="#git-xiang-guan-bao-cuo-de-jie-jue-fang-fa-hui-zong" class="header-anchor"></a></h1><p>本文为git使用遇到的相关报错的解决方法汇总，后面遇到新的报错解决会更新到这里。</p>
-<div class="toc">
-
-<!-- toc -->
-
-<ul>
-<li><a href="#bao-cuo-ssh-connect-to-host-github-com-port-22-connection-timed-out">报错“ssh:connect to host github.com port 22: Connection timed out“</a></li>
-</ul>
-<!-- tocstop -->
-
-</div>
-
-<h2><span id="bao-cuo-ssh-connect-to-host-github-com-port-22-connection-timed-out">报错“ssh:connect to host github.com port 22: Connection timed out“</span><a href="#bao-cuo-ssh-connect-to-host-github-com-port-22-connection-timed-out" class="header-anchor"></a></h2><p><strong>1、首先检验22端口是否出问题</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
-
-<p>如果执行上面的命令仍然出现timed out，则说明可能是22端口出问题了。</p>
-<p><strong>2、更改ssh配置文件</strong></p>
-<p>进入~&#x2F;.ssh&#x2F;目录（C:\users\username.ssh\），如果没有config文件，则创建一个，打开config文件，添加或更改为以下配置：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Host github.com</span><br><span class="line">  HostName ssh.github.com</span><br><span class="line">  Port 443</span><br><span class="line">  IdentityFile ~/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
-
-<p>大致意思为更改默认端口为443。</p>
-<p>再次执行<code>ssh -T git@github.com</code>指令，若出现如下图信息则说明问题解决：</p>
-<p><img src="image-20240117144427614.png" alt="image-20240117144427614"></p>
-]]></content>
-      <categories>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>github</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Git的绑定与连接</title>
     <url>/2023/10/29/Git%E7%9A%84%E7%BB%91%E5%AE%9A%E4%B8%8E%E8%BF%9E%E6%8E%A5/</url>
     <content><![CDATA[<h1><span id="git-de-bang-ding-yu-lian-jie">Git的绑定与连接</span><a href="#git-de-bang-ding-yu-lian-jie" class="header-anchor"></a></h1><div class="toc">
@@ -89,9 +55,44 @@
       </tags>
   </entry>
   <entry>
+    <title>git相关报错的解决方法汇总</title>
+    <url>/2024/01/17/git%E7%9B%B8%E5%85%B3%E6%8A%A5%E9%94%99%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%E6%B1%87%E6%80%BB/</url>
+    <content><![CDATA[<h1><span id="git-xiang-guan-bao-cuo-de-jie-jue-fang-fa-hui-zong">git相关报错的解决方法汇总</span><a href="#git-xiang-guan-bao-cuo-de-jie-jue-fang-fa-hui-zong" class="header-anchor"></a></h1><p>本文为git使用遇到的相关报错的解决方法汇总，后面遇到新的报错解决会更新到这里。</p>
+<div class="toc">
+
+<!-- toc -->
+
+<ul>
+<li><a href="#bao-cuo-ssh-connect-to-host-github-com-port-22-connection-timed-out">报错“ssh:connect to host github.com port 22: Connection timed out“</a></li>
+</ul>
+<!-- tocstop -->
+
+</div>
+
+<h2><span id="bao-cuo-ssh-connect-to-host-github-com-port-22-connection-timed-out">报错“ssh:connect to host github.com port 22: Connection timed out“</span><a href="#bao-cuo-ssh-connect-to-host-github-com-port-22-connection-timed-out" class="header-anchor"></a></h2><p><strong>1、首先检验22端口是否出问题</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+
+<p>如果执行上面的命令仍然出现timed out，则说明可能是22端口出问题了。</p>
+<p><strong>2、更改ssh配置文件</strong></p>
+<p>进入~&#x2F;.ssh&#x2F;目录（C:\users\username.ssh\），如果没有config文件，则创建一个，打开config文件，添加或更改为以下配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Host github.com</span><br><span class="line">  HostName ssh.github.com</span><br><span class="line">  Port 443</span><br><span class="line">  IdentityFile ~/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
+
+<p>大致意思为更改默认端口为443。</p>
+<p>再次执行<code>ssh -T git@github.com</code>指令，若出现如下图信息则说明问题解决：</p>
+<p><img src="image-20240117144427614.png" alt="image-20240117144427614"></p>
+]]></content>
+      <categories>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>github</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hello World</title>
     <url>/2022/05/14/hello-world/</url>
-    <content><![CDATA[<h1><span id="this-is-my-first-blog">This is my first blog</span><a href="#this-is-my-first-blog" class="header-anchor"></a></h1>]]></content>
+    <content><![CDATA[<h1><span id="this-is-my-first-blog">This is my first blog</span><a href="#this-is-my-first-blog" class="header-anchor"></a></h1><p><img src="fk.jpg" alt="fk"></p>
+]]></content>
   </entry>
   <entry>
     <title>hexo主题配置--reimu</title>
@@ -250,49 +251,6 @@
       <tags>
         <tag>hexo</tag>
         <tag>algolia</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo添加版权声明</title>
-    <url>/2023/10/30/hexo%E6%B7%BB%E5%8A%A0%E7%89%88%E6%9D%83%E5%A3%B0%E6%98%8E/</url>
-    <content><![CDATA[<h1><span id="hexo-tian-jia-ban-quan-sheng-ming">hexo添加版权声明</span><a href="#hexo-tian-jia-ban-quan-sheng-ming" class="header-anchor"></a></h1><div class="toc">
-
-<!-- toc -->
-
-<ul>
-<li><a href="#1-xiu-gai-zhu-ti-mu-lu-xia-de-u-layout-partial-article-ejs-u-mo-ban-wen-jian">1.修改主题目录下的 <strong><u>layout&#x2F;_partial&#x2F;article.ejs</u></strong>  模板文件</a></li>
-<li><a href="#2-tian-jia-dui-ying-de-css-yang-shi">2.添加对应的CSS样式</a></li>
-<li><a href="#3-xiu-gai-zhu-ti-pei-zhi-wen-jian">3.修改主题配置文件</a></li>
-</ul>
-<!-- tocstop -->
-
-</div>
-
-<p>由于主题的问题，这里采用手动配置的方法，添加版权声明的位置为<strong>文章末尾</strong>。</p>
-<h3><span id="1-xiu-gai-zhu-ti-mu-lu-xia-de-layout-x2f-partial-x2f-article-ejs-mo-ban-wen-jian">1.修改主题目录下的  <strong><u>layout&#x2F;_partial&#x2F;article.ejs</u></strong>  模板文件</span><a href="#1-xiu-gai-zhu-ti-mu-lu-xia-de-layout-x2f-partial-x2f-article-ejs-mo-ban-wen-jian" class="header-anchor"></a></h3><p>在下面的位置添加代码，在我的主题里面这是在文章对应部分的最后，footer前面：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">	 &lt;%- post.content %&gt;</span><br><span class="line">&lt;% &#125; %&gt;</span><br><span class="line">&lt;!--   在此处添加代码  --&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">	&lt;footer class=&quot;article-footer&quot;&gt;</span><br></pre></td></tr></table></figure>
-
-<p>添加的内容如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- 添加版权声明 --&gt;</span><br><span class="line">    &lt;%</span><br><span class="line">    var sUrl = url.replace(/index\.html$/, &#x27;&#x27;);</span><br><span class="line">    sUrl = /^(http:|https:)\/\//.test(sUrl) ? sUrl : &#x27;https:&#x27; + sUrl;</span><br><span class="line">  %&gt;</span><br><span class="line">  &lt;% if ((theme.declare_type === 2 || (theme.declare_type === 1 &amp;&amp; post.declare)) &amp;&amp; !index)&#123; %&gt;</span><br><span class="line">    &lt;div id=&quot;declare&quot;&gt;</span><br><span class="line">      &lt;strong&gt;本文作者：&lt;/strong&gt;</span><br><span class="line">      &lt;% if(config.author != undefined)&#123; %&gt;</span><br><span class="line">        &lt;%= config.author%&gt;</span><br><span class="line">      &lt;% &#125;else&#123;%&gt;</span><br><span class="line">        &lt;font color=&quot;red&quot;&gt;请在博客根目录“_config.yml”中填入正确的“author”&lt;/font&gt;</span><br><span class="line">      &lt;%&#125;%&gt;</span><br><span class="line">      &lt;br&gt;</span><br><span class="line">      &lt;strong&gt;本文链接：&lt;/strong&gt;</span><br><span class="line">      &lt;a href=&quot;&lt;%= config.url %&gt;/&lt;%= post.path %&gt;&quot; title=&quot;&lt;%= post.title %&gt;&quot; target=&quot;_blank&quot;&gt;&lt;%= config.url %&gt;/&lt;%= post.path %&gt;&lt;/a&gt;</span><br><span class="line">      &lt;br&gt;</span><br><span class="line">      &lt;strong&gt;版权声明：&lt;/strong&gt;</span><br><span class="line">      除特殊说明外，本作品采用</span><br><span class="line">    &lt;a id=&quot;copyright&quot; href=&quot;http://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1&quot; target=&quot;_blank&quot; rel=&quot;license noopener noreferrer&quot; style=&quot;display:inline-block;&quot;&gt;CC BY-NC-SA 4.0&lt;/a&gt;</span><br><span class="line">        协议进行许可。转载请注明出处！</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;% &#125; else &#123;%&gt;</span><br><span class="line">    &lt;div class=&quot;declare&quot; hidden=&quot;hidden&quot;&gt;&lt;/div&gt;</span><br><span class="line">  &lt;% &#125; %&gt;</span><br><span class="line">&lt;!-- 添加版权声明 --&gt;</span><br></pre></td></tr></table></figure>
-
-<p>这段代码作用就是使版权声明显示在html页面中文章末尾的地方。</p>
-<h3><span id="2-tian-jia-dui-ying-de-css-yang-shi">2.添加对应的CSS样式</span><a href="#2-tian-jia-dui-ying-de-css-yang-shi" class="header-anchor"></a></h3><p>打开主题目录下：<code>source/css/_partial/article.styl</code>文件</p>
-<p>添加如下css样式：</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*版权声明的样式*/</span></span><br><span class="line"><span class="selector-id">#declare</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#eaeaea</span>;</span><br><span class="line">  <span class="attribute">margin-top</span>: <span class="number">2em</span>;</span><br><span class="line">  <span class="attribute">margin-bottom</span>: <span class="number">2.5em</span>;</span><br><span class="line">  <span class="attribute">border-left</span>: <span class="number">3px</span> solid <span class="number">#ff1700</span>;</span><br><span class="line">  <span class="attribute">padding</span>: .<span class="number">5em</span> <span class="number">1em</span>; </span><br><span class="line">  <span class="attribute">line-height</span>: <span class="number">2em</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3><span id="3-xiu-gai-zhu-ti-pei-zhi-wen-jian">3.修改主题配置文件</span><a href="#3-xiu-gai-zhu-ti-pei-zhi-wen-jian" class="header-anchor"></a></h3><p><code>themes/themename/_config.yml</code></p>
-<p>添加如下内容：</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 版权声明</span></span><br><span class="line"><span class="comment">#在需要进行版权声明的文章的md文件头部，设置属性declare: true。</span></span><br><span class="line"><span class="comment">#版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明</span></span><br><span class="line"><span class="attr">declare_type:</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h4><span id="tian-jia-hou-de-ye-mian-xian-shi-xiao-guo-ru-xia">添加后的页面显示效果如下</span><a href="#tian-jia-hou-de-ye-mian-xian-shi-xiao-guo-ru-xia" class="header-anchor"></a></h4><p><img src="image-20231030195531220.png" alt="BYNCSA"></p>
-]]></content>
-      <categories>
-        <category>hexo</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -596,6 +554,49 @@
 <h4><span id="kuo-zhan-extensions">扩展 - Extensions</span><a href="#kuo-zhan-extensions" class="header-anchor"></a></h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Extensions</span><br><span class="line">## Plugins: https://hexo.io/plugins/</span><br><span class="line">## Themes: https://hexo.io/themes/</span><br><span class="line">theme: landscape				# 当前主题名称。值为 false 时禁用主题</span><br></pre></td></tr></table></figure>
 
 <h4><span id="bu-shu-deployment">部署 - Deployment</span><a href="#bu-shu-deployment" class="header-anchor"></a></h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Deployment</span><br><span class="line">## Docs: https://hexo.io/docs/one-command-deployment</span><br><span class="line">deploy:</span><br><span class="line">  type: git						# 部署方式</span><br><span class="line">  repo: 						# 库（Repository）地址，SSH比较好</span><br><span class="line">  branch: 						# 可选，分支名称（Github默认为master）</span><br><span class="line">  message: 						# 自定义提交信息（默认为Site updated: </span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo添加版权声明</title>
+    <url>/2023/10/30/hexo%E6%B7%BB%E5%8A%A0%E7%89%88%E6%9D%83%E5%A3%B0%E6%98%8E/</url>
+    <content><![CDATA[<h1><span id="hexo-tian-jia-ban-quan-sheng-ming">hexo添加版权声明</span><a href="#hexo-tian-jia-ban-quan-sheng-ming" class="header-anchor"></a></h1><div class="toc">
+
+<!-- toc -->
+
+<ul>
+<li><a href="#1-xiu-gai-zhu-ti-mu-lu-xia-de-u-layout-partial-article-ejs-u-mo-ban-wen-jian">1.修改主题目录下的 <strong><u>layout&#x2F;_partial&#x2F;article.ejs</u></strong>  模板文件</a></li>
+<li><a href="#2-tian-jia-dui-ying-de-css-yang-shi">2.添加对应的CSS样式</a></li>
+<li><a href="#3-xiu-gai-zhu-ti-pei-zhi-wen-jian">3.修改主题配置文件</a></li>
+</ul>
+<!-- tocstop -->
+
+</div>
+
+<p>由于主题的问题，这里采用手动配置的方法，添加版权声明的位置为<strong>文章末尾</strong>。</p>
+<h3><span id="1-xiu-gai-zhu-ti-mu-lu-xia-de-layout-x2f-partial-x2f-article-ejs-mo-ban-wen-jian">1.修改主题目录下的  <strong><u>layout&#x2F;_partial&#x2F;article.ejs</u></strong>  模板文件</span><a href="#1-xiu-gai-zhu-ti-mu-lu-xia-de-layout-x2f-partial-x2f-article-ejs-mo-ban-wen-jian" class="header-anchor"></a></h3><p>在下面的位置添加代码，在我的主题里面这是在文章对应部分的最后，footer前面：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">	 &lt;%- post.content %&gt;</span><br><span class="line">&lt;% &#125; %&gt;</span><br><span class="line">&lt;!--   在此处添加代码  --&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">	&lt;footer class=&quot;article-footer&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>添加的内容如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- 添加版权声明 --&gt;</span><br><span class="line">    &lt;%</span><br><span class="line">    var sUrl = url.replace(/index\.html$/, &#x27;&#x27;);</span><br><span class="line">    sUrl = /^(http:|https:)\/\//.test(sUrl) ? sUrl : &#x27;https:&#x27; + sUrl;</span><br><span class="line">  %&gt;</span><br><span class="line">  &lt;% if ((theme.declare_type === 2 || (theme.declare_type === 1 &amp;&amp; post.declare)) &amp;&amp; !index)&#123; %&gt;</span><br><span class="line">    &lt;div id=&quot;declare&quot;&gt;</span><br><span class="line">      &lt;strong&gt;本文作者：&lt;/strong&gt;</span><br><span class="line">      &lt;% if(config.author != undefined)&#123; %&gt;</span><br><span class="line">        &lt;%= config.author%&gt;</span><br><span class="line">      &lt;% &#125;else&#123;%&gt;</span><br><span class="line">        &lt;font color=&quot;red&quot;&gt;请在博客根目录“_config.yml”中填入正确的“author”&lt;/font&gt;</span><br><span class="line">      &lt;%&#125;%&gt;</span><br><span class="line">      &lt;br&gt;</span><br><span class="line">      &lt;strong&gt;本文链接：&lt;/strong&gt;</span><br><span class="line">      &lt;a href=&quot;&lt;%= config.url %&gt;/&lt;%= post.path %&gt;&quot; title=&quot;&lt;%= post.title %&gt;&quot; target=&quot;_blank&quot;&gt;&lt;%= config.url %&gt;/&lt;%= post.path %&gt;&lt;/a&gt;</span><br><span class="line">      &lt;br&gt;</span><br><span class="line">      &lt;strong&gt;版权声明：&lt;/strong&gt;</span><br><span class="line">      除特殊说明外，本作品采用</span><br><span class="line">    &lt;a id=&quot;copyright&quot; href=&quot;http://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1&quot; target=&quot;_blank&quot; rel=&quot;license noopener noreferrer&quot; style=&quot;display:inline-block;&quot;&gt;CC BY-NC-SA 4.0&lt;/a&gt;</span><br><span class="line">        协议进行许可。转载请注明出处！</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;% &#125; else &#123;%&gt;</span><br><span class="line">    &lt;div class=&quot;declare&quot; hidden=&quot;hidden&quot;&gt;&lt;/div&gt;</span><br><span class="line">  &lt;% &#125; %&gt;</span><br><span class="line">&lt;!-- 添加版权声明 --&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码作用就是使版权声明显示在html页面中文章末尾的地方。</p>
+<h3><span id="2-tian-jia-dui-ying-de-css-yang-shi">2.添加对应的CSS样式</span><a href="#2-tian-jia-dui-ying-de-css-yang-shi" class="header-anchor"></a></h3><p>打开主题目录下：<code>source/css/_partial/article.styl</code>文件</p>
+<p>添加如下css样式：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*版权声明的样式*/</span></span><br><span class="line"><span class="selector-id">#declare</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#eaeaea</span>;</span><br><span class="line">  <span class="attribute">margin-top</span>: <span class="number">2em</span>;</span><br><span class="line">  <span class="attribute">margin-bottom</span>: <span class="number">2.5em</span>;</span><br><span class="line">  <span class="attribute">border-left</span>: <span class="number">3px</span> solid <span class="number">#ff1700</span>;</span><br><span class="line">  <span class="attribute">padding</span>: .<span class="number">5em</span> <span class="number">1em</span>; </span><br><span class="line">  <span class="attribute">line-height</span>: <span class="number">2em</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3><span id="3-xiu-gai-zhu-ti-pei-zhi-wen-jian">3.修改主题配置文件</span><a href="#3-xiu-gai-zhu-ti-pei-zhi-wen-jian" class="header-anchor"></a></h3><p><code>themes/themename/_config.yml</code></p>
+<p>添加如下内容：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 版权声明</span></span><br><span class="line"><span class="comment">#在需要进行版权声明的文章的md文件头部，设置属性declare: true。</span></span><br><span class="line"><span class="comment">#版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明</span></span><br><span class="line"><span class="attr">declare_type:</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4><span id="tian-jia-hou-de-ye-mian-xian-shi-xiao-guo-ru-xia">添加后的页面显示效果如下</span><a href="#tian-jia-hou-de-ye-mian-xian-shi-xiao-guo-ru-xia" class="header-anchor"></a></h4><p><img src="image-20231030195531220.png" alt="BYNCSA"></p>
 ]]></content>
       <categories>
         <category>hexo</category>
@@ -3263,12 +3264,12 @@
   </entry>
   <entry>
     <title></title>
-    <url>/about/index.html</url>
+    <url>/friend/index.html</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title></title>
-    <url>/friend/index.html</url>
+    <url>/about/index.html</url>
     <content><![CDATA[]]></content>
   </entry>
 </search>

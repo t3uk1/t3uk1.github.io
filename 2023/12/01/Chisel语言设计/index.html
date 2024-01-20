@@ -1,0 +1,687 @@
+
+    <!DOCTYPE html>
+    <html lang="zh-CN"
+            
+          data-theme="dark"
+            
+    >
+    <head>
+    <meta charset="utf-8">
+    
+
+    
+
+    
+    <title>
+        深圳大学计算机系统(3)实验 Chisel语言设计 |
+        
+        T3uk1&#39;s hub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CUbuntu%20Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+    
+<link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free/css/v4-font-face.min.css">
+
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+    <meta name="description" content="深圳大学计算机系统(3)实验 Chisel语言设计chisel的视频学习可以看这里：Chisel数字系统设计基础      1、环境安装 1.1 chisel环境安装 1.2 安装gtkwave   2、电路设计 2.1 译码电路设计 2.2 寄存器文件电路设计 2.3 pc指令寄存器电路设计 2.4 集合三个部件   3、特别说明      1、环境安装本次实验需要用到chisel环境进行电路设">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深圳大学计算机系统(3)实验 Chisel语言设计">
+<meta property="og:url" content="https://t3uk1.github.io/2023/12/01/Chisel%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1/index.html">
+<meta property="og:site_name" content="T3uk1&#39;s hub">
+<meta property="og:description" content="深圳大学计算机系统(3)实验 Chisel语言设计chisel的视频学习可以看这里：Chisel数字系统设计基础      1、环境安装 1.1 chisel环境安装 1.2 安装gtkwave   2、电路设计 2.1 译码电路设计 2.2 寄存器文件电路设计 2.3 pc指令寄存器电路设计 2.4 集合三个部件   3、特别说明      1、环境安装本次实验需要用到chisel环境进行电路设">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t3uk1.github.io/2023/12/01/Chisel%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1/image-20240120215647120.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/12/01/Chisel%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1/image-20240120215728554.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/12/01/Chisel%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1/image-20240120215825781.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/12/01/Chisel%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1/image-20240120215850113.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/12/01/Chisel%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1/image-20240120215855284.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/12/01/Chisel%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1/image-20240120215900146.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/12/01/Chisel%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1/image-20240120220039561.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/12/01/Chisel%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1/image-20240120220114663.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/12/01/Chisel%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1/image-20240120220119422.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/12/01/Chisel%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1/image-20240120220122477.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/12/01/Chisel%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1/image-20240120220125532.png">
+<meta property="article:published_time" content="2023-12-01T07:15:30.000Z">
+<meta property="article:modified_time" content="2024-01-20T14:11:12.946Z">
+<meta property="article:author" content="*月遇丛雲花遇風*">
+<meta property="article:tag" content="计算机组成原理">
+<meta property="article:tag" content="Chisel">
+<meta property="article:tag" content="mips">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://t3uk1.github.io/2023/12/01/Chisel%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1/image-20240120215647120.png">
+    
+        <link rel="alternate" href="/atom.xml" title="T3uk1's hub" type="application/atom+xml">
+    
+    
+        <link rel="shortcut icon" href="/images/favicon.ico">
+    
+    
+        
+<link rel="stylesheet" href="https://unpkg.com/typeface-source-code-pro@1.1.13/index.css">
+
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+    
+    
+    
+    
+    
+<script src="https://unpkg.com/pace-js@1.2.4/pace.min.js"></script>
+
+    
+        
+<link rel="stylesheet" href="https://unpkg.com/wowjs@1.1.3/css/libs/animate.css">
+
+        
+<script src="https://unpkg.com/wowjs@1.1.3/dist/wow.min.js"></script>
+
+        <script>
+          new WOW({
+            offset: 0,
+            mobile: true,
+            live: false
+          }).init();
+        </script>
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+    <body>
+    
+<div id='loader'>
+  <div class="loading-left-bg"></div>
+  <div class="loading-right-bg"></div>
+  <div class="spinner-box">
+    <div class="loading-taichi">
+      <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+      <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff6e6b" />
+      <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z" fill="#fd0d00" />
+      <path d="M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95" fill="#fd0d00" />
+    </svg>
+    </div>
+    <div class="loading-word">少女祈祷中...</div>
+  </div>
+</div>
+</div>
+
+<script>
+  const endLoading = function() {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loader').classList.add("loading");
+  }
+  window.addEventListener('load', endLoading);
+  document.getElementById('loader').addEventListener('click', endLoading);
+</script>
+
+
+    <div id="container">
+        <div id="wrap">
+            <header id="header">
+    
+        <img data-src="/images/banner.jpg" data-sizes="auto" alt="深圳大学计算机系统(3)实验 Chisel语言设计" class="lazyload">
+    
+    <div id="header-outer" class="outer">
+        <div id="header-title" class="inner">
+            <div id="logo-wrap">
+                
+                    
+                    
+                        <a href="/" id="logo"><h1>深圳大学计算机系统(3)实验 Chisel语言设计</h1></a>
+                    
+                
+            </div>
+            
+                
+                
+            
+        </div>
+        <div id="header-inner">
+            <nav id="main-nav">
+                <a id="main-nav-toggle" class="nav-icon"></a>
+                
+                    <span class="main-nav-link-wrap">
+                        <span class="main-nav-icon"></span>
+                        <a class="main-nav-link" href="/">首页</a>
+                    </span>
+                
+                    <span class="main-nav-link-wrap">
+                        <span class="main-nav-icon"></span>
+                        <a class="main-nav-link" href="/archives">归档</a>
+                    </span>
+                
+                    <span class="main-nav-link-wrap">
+                        <span class="main-nav-icon"></span>
+                        <a class="main-nav-link" href="/about">关于</a>
+                    </span>
+                
+                    <span class="main-nav-link-wrap">
+                        <span class="main-nav-icon"></span>
+                        <a class="main-nav-link" href="/friend">友链</a>
+                    </span>
+                
+            </nav>
+            <nav id="sub-nav">
+                
+                    <a id="nav-rss-link" class="nav-icon" href="/atom.xml"
+                       title="RSS 订阅"></a>
+                
+                
+                    <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索">
+                    </a>
+                
+            </nav>
+            <div id="search-form-wrap">
+                <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://t3uk1.github.io"></form>
+            </div>
+        </div>
+    </div>
+</header>
+
+            <div id="content" class="outer">
+                <section id="main"><article id="post-Chisel语言设计" class="h-entry article article-type-post"
+         itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <div class="article-inner">
+        <div class="article-meta">
+            <div class="article-date wow slideInLeft">
+    <a href="/2023/12/01/Chisel%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1/" class="article-date-link">
+        <time datetime="2023-12-01T07:15:30.000Z"
+              itemprop="datePublished">2023-12-01</time>
+    </a>
+</div>
+
+            
+    <div class="article-category wow slideInLeft">
+        <a class="article-category-link" href="/categories/Chisel/">Chisel</a>
+    </div>
+
+
+        </div>
+        <div class="hr-line"></div>
+        
+
+        <div class="e-content article-entry" itemprop="articleBody">
+            
+                <h1><span id="shen-zhen-da-xue-ji-suan-ji-xi-tong-3-shi-yan-chisel-yu-yan-she-ji">深圳大学计算机系统(3)实验 Chisel语言设计</span><a href="#shen-zhen-da-xue-ji-suan-ji-xi-tong-3-shi-yan-chisel-yu-yan-she-ji" class="header-anchor"></a></h1><p>chisel的视频学习可以看这里：<a href="https://www.bilibili.com/video/BV1m44y1c7DZ" target="_blank">Chisel数字系统设计基础</a></p>
+<div class="toc">
+
+<!-- toc -->
+
+<ul>
+<li><a href="#1-huan-jing-an-zhuang">1、环境安装</a><ul>
+<li><a href="#1-1-chisel-huan-jing-an-zhuang">1.1 chisel环境安装</a></li>
+<li><a href="#1-2-an-zhuang-gtkwave">1.2 安装gtkwave</a></li>
+</ul>
+</li>
+<li><a href="#2-dian-lu-she-ji">2、电路设计</a><ul>
+<li><a href="#2-1-yi-ma-dian-lu-she-ji">2.1 译码电路设计</a></li>
+<li><a href="#2-2-ji-cun-qi-wen-jian-dian-lu-she-ji">2.2 寄存器文件电路设计</a></li>
+<li><a href="#2-3-pc-zhi-ling-ji-cun-qi-dian-lu-she-ji">2.3 pc指令寄存器电路设计</a></li>
+<li><a href="#2-4-ji-he-san-ge-bu-jian">2.4 集合三个部件</a></li>
+</ul>
+</li>
+<li><a href="#3-te-bie-shuo-ming">3、特别说明</a></li>
+</ul>
+<!-- tocstop -->
+
+</div>
+
+<h2><span id="1-huan-jing-an-zhuang">1、环境安装</span><a href="#1-huan-jing-an-zhuang" class="header-anchor"></a></h2><p>本次实验需要用到chisel环境进行电路设计以及测试，并生成vcd信号文件，同时还需要在linux虚拟机中安装gtkwave软件来显示vcd信号文件的信号。</p>
+<h3><span id="1-1-chisel-huan-jing-an-zhuang">1.1 chisel环境安装</span><a href="#1-1-chisel-huan-jing-an-zhuang" class="header-anchor"></a></h3><p>chisel环境安装这里提供两种方法。</p>
+<p>方法一：按照课件ppt中的安装流程在linux虚拟机中进行配置</p>
+<p><em><strong>注意：使用sbt下载的时候如果出现下载非常慢或卡死的状态可能需要换源</strong></em></p>
+<p>方法二：使用JB家的IDEA可以直接安装和配置scala以及chisel的环境，这里不多赘述，可以直接在windows系统中编写程序和运行，仅需要将生成的vcd文件复制到虚拟机中用gtkwave打开即可。</p>
+<h3><span id="1-2-an-zhuang-gtkwave">1.2 安装gtkwave</span><a href="#1-2-an-zhuang-gtkwave" class="header-anchor"></a></h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gtkwave</span><br></pre></td></tr></table></figure>
+
+
+
+<h2><span id="2-dian-lu-she-ji">2、电路设计</span><a href="#2-dian-lu-she-ji" class="header-anchor"></a></h2><h3><span id="2-1-yi-ma-dian-lu-she-ji">2.1 译码电路设计</span><a href="#2-1-yi-ma-dian-lu-she-ji" class="header-anchor"></a></h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> chisel3._</span><br><span class="line"><span class="keyword">import</span> chisel3.util._</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MIPSInstructionDecoder</span> <span class="keyword">extends</span> <span class="title">Module</span> </span>&#123;</span><br><span class="line">  <span class="keyword">val</span> io = <span class="type">IO</span>(<span class="keyword">new</span> <span class="type">Bundle</span> &#123;</span><br><span class="line">    <span class="keyword">val</span> instr_word = <span class="type">Input</span>(<span class="type">UInt</span>(<span class="number">32.</span><span class="type">W</span>))</span><br><span class="line">    <span class="keyword">val</span> add_op = <span class="type">Output</span>(<span class="type">Bool</span>())</span><br><span class="line">    <span class="keyword">val</span> sub_op = <span class="type">Output</span>(<span class="type">Bool</span>())</span><br><span class="line">    <span class="keyword">val</span> lw_op = <span class="type">Output</span>(<span class="type">Bool</span>())</span><br><span class="line">    <span class="keyword">val</span> sw_op = <span class="type">Output</span>(<span class="type">Bool</span>())</span><br><span class="line">    <span class="keyword">val</span> nop = <span class="type">Output</span>(<span class="type">Bool</span>())</span><br><span class="line">    <span class="comment">//解析寄存器</span></span><br><span class="line">    <span class="keyword">val</span> <span class="type">Reg1</span> = <span class="type">Output</span>(<span class="type">UInt</span>(<span class="number">5.</span><span class="type">W</span>))</span><br><span class="line">    <span class="keyword">val</span> <span class="type">Reg2</span> = <span class="type">Output</span>(<span class="type">UInt</span>(<span class="number">5.</span><span class="type">W</span>))</span><br><span class="line">    <span class="keyword">val</span> <span class="type">Reg3</span> = <span class="type">Output</span>(<span class="type">UInt</span>(<span class="number">5.</span><span class="type">W</span>))</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> opcode = io.instr_word(<span class="number">31</span>, <span class="number">26</span>)</span><br><span class="line">  <span class="keyword">val</span> funinfo = io.instr_word(<span class="number">5</span>, <span class="number">0</span>)</span><br><span class="line">  </span><br><span class="line">  io.add_op := <span class="literal">false</span>.<span class="type">B</span>;</span><br><span class="line">  io.sub_op := <span class="literal">false</span>.<span class="type">B</span>;</span><br><span class="line">  io.lw_op := <span class="literal">false</span>.<span class="type">B</span>;</span><br><span class="line">  io.sw_op := <span class="literal">false</span>.<span class="type">B</span>;</span><br><span class="line">  io.nop := <span class="literal">false</span>.<span class="type">B</span>;</span><br><span class="line"></span><br><span class="line">  io.<span class="type">Reg3</span> := io.instr_word(<span class="number">25</span>,<span class="number">21</span>) <span class="comment">//target</span></span><br><span class="line">  io.<span class="type">Reg1</span> := io.instr_word(<span class="number">20</span>,<span class="number">16</span>) <span class="comment">//src</span></span><br><span class="line">  io.<span class="type">Reg2</span> := io.instr_word(<span class="number">15</span>,<span class="number">11</span>)</span><br><span class="line">  when(opcode === <span class="string">&quot;b000000&quot;</span>.<span class="type">U</span>)</span><br><span class="line">  &#123;</span><br><span class="line">    when(funinfo === <span class="string">&quot;b100000&quot;</span>.<span class="type">U</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      io.add_op := <span class="literal">true</span>.<span class="type">B</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    .elsewhen(funinfo === <span class="string">&quot;b100010&quot;</span>.<span class="type">U</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      io.sub_op := <span class="literal">true</span>.<span class="type">B</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  .elsewhen(opcode === <span class="string">&quot;b100011&quot;</span>.<span class="type">U</span>)</span><br><span class="line">  &#123;</span><br><span class="line">    io.lw_op := <span class="literal">true</span>.<span class="type">B</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  .elsewhen(opcode === <span class="string">&quot;b101011&quot;</span>.<span class="type">U</span>)</span><br><span class="line">  &#123;</span><br><span class="line">    io.sw_op := <span class="literal">true</span>.<span class="type">B</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  .otherwise</span><br><span class="line">  &#123;</span><br><span class="line">    io.nop := <span class="literal">true</span>.<span class="type">B</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">MIPSInstructionDecoder</span> <span class="keyword">extends</span> <span class="title">App</span> </span>&#123;</span><br><span class="line">  (<span class="keyword">new</span> chisel3.stage.<span class="type">ChiselStage</span>).emitVerilog(<span class="keyword">new</span> <span class="type">MIPSInstructionDecoder</span> (), 	<span class="type">Array</span>(<span class="string">&quot;--target-dir&quot;</span>,<span class="string">&quot;generated&quot;</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>创建IO，其中输入为32位指令，下面五个bool信号为五种类型指令的鉴别信号，同时根据输入的指令解析出其中对应的寄存器编号（如有）。</p>
+<p>Opcode为指令前6位，funinfo为指令后6位，add和sub指令的前6位均为0，因此需要靠后6位来区分。首先初始化五种指令，然后根据指令内容进行译码。</p>
+<p>测试代码：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.scalatest.flatspec.<span class="type">AnyFlatSpec</span></span><br><span class="line"><span class="keyword">import</span> chisel3._</span><br><span class="line"><span class="keyword">import</span> chiseltest._</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MIPSInstructionDecoderSpec</span> <span class="keyword">extends</span> <span class="title">AnyFlatSpec</span> <span class="keyword">with</span> <span class="title">ChiselScalatestTester</span> </span>&#123;</span><br><span class="line">  behavior of <span class="string">&quot;MIPSInstructionDecoder&quot;</span></span><br><span class="line"></span><br><span class="line">  it should <span class="string">&quot;TestInstructions&quot;</span> in &#123;</span><br><span class="line">    test(<span class="keyword">new</span> <span class="type">MIPSInstructionDecoder</span>).withAnnotations(<span class="type">Seq</span>(<span class="type">WriteVcdAnnotation</span>)) &#123; c =&gt;</span><br><span class="line">      c.io.instr_word.poke(<span class="string">&quot;b00000000001000100001100000100000&quot;</span>.<span class="type">U</span>) </span><br><span class="line">      <span class="comment">// add R1, R2, R3</span></span><br><span class="line">      c.clock.step(<span class="number">1</span>)</span><br><span class="line">      c.io.add_op.expect(<span class="literal">true</span>.<span class="type">B</span>)</span><br><span class="line">      c.io.sub_op.expect(<span class="literal">false</span>.<span class="type">B</span>)</span><br><span class="line">      c.io.lw_op.expect(<span class="literal">false</span>.<span class="type">B</span>)</span><br><span class="line">      c.io.sw_op.expect(<span class="literal">false</span>.<span class="type">B</span>)</span><br><span class="line">      c.io.nop.expect(<span class="literal">false</span>.<span class="type">B</span>)</span><br><span class="line"></span><br><span class="line">      c.io.instr_word.poke(<span class="string">&quot;b00000000000001010011000000100010&quot;</span>.<span class="type">U</span>) </span><br><span class="line">      <span class="comment">// sub R0, R5, R6</span></span><br><span class="line">      c.clock.step(<span class="number">1</span>)</span><br><span class="line">      c.io.add_op.expect(<span class="literal">false</span>.<span class="type">B</span>)</span><br><span class="line">      c.io.sub_op.expect(<span class="literal">true</span>.<span class="type">B</span>)</span><br><span class="line">      c.io.lw_op.expect(<span class="literal">false</span>.<span class="type">B</span>)</span><br><span class="line">      c.io.sw_op.expect(<span class="literal">false</span>.<span class="type">B</span>)</span><br><span class="line">      c.io.nop.expect(<span class="literal">false</span>.<span class="type">B</span>)</span><br><span class="line"></span><br><span class="line">      c.io.instr_word.poke(<span class="string">&quot;b10001100101000100000000001100100&quot;</span>.<span class="type">U</span>) </span><br><span class="line">      <span class="comment">// lw R5, 100(R2)</span></span><br><span class="line">      c.clock.step(<span class="number">1</span>)</span><br><span class="line">      c.io.add_op.expect(<span class="literal">false</span>.<span class="type">B</span>)</span><br><span class="line">      c.io.sub_op.expect(<span class="literal">false</span>.<span class="type">B</span>)</span><br><span class="line">      c.io.lw_op.expect(<span class="literal">true</span>.<span class="type">B</span>)</span><br><span class="line">      c.io.sw_op.expect(<span class="literal">false</span>.<span class="type">B</span>)</span><br><span class="line">      c.io.nop.expect(<span class="literal">false</span>.<span class="type">B</span>)</span><br><span class="line"></span><br><span class="line">      c.io.instr_word.poke(<span class="string">&quot;b10101100101000100000000001101000&quot;</span>.<span class="type">U</span>) </span><br><span class="line">      <span class="comment">// sw R0, 104(R2)</span></span><br><span class="line">      c.clock.step(<span class="number">1</span>)</span><br><span class="line">      c.io.add_op.expect(<span class="literal">false</span>.<span class="type">B</span>)</span><br><span class="line">      c.io.sub_op.expect(<span class="literal">false</span>.<span class="type">B</span>)</span><br><span class="line">      c.io.lw_op.expect(<span class="literal">false</span>.<span class="type">B</span>)</span><br><span class="line">      c.io.sw_op.expect(<span class="literal">true</span>.<span class="type">B</span>)</span><br><span class="line">      c.io.nop.expect(<span class="literal">false</span>.<span class="type">B</span>)</span><br><span class="line"></span><br><span class="line">      c.io.instr_word.poke(<span class="string">&quot;b00001100000000000000000001100100&quot;</span>.<span class="type">U</span>) </span><br><span class="line">      <span class="comment">// jal 100</span></span><br><span class="line">      c.clock.step(<span class="number">1</span>)</span><br><span class="line">      c.io.add_op.expect(<span class="literal">false</span>.<span class="type">B</span>)</span><br><span class="line">      c.io.sub_op.expect(<span class="literal">false</span>.<span class="type">B</span>)</span><br><span class="line">      c.io.lw_op.expect(<span class="literal">false</span>.<span class="type">B</span>)</span><br><span class="line">      c.io.sw_op.expect(<span class="literal">false</span>.<span class="type">B</span>)</span><br><span class="line">      c.io.nop.expect(<span class="literal">true</span>.<span class="type">B</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>共执行5个时钟周期，依次向instr_word输入add R1,R2,R3; sub R0,R5,R6，lw R5,100(R2), sw R5,104(R2)、JAL 100指令的数据，并进行检验。</p>
+<p>测试结果：</p>
+<p><img src="image-20240120215647120.png" alt="decoder测试结果"></p>
+<p>观察波形：</p>
+<p><img src="image-20240120215728554.png" alt="decoder波形"></p>
+<p>第一个时钟周期过后，instr_word内容更改为add R1,R2,R3;对应的32位数据，opcode为0，funinfo为0x20，add_op为1，说明正确译码。</p>
+<p>后面的几个时钟周期结果与上面类似，这里不作展示。</p>
+<h3><span id="2-2-ji-cun-qi-wen-jian-dian-lu-she-ji">2.2 寄存器文件电路设计</span><a href="#2-2-ji-cun-qi-wen-jian-dian-lu-she-ji" class="header-anchor"></a></h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> chisel3._</span><br><span class="line"><span class="keyword">import</span> chisel3.util._</span><br><span class="line"><span class="keyword">import</span> chisel3.stage.<span class="type">ChiselStage</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RegisterFile</span> <span class="keyword">extends</span> <span class="title">Module</span> </span>&#123;</span><br><span class="line">  <span class="keyword">val</span> io = <span class="type">IO</span>(<span class="keyword">new</span> <span class="type">Bundle</span> &#123;</span><br><span class="line">    <span class="keyword">val</span> <span class="type">RS1</span> = <span class="type">Input</span>(<span class="type">UInt</span>(<span class="number">5.</span><span class="type">W</span>))</span><br><span class="line">    <span class="keyword">val</span> <span class="type">RS2</span> = <span class="type">Input</span>(<span class="type">UInt</span>(<span class="number">5.</span><span class="type">W</span>))</span><br><span class="line">    <span class="keyword">val</span> <span class="type">WB_data</span> = <span class="type">Input</span>(<span class="type">UInt</span>(<span class="number">32.</span><span class="type">W</span>))</span><br><span class="line">    <span class="keyword">val</span> <span class="type">Reg_WB</span> = <span class="type">Input</span>(<span class="type">UInt</span>(<span class="number">5.</span><span class="type">W</span>))</span><br><span class="line">    <span class="keyword">val</span> <span class="type">RS1_out</span> = <span class="type">Output</span>(<span class="type">UInt</span>(<span class="number">32.</span><span class="type">W</span>))</span><br><span class="line">    <span class="keyword">val</span> <span class="type">RS2_out</span> = <span class="type">Output</span>(<span class="type">UInt</span>(<span class="number">32.</span><span class="type">W</span>))</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> registers = <span class="type">RegInit</span>(<span class="type">VecInit</span>((<span class="number">0</span> until <span class="number">32</span>).map(_.<span class="type">U</span>(<span class="number">32.</span><span class="type">W</span>))))</span><br><span class="line"></span><br><span class="line">  io.<span class="type">RS1_out</span> := registers(io.<span class="type">RS1</span>)  <span class="comment">//读取RS1</span></span><br><span class="line">  io.<span class="type">RS2_out</span> := registers(io.<span class="type">RS2</span>)  <span class="comment">//读取RS2</span></span><br><span class="line"></span><br><span class="line">  when(io.<span class="type">Reg_WB</span> =/= <span class="number">0.</span><span class="type">U</span>)</span><br><span class="line">  &#123;</span><br><span class="line">    registers(io.<span class="type">Reg_WB</span>) := io.<span class="type">WB_data</span>  <span class="comment">//将WB_data写入到Reg_Wb</span></span><br><span class="line">  &#125;</span><br><span class="line">  .otherwise <span class="comment">//0寄存器不作任何改变，保证其恒为0</span></span><br><span class="line">  &#123;</span><br><span class="line">    registers(io.<span class="type">Reg_WB</span>) := registers(io.<span class="type">Reg_WB</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">RegisterFileMain</span> <span class="keyword">extends</span> <span class="title">App</span> </span>&#123;</span><br><span class="line">  (<span class="keyword">new</span> <span class="type">ChiselStage</span>).emitVerilog(<span class="keyword">new</span> <span class="type">RegisterFile</span>, <span class="type">Array</span>(<span class="string">&quot;--target-dir&quot;</span>, <span class="string">&quot;generated&quot;</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>IO信号中，定义RS1，RS2，WB_data,Reg_WB输入，RS1_out, RS2_out两个输出。</p>
+<p>定义一组32个寄存器，使用循环为寄存器附上初值，初始值内容为其编号。</p>
+<p>根据上面的图，RS1_out和RS2_out分别对应编号为RS1寄存器的内容和编号为RS2寄存器的内容，同时，WB_data将会被写入到编号为Reg_WB的寄存器中，这就是两读一写的功能。根据真实的regfile，还应有一个写使位用于控制寄存器是否写入，由于上图中没有，因此这里默认WB寄存器可写。</p>
+<p>此外，特别地，由于0号寄存器的值恒为0，因此在进行寄存器修改操作的时候若涉及到0寄存器则不对其做任何改动。</p>
+<p>测试代码：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.scalatest.flatspec.<span class="type">AnyFlatSpec</span></span><br><span class="line"><span class="keyword">import</span> chisel3._</span><br><span class="line"><span class="keyword">import</span> chiseltest._</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RegisterFileSpec</span> <span class="keyword">extends</span> <span class="title">AnyFlatSpec</span> <span class="keyword">with</span> <span class="title">ChiselScalatestTester</span> </span>&#123;</span><br><span class="line">  behavior of <span class="string">&quot;RegisterFile&quot;</span></span><br><span class="line"></span><br><span class="line">  it should <span class="string">&quot;correctly read and write registers&quot;</span> in &#123;</span><br><span class="line">    test(<span class="keyword">new</span> <span class="type">RegisterFile</span>).withAnnotations(<span class="type">Seq</span>(<span class="type">WriteVcdAnnotation</span>)) &#123; c =&gt;</span><br><span class="line">      <span class="comment">// 设置输入信号</span></span><br><span class="line">      c.io.<span class="type">RS1</span>.poke(<span class="number">5.</span><span class="type">U</span>)</span><br><span class="line">      c.io.<span class="type">RS2</span>.poke(<span class="number">8.</span><span class="type">U</span>)</span><br><span class="line">      c.io.<span class="type">WB_data</span>.poke(<span class="number">0x1234</span>.<span class="type">U</span>)</span><br><span class="line">      c.io.<span class="type">Reg_WB</span>.poke(<span class="number">1.</span><span class="type">U</span>)</span><br><span class="line">      c.clock.step()</span><br><span class="line">      <span class="comment">// 验证输出结果和寄存器值</span></span><br><span class="line">      c.io.<span class="type">RS1_out</span>.expect(<span class="number">5.</span><span class="type">U</span>(<span class="number">32.</span><span class="type">W</span>))</span><br><span class="line">      c.io.<span class="type">RS2_out</span>.expect(<span class="number">8.</span><span class="type">U</span>(<span class="number">32.</span><span class="type">W</span>))</span><br><span class="line"></span><br><span class="line">      c.io.<span class="type">RS1</span>.poke(<span class="number">1.</span><span class="type">U</span>)</span><br><span class="line">      c.io.<span class="type">RS2</span>.poke(<span class="number">0.</span><span class="type">U</span>)</span><br><span class="line">      c.io.<span class="type">WB_data</span>.poke(<span class="number">0x1234</span>.<span class="type">U</span>)</span><br><span class="line">      c.io.<span class="type">Reg_WB</span>.poke(<span class="number">0.</span><span class="type">U</span>)</span><br><span class="line">      c.clock.step()</span><br><span class="line">      c.io.<span class="type">RS1_out</span>.expect(<span class="number">0x1234</span>.<span class="type">U</span>(<span class="number">32.</span><span class="type">W</span>))</span><br><span class="line">      c.io.<span class="type">RS2_out</span>.expect(<span class="number">0.</span><span class="type">U</span>(<span class="number">32.</span><span class="type">W</span>))</span><br><span class="line"></span><br><span class="line">      c.io.<span class="type">RS1</span>.poke(<span class="number">0.</span><span class="type">U</span>)</span><br><span class="line">      c.io.<span class="type">RS2</span>.poke(<span class="number">8.</span><span class="type">U</span>)</span><br><span class="line">      c.io.<span class="type">WB_data</span>.poke(<span class="number">0x1234</span>.<span class="type">U</span>)</span><br><span class="line">      c.io.<span class="type">Reg_WB</span>.poke(<span class="number">1.</span><span class="type">U</span>)</span><br><span class="line">      c.clock.step()</span><br><span class="line">      c.io.<span class="type">RS1_out</span>.expect(<span class="number">0.</span><span class="type">U</span>(<span class="number">32.</span><span class="type">W</span>))</span><br><span class="line">      c.io.<span class="type">RS2_out</span>.expect(<span class="number">8.</span><span class="type">U</span>(<span class="number">32.</span><span class="type">W</span>))</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>测试结果：</p>
+<p><img src="image-20240120215825781.png" alt="regfile测试结果"></p>
+<p>观察波形：</p>
+<p><img src="image-20240120215850113.png" alt="regfile波形1"></p>
+<p><img src="image-20240120215855284.png" alt="regfile波形2"></p>
+<p><img src="image-20240120215900146.png" alt="regfile波形3"></p>
+<p>使用三个时间周期进行验证，第一个时钟周期，输入RS1&#x3D;5，RS2&#x3D;8，WB_data&#x3D;0x1234，Reg_WB&#x3D;1，按照上面的设计，此时应当输出RS1_out&#x3D;5,RS2_out&#x3D;8.</p>
+<p>第二个时钟周期，输入RS1&#x3D;1,RS2&#x3D;0，WB_data&#x3D;0x1234，Reg_WB&#x3D;0。在上一个时间周期中，上一个WB_data，即0x1234应已被写入到1号寄存器中，此时的RS1_out&#x3D;0x1234，RS2_out&#x3D;0。</p>
+<p>第三个时间周期，输入RS1&#x3D;0，RS2&#x3D;8, WB_data&#x3D;0x1234，Reg_WB&#x3D;1。在上一个时间周期中，Reg_WB输入为0，WB_data&#x3D;0x1234，由于0寄存器任何时候都为0，因此不会对0寄存器的值进行修改。此时RS1_out&#x3D;0,RS2_out&#x3D;8。</p>
+<p>根据上图波形，可以验证测试结果均正确。</p>
+<h3><span id="2-3-pc-zhi-ling-ji-cun-qi-dian-lu-she-ji">2.3 pc指令寄存器电路设计</span><a href="#2-3-pc-zhi-ling-ji-cun-qi-dian-lu-she-ji" class="header-anchor"></a></h3><p>设计Instruction取指令部件：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InstructionStorage</span> <span class="keyword">extends</span> <span class="title">Module</span></span>&#123;</span><br><span class="line">    <span class="keyword">val</span> io = <span class="type">IO</span>(<span class="keyword">new</span> <span class="type">Bundle</span>&#123;</span><br><span class="line">        <span class="keyword">val</span> <span class="type">Instruction</span> = <span class="type">Output</span>(<span class="type">UInt</span>(<span class="number">32.</span><span class="type">W</span>))</span><br><span class="line">        <span class="keyword">val</span> pc = <span class="type">Input</span>(<span class="type">UInt</span>(<span class="number">32.</span><span class="type">W</span>))</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> <span class="type">Instructions</span> = <span class="type">RegInit</span>(<span class="type">Reg</span>(<span class="type">Vec</span>(<span class="number">16</span>, <span class="type">UInt</span>(<span class="number">32.</span><span class="type">W</span>))))</span><br><span class="line">    <span class="comment">//存储4个预存的指令</span></span><br><span class="line">    <span class="type">Instructions</span>(<span class="number">0</span>) := <span class="string">&quot;b00000000001000100001100000100000&quot;</span>.<span class="type">U</span></span><br><span class="line">    <span class="type">Instructions</span>(<span class="number">4</span>) := <span class="string">&quot;b00000000000001010011000000100010&quot;</span>.<span class="type">U</span></span><br><span class="line">    <span class="type">Instructions</span>(<span class="number">8</span>) := <span class="string">&quot;b10001100101000100000000001100100&quot;</span>.<span class="type">U</span></span><br><span class="line">    <span class="type">Instructions</span>(<span class="number">12</span>) := <span class="string">&quot;b10101100101000100000000001101000&quot;</span>.<span class="type">U</span></span><br><span class="line"></span><br><span class="line">    io.<span class="type">Instruction</span> := <span class="type">Instructions</span>(io.pc)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>IO信号中定义输入为pc，输出为对应的指令。使用RegInit预存四个指令，依次为add R1,R2,R3; sub R0,R5,R6，lw R5,100(R2), sw R5,104(R2)的32位二进制数据，指令之间间隔4位，对应pc每次+4的操作。</p>
+<h3><span id="2-4-ji-he-san-ge-bu-jian">2.4 集合三个部件</span><a href="#2-4-ji-he-san-ge-bu-jian" class="header-anchor"></a></h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> chisel3._</span><br><span class="line"><span class="keyword">import</span> chisel3.util._</span><br><span class="line"><span class="keyword">import</span> chisel3.stage.<span class="type">ChiselStage</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PC</span> <span class="keyword">extends</span> <span class="title">Module</span></span>&#123;</span><br><span class="line">    <span class="keyword">val</span> io = <span class="type">IO</span>(<span class="keyword">new</span> <span class="type">Bundle</span>&#123;</span><br><span class="line">        <span class="keyword">val</span> pc = <span class="type">Input</span>(<span class="type">UInt</span>(<span class="number">32.</span><span class="type">W</span>))</span><br><span class="line">        <span class="keyword">val</span> <span class="type">RS1_out</span> = <span class="type">Output</span>(<span class="type">UInt</span>(<span class="number">32.</span><span class="type">W</span>))</span><br><span class="line">        <span class="keyword">val</span> <span class="type">RS2_out</span> = <span class="type">Output</span>(<span class="type">UInt</span>(<span class="number">32.</span><span class="type">W</span>))</span><br><span class="line">        <span class="keyword">val</span> add_op = <span class="type">Output</span>(<span class="type">Bool</span>())</span><br><span class="line">        <span class="keyword">val</span> sub_op = <span class="type">Output</span>(<span class="type">Bool</span>())</span><br><span class="line">        <span class="keyword">val</span> lw_op = <span class="type">Output</span>(<span class="type">Bool</span>())</span><br><span class="line">        <span class="keyword">val</span> sw_op = <span class="type">Output</span>(<span class="type">Bool</span>())</span><br><span class="line">        <span class="keyword">val</span> nop = <span class="type">Output</span>(<span class="type">Bool</span>())</span><br><span class="line">        <span class="comment">//测试指令</span></span><br><span class="line">        <span class="keyword">val</span> nowins = <span class="type">Output</span>(<span class="type">UInt</span>(<span class="number">32.</span><span class="type">W</span>))</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建三个部件实例</span></span><br><span class="line">    <span class="keyword">val</span> <span class="type">InstructionDecoder</span> = <span class="type">Module</span>(<span class="keyword">new</span> <span class="type">MIPSInstructionDecoder</span>())</span><br><span class="line">    <span class="keyword">val</span> <span class="type">Register</span>  = <span class="type">Module</span>(<span class="keyword">new</span> <span class="type">RegisterFile</span>())</span><br><span class="line">    <span class="keyword">val</span> <span class="type">InstructionStorage</span> = <span class="type">Module</span>(<span class="keyword">new</span> <span class="type">InstructionStorage</span>())</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将不同部件之间的接口和最外层接口连接起来</span></span><br><span class="line">    <span class="keyword">this</span>.io.nowins := <span class="type">InstructionDecoder</span>.io.instr_word</span><br><span class="line"></span><br><span class="line">    <span class="type">InstructionDecoder</span>.io.instr_word := <span class="type">InstructionStorage</span>.io.<span class="type">Instruction</span></span><br><span class="line">    <span class="type">Register</span>.io.<span class="type">RS1</span> := <span class="type">InstructionDecoder</span>.io.<span class="type">Reg1</span></span><br><span class="line">    <span class="type">Register</span>.io.<span class="type">RS2</span> := <span class="type">InstructionDecoder</span>.io.<span class="type">Reg2</span></span><br><span class="line"></span><br><span class="line">    <span class="type">Register</span>.io.<span class="type">WB_data</span> := <span class="number">0.</span><span class="type">U</span></span><br><span class="line">    <span class="type">Register</span>.io.<span class="type">Reg_WB</span> := <span class="number">0.</span><span class="type">U</span></span><br><span class="line"></span><br><span class="line">    <span class="type">InstructionStorage</span>.io.pc := <span class="keyword">this</span>.io.pc</span><br><span class="line">    <span class="keyword">this</span>.io.<span class="type">RS1_out</span> := <span class="type">Register</span>.io.<span class="type">RS1_out</span></span><br><span class="line">    <span class="keyword">this</span>.io.<span class="type">RS2_out</span> := <span class="type">Register</span>.io.<span class="type">RS2_out</span></span><br><span class="line">    <span class="keyword">this</span>.io.add_op := <span class="type">InstructionDecoder</span>.io.add_op</span><br><span class="line">    <span class="keyword">this</span>.io.sub_op := <span class="type">InstructionDecoder</span>.io.sub_op</span><br><span class="line">    <span class="keyword">this</span>.io.lw_op := <span class="type">InstructionDecoder</span>.io.lw_op</span><br><span class="line">    <span class="keyword">this</span>.io.sw_op := <span class="type">InstructionDecoder</span>.io.sw_op</span><br><span class="line">    <span class="keyword">this</span>.io.nop := <span class="type">InstructionDecoder</span>.io.nop</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">PC</span> <span class="keyword">extends</span> <span class="title">App</span></span>&#123;</span><br><span class="line">    (<span class="keyword">new</span> chisel3.stage.<span class="type">ChiselStage</span>).emitVerilog(<span class="keyword">new</span> <span class="type">PC</span>(), <span class="type">Array</span>(<span class="string">&quot;--target-dir&quot;</span>, <span class="string">&quot;generated&quot;</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>PC的IO信号中，输入为初始pc值，输出有RS1_out, RS2_out, 五种指令的检验位，还有一个从取指令器输出中外接的一个nowins，用于查看当前指令的值，便于检查是否出错。</p>
+<p>首先创建3个部件的实例，然后将三个部件之间以及PC和三个部件的输入输出接口对应连接起来。</p>
+<p>测试代码：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.scalatest.flatspec.<span class="type">AnyFlatSpec</span></span><br><span class="line"><span class="keyword">import</span> chisel3._</span><br><span class="line"><span class="keyword">import</span> chiseltest._</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PCTest</span> <span class="keyword">extends</span> <span class="title">AnyFlatSpec</span> <span class="keyword">with</span> <span class="title">ChiselScalatestTester</span></span>&#123;</span><br><span class="line">    behavior of <span class="string">&quot;PC&quot;</span></span><br><span class="line"></span><br><span class="line">    it should <span class="string">&quot;pass&quot;</span> in &#123;</span><br><span class="line">        test(<span class="keyword">new</span> <span class="type">PC</span>).withAnnotations(<span class="type">Seq</span>(<span class="type">WriteVcdAnnotation</span>)) &#123; c =&gt;</span><br><span class="line">            <span class="comment">//初始化pc</span></span><br><span class="line">            c.io.pc.poke(<span class="number">0.</span><span class="type">U</span>)</span><br><span class="line">            c.clock.step()</span><br><span class="line">            <span class="keyword">for</span>(i &lt;- <span class="number">0</span> until <span class="number">4</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                c.io.pc.poke((<span class="number">4</span>*i).<span class="type">U</span>)</span><br><span class="line">                println(<span class="string">&quot;Now pc: &quot;</span> + <span class="number">4</span>*i)</span><br><span class="line">                <span class="comment">//测试指令</span></span><br><span class="line">                println(<span class="string">&quot;Now instruction is: &quot;</span> + c.io.nowins.peek().toString)</span><br><span class="line">                </span><br><span class="line">                println(<span class="string">&quot;RS1_out is: &quot;</span> + c.io.<span class="type">RS1_out</span>.peek().toString)</span><br><span class="line">                println(<span class="string">&quot;RS2_out is： &quot;</span> + c.io.<span class="type">RS2_out</span>.peek().toString)</span><br><span class="line">                println(<span class="string">&quot;add status: &quot;</span> + c.io.add_op.peek().toString)</span><br><span class="line">                println(<span class="string">&quot;sub status: &quot;</span> + c.io.sub_op.peek().toString)</span><br><span class="line">                println(<span class="string">&quot;lw status: &quot;</span> + c.io.lw_op.peek().toString)</span><br><span class="line">                println(<span class="string">&quot;sw status: &quot;</span> + c.io.sw_op.peek().toString)</span><br><span class="line">                println(<span class="string">&quot;nop status: &quot;</span> + c.io.nop.peek().toString)</span><br><span class="line">                i <span class="keyword">match</span> &#123;</span><br><span class="line">                    <span class="keyword">case</span> <span class="number">0</span> =&gt;</span><br><span class="line">                    c.io.add_op.expect(<span class="literal">true</span>.<span class="type">B</span>)</span><br><span class="line">                    <span class="keyword">case</span> <span class="number">1</span> =&gt;</span><br><span class="line">                    c.io.sub_op.expect(<span class="literal">true</span>.<span class="type">B</span>)</span><br><span class="line">                    <span class="keyword">case</span> <span class="number">2</span> =&gt;</span><br><span class="line">                    c.io.lw_op.expect(<span class="literal">true</span>.<span class="type">B</span>)</span><br><span class="line">                    <span class="keyword">case</span> <span class="number">3</span> =&gt;</span><br><span class="line">                    c.io.sw_op.expect(<span class="literal">true</span>.<span class="type">B</span>)</span><br><span class="line">                &#125;</span><br><span class="line">                c.clock.step()</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先先令pc输入为0，保持一个时间周期作为初始化，然后进行四个时间周期的测试，输入的pc值依次+4，分别对应取四条不同的指令，根据结果检验是否正确。</p>
+<p>测试结果：</p>
+<p><img src="image-20240120220039561.png" alt="综合测试结果"></p>
+<p>测试通过，从输出的提示信息可以看到结果均正确，能够正常的进行取指令和译码的操作。</p>
+<p>波形图观察：</p>
+<p><img src="image-20240120220114663.png" alt="时钟周期1"></p>
+<p>第一个时间周期中，add_op为1，RS1_out&#x3D;2,RS2_out&#x3D;3，对应R2，R3两个读入数据的寄存器。</p>
+<p><img src="image-20240120220119422.png" alt="时钟周期2"></p>
+<p>第二个时间周期，sub_op&#x3D;1,RS1_out&#x3D;5, RS2_out&#x3D;6,对应R5，R6两个读入数据的寄存器。</p>
+<p><img src="image-20240120220122477.png" alt="时钟周期3"></p>
+<p>第三个时间周期，lw_op&#x3D;1，RS1_out&#x3D;2，对应读取寄存器为R2。</p>
+<p><img src="image-20240120220125532.png" alt="时钟周期4"></p>
+<p>第四个时间周期，sw_op&#x3D;1,RS1_out&#x3D;2，对应写入的源寄存器为R2。</p>
+<h2><span id="3-te-bie-shuo-ming">3、特别说明</span><a href="#3-te-bie-shuo-ming" class="header-anchor"></a></h2><p>最后要特别进行一点说明是，由于当时做实验的时候对于指令的格式理解与真实指令有误差，本文中构造的mips机器码并非真实mips指令对应的机器码。具体错误体现在：</p>
+<p>真实mips指令和机器码的对应关系如下：</p>
+<p>指令中的寄存器顺序是rd，rs，rt，  而机器码中，从左到右相关寄存器的顺序为rs，rt，rd</p>
+<p>以add指令为例，add r1, r2, r3，在机器码中的寄存器顺序就应该是r2，r3，r1.</p>
+<p>而在本文构造中，上述格式的指令机器码构造的顺序是r1，r2，r3，即完全按照指令中排列顺序构造，如果在真实环境下运行将会产生寄存器错位导致结果错误的情况。</p>
+
+            
+
+             <!-- 添加版权声明 -->
+    
+  
+    <div id="declare">
+      <strong>本文作者：</strong>
+      
+        *月遇丛雲花遇風*
+      
+      <br>
+      <strong>本文链接：</strong>
+      <a href="https://t3uk1.github.io/2023/12/01/Chisel语言设计/" title="深圳大学计算机系统(3)实验 Chisel语言设计" target="_blank">https://t3uk1.github.io/2023/12/01/Chisel语言设计/</a>
+      <br>
+      <strong>版权声明：</strong>
+      除特殊说明外，本作品采用
+    <a id="copyright" href="http://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC BY-NC-SA 4.0</a>
+        协议进行许可。转载请注明出处！
+    </div>
+  
+        <!-- 添加版权声明 -->
+  
+        </div>
+        <footer class="article-footer">
+            <a data-url="https://t3uk1.github.io/2023/12/01/Chisel%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1/" data-id="clrm5e4h80001ckug8z3i9g5q" data-title="深圳大学计算机系统(3)实验 Chisel语言设计"
+               class="article-share-link">分享</a>
+            
+            
+            
+            
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Chisel/" rel="tag">Chisel</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mips/" rel="tag">mips</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" rel="tag">计算机组成原理</a></li></ul>
+
+
+        </footer>
+    </div>
+    
+        
+    <nav id="article-nav" class="wow fadeInUp">
+        
+            <div class="article-nav-link-wrap article-nav-link-left">
+                
+                    
+                    
+                        <img data-src="/covers/ec43126fgy1gwg9veeogtj224r1i9u0y.jpg" data-sizes="auto" alt="形式语言与自动机期末复习总结" class="lazyload">
+                    
+                
+                <a href="/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/"></a>
+                <div class="article-nav-caption">前一篇</div>
+                <h3 class="article-nav-title">
+                    
+                        形式语言与自动机期末复习总结
+                    
+                </h3>
+            </div>
+        
+        
+            <div class="article-nav-link-wrap article-nav-link-right">
+                
+                    
+                    
+                        <img data-src="/covers/QQ图片20220202221113.jpg" data-sizes="auto" alt="在vscode使用ssh连接Linux虚拟机工作" class="lazyload">
+                    
+                
+                <a href="/2023/10/31/%E5%9C%A8vscode%E4%BD%BF%E7%94%A8ssh%E8%BF%9E%E6%8E%A5Linux%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B7%A5%E4%BD%9C/"></a>
+                <div class="article-nav-caption">后一篇</div>
+                <h3 class="article-nav-title">
+                    
+                        在vscode使用ssh连接Linux虚拟机工作
+                    
+                </h3>
+            </div>
+        
+    </nav>
+
+
+    
+</article>
+
+
+
+
+
+
+
+
+
+
+
+</section>
+                
+                    <aside id="sidebar">
+    <div class="sidebar-wrap wow fadeInRight">
+        <div class="sidebar-author">
+            <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="*月遇丛雲花遇風*" class="lazyload">
+            <div class="sidebar-author-name">*月遇丛雲花遇風*</div>
+            <div class="sidebar-description"></div>
+        </div>
+        <div class="sidebar-state">
+            <div class="sidebar-state-article">
+                <div>文章</div>
+                <div class="sidebar-state-number">13</div>
+            </div>
+            <div class="sidebar-state-category">
+                <div>分类</div>
+                <div class="sidebar-state-number">9</div>
+            </div>
+            <div class="sidebar-state-tag">
+                <div>标签</div>
+                <div class="sidebar-state-number">14</div>
+            </div>
+        </div>
+        <div class="sidebar-social">
+            
+                <div class=icon-github>
+                    <a href=https://github.com/t3uk1 itemprop="url" target="_blank"></a>
+                </div>
+            
+        </div>
+        <div class="sidebar-menu">
+            
+                <div class="sidebar-menu-link-wrap">
+                    <a class="sidebar-menu-link-dummy" href="/"></a>
+                    <span class="sidebar-menu-icon"></span>
+                    <div class="sidebar-menu-link">首页</div>
+                </div>
+            
+                <div class="sidebar-menu-link-wrap">
+                    <a class="sidebar-menu-link-dummy" href="/archives"></a>
+                    <span class="sidebar-menu-icon"></span>
+                    <div class="sidebar-menu-link">归档</div>
+                </div>
+            
+                <div class="sidebar-menu-link-wrap">
+                    <a class="sidebar-menu-link-dummy" href="/about"></a>
+                    <span class="sidebar-menu-icon"></span>
+                    <div class="sidebar-menu-link">关于</div>
+                </div>
+            
+                <div class="sidebar-menu-link-wrap">
+                    <a class="sidebar-menu-link-dummy" href="/friend"></a>
+                    <span class="sidebar-menu-icon"></span>
+                    <div class="sidebar-menu-link">友链</div>
+                </div>
+            
+        </div>
+    </div>
+    
+        
+    <div class="widget-wrap wow fadeInRight">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTF/">CTF</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CTF/pwn/">pwn</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Chisel/">Chisel</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vscode/">vscode</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA/">形式语言与自动机</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/">计算机图形学</a></li></ul>
+        </div>
+    </div>
+
+
+    
+        
+    <div class="widget-wrap wow fadeInRight">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Chisel/" style="font-size: 10px;">Chisel</a> <a href="/tags/Remote-SSH/" style="font-size: 10px;">Remote-SSH</a> <a href="/tags/SSH%E8%BF%9E%E6%8E%A5/" style="font-size: 10px;">SSH连接</a> <a href="/tags/algolia/" style="font-size: 10px;">algolia</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/hexo/" style="font-size: 20px;">hexo</a> <a href="/tags/mips/" style="font-size: 10px;">mips</a> <a href="/tags/openGL/" style="font-size: 10px;">openGL</a> <a href="/tags/pwn/" style="font-size: 15px;">pwn</a> <a href="/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/tags/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA/" style="font-size: 10px;">形式语言与自动机</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">数据结构</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" style="font-size: 10px;">计算机组成原理</a>
+        </div>
+    </div>
+
+
+    
+        
+    <div class="widget-wrap wow fadeInRight">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">十月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a></li></ul>
+        </div>
+    </div>
+
+
+    
+</aside>
+
+                
+            </div>
+            <footer id="footer" class="wow fadeInUp">
+    <div style="width: 100%; overflow: hidden"><div class="footer-line"></div></div>
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            
+            <div>
+                <span class="icon-copyright"></span>
+                2023-2024
+                <span class="footer-info-sep"></span>
+                *月遇丛雲花遇風*
+            </div>
+            
+                <div>
+                    基于&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+                    Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+                </div>
+            
+            
+                <div>
+                    <span class="icon-brush"></span>
+                    77.5k
+                    &nbsp;|&nbsp;
+                    <span class="icon-coffee"></span>
+                    06:15
+                </div>
+            
+            
+                <div>
+                    <span class="icon-eye"></span>
+                    <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+                    &nbsp;|&nbsp;
+                    <span class="icon-user"></span>
+                    <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+                </div>
+            
+        </div>
+    </div>
+</footer>
+
+        </div>
+        <nav id="mobile-nav">
+    <div class="sidebar-wrap">
+        <div class="sidebar-author">
+            <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="*月遇丛雲花遇風*" class="lazyload">
+            <div class="sidebar-author-name">*月遇丛雲花遇風*</div>
+            <div class="sidebar-description"></div>
+        </div>
+        <div class="sidebar-state">
+            <div class="sidebar-state-article">
+                <div>文章</div>
+                <div class="sidebar-state-number">13</div>
+            </div>
+            <div class="sidebar-state-category">
+                <div>分类</div>
+                <div class="sidebar-state-number">9</div>
+            </div>
+            <div class="sidebar-state-tag">
+                <div>标签</div>
+                <div class="sidebar-state-number">14</div>
+            </div>
+        </div>
+        <div class="sidebar-social">
+            
+                <div class=icon-github>
+                    <a href=https://github.com/t3uk1 itemprop="url" target="_blank"></a>
+                </div>
+            
+        </div>
+        <div class="sidebar-menu">
+            
+                <div class="sidebar-menu-link-wrap">
+                    <a class="sidebar-menu-link-dummy" href="/"></a>
+                    <span class="sidebar-menu-icon"></span>
+                    <div class="sidebar-menu-link">首页</div>
+                </div>
+            
+                <div class="sidebar-menu-link-wrap">
+                    <a class="sidebar-menu-link-dummy" href="/archives"></a>
+                    <span class="sidebar-menu-icon"></span>
+                    <div class="sidebar-menu-link">归档</div>
+                </div>
+            
+                <div class="sidebar-menu-link-wrap">
+                    <a class="sidebar-menu-link-dummy" href="/about"></a>
+                    <span class="sidebar-menu-icon"></span>
+                    <div class="sidebar-menu-link">关于</div>
+                </div>
+            
+                <div class="sidebar-menu-link-wrap">
+                    <a class="sidebar-menu-link-dummy" href="/friend"></a>
+                    <span class="sidebar-menu-icon"></span>
+                    <div class="sidebar-menu-link">友链</div>
+                </div>
+            
+        </div>
+    </div>
+</nav>
+
+        
+<script src="https://unpkg.com/jquery@3.7.0/dist/jquery.min.js"></script>
+
+
+<script src="https://unpkg.com/lazysizes@5.3.2/lazysizes.min.js"></script>
+
+
+<script src="https://unpkg.com/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+    
+<script src="https://unpkg.com/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+
+    
+<script src="https://unpkg.com/busuanzi@2.3.0/bsz.pure.mini.js"></script>
+
+
+
+
+    
+<script src="https://unpkg.com/mermaid@9.4.3/dist/mermaid.min.js"></script>
+
+    <script>
+        if (window.mermaid) {
+            mermaid.initialize({theme: 'forest'});
+        }
+    </script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+<script src="https://unpkg.com/algoliasearch@4.17.1/dist/algoliasearch-lite.umd.js"></script>
+
+    
+<script src="https://unpkg.com/instantsearch.js@4.56.1/dist/instantsearch.production.min.js"></script>
+
+    
+<script src="/js/search.js"></script>
+
+    <script>
+        var CONFIG = {
+            root: '/',
+            algolia: {
+                applicationID: "LY6AZ6NLTL",
+                apiKey: "a4e057248aeb84947785a6f29600ea43",
+                indexName: "blog",
+                hits: {
+                    "per_page": parseInt("10")
+                },
+                labels: {
+                    "input_placeholder": "搜索.....",
+                    "hits_empty": "未发现与 「${query}」相关内容",
+                    "hits_stats": "找到${hits}条结果（用时 ${time} ms）"
+                }
+            }
+        };
+	
+    </script>
+
+
+    </div>
+    <div class="site-search">
+        <div class="algolia-popup popup">
+            <div class="algolia-search">
+                <span class="algolia-search-input-icon"></span>
+                <div class="algolia-search-input" id="algolia-search-input"></div>
+            </div>
+
+            <div class="algolia-results">
+                <div id="algolia-stats"></div>
+                <div id="algolia-hits"></div>
+                <div id="algolia-pagination" class="algolia-pagination"></div>
+            </div>
+
+            <span class="popup-btn-close"></span>
+        </div>
+    </div>
+    <!-- hexo injector body_end start -->
+<script src="/js/insertHighlight.js"></script>
+<!-- hexo injector body_end end --></body>
+    </html>
+

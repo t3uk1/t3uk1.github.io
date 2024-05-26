@@ -15,7 +15,7 @@
     <title>
         在vscode使用ssh连接Linux虚拟机工作 |
         
-        T3uk1&#39;s hub</title>
+        T3uk1 の 庭院</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CUbuntu%20Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
     
@@ -24,12 +24,12 @@
     
 <link rel="stylesheet" href="/css/loader.css">
 
-    <meta name="description" content="在vscode使用ssh连接Linux虚拟机工作     1、Kali Linux虚拟机安装openssh-server 2、vscode中的配置 3、连接到远程Linux虚拟机      最近发现一个用vscode远程操控虚拟机的方法，感觉比直接操作虚拟机顺滑多了(虚拟机有点卡)，在此记录一下。 1、Kali Linux虚拟机安装openssh-server安装openssh-server 1s">
+    <meta name="description" content="在vscode使用ssh连接Linux虚拟机工作     1、Kali Linux虚拟机安装openssh-server 2、vscode中的配置 3、连接到远程Linux虚拟机 远程连接root用户的情况        最近发现一个用vscode远程操控虚拟机的方法，感觉比直接操作虚拟机顺滑多了(虚拟机有点卡)，在此记录一下。 1、Kali Linux虚拟机安装openssh-server安装o">
 <meta property="og:type" content="article">
 <meta property="og:title" content="在vscode使用ssh连接Linux虚拟机工作">
 <meta property="og:url" content="https://t3uk1.github.io/2023/10/31/%E5%9C%A8vscode%E4%BD%BF%E7%94%A8ssh%E8%BF%9E%E6%8E%A5Linux%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B7%A5%E4%BD%9C/index.html">
-<meta property="og:site_name" content="T3uk1&#39;s hub">
-<meta property="og:description" content="在vscode使用ssh连接Linux虚拟机工作     1、Kali Linux虚拟机安装openssh-server 2、vscode中的配置 3、连接到远程Linux虚拟机      最近发现一个用vscode远程操控虚拟机的方法，感觉比直接操作虚拟机顺滑多了(虚拟机有点卡)，在此记录一下。 1、Kali Linux虚拟机安装openssh-server安装openssh-server 1s">
+<meta property="og:site_name" content="T3uk1 の 庭院">
+<meta property="og:description" content="在vscode使用ssh连接Linux虚拟机工作     1、Kali Linux虚拟机安装openssh-server 2、vscode中的配置 3、连接到远程Linux虚拟机 远程连接root用户的情况        最近发现一个用vscode远程操控虚拟机的方法，感觉比直接操作虚拟机顺滑多了(虚拟机有点卡)，在此记录一下。 1、Kali Linux虚拟机安装openssh-server安装o">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E5%9C%A8vscode%E4%BD%BF%E7%94%A8ssh%E8%BF%9E%E6%8E%A5Linux%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B7%A5%E4%BD%9C/image-20231031181914914.png">
 <meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E5%9C%A8vscode%E4%BD%BF%E7%94%A8ssh%E8%BF%9E%E6%8E%A5Linux%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B7%A5%E4%BD%9C/image-20231031182341372.png">
@@ -40,14 +40,14 @@
 <meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E5%9C%A8vscode%E4%BD%BF%E7%94%A8ssh%E8%BF%9E%E6%8E%A5Linux%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B7%A5%E4%BD%9C/image-20231031183336527.png">
 <meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E5%9C%A8vscode%E4%BD%BF%E7%94%A8ssh%E8%BF%9E%E6%8E%A5Linux%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B7%A5%E4%BD%9C/image-20231031183124291.png">
 <meta property="article:published_time" content="2023-10-31T15:54:20.000Z">
-<meta property="article:modified_time" content="2023-10-31T15:57:16.527Z">
+<meta property="article:modified_time" content="2024-05-23T12:51:07.344Z">
 <meta property="article:author" content="*月遇丛雲花遇風*">
 <meta property="article:tag" content="vscode">
 <meta property="article:tag" content="Remote-SSH">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://t3uk1.github.io/2023/10/31/%E5%9C%A8vscode%E4%BD%BF%E7%94%A8ssh%E8%BF%9E%E6%8E%A5Linux%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B7%A5%E4%BD%9C/image-20231031181914914.png">
     
-        <link rel="alternate" href="/atom.xml" title="T3uk1's hub" type="application/atom+xml">
+        <link rel="alternate" href="/atom.xml" title="T3uk1 の 庭院" type="application/atom+xml">
     
     
         <link rel="shortcut icon" href="/images/favicon.ico">
@@ -210,7 +210,10 @@
 <ul>
 <li><a href="#1-kali-linux-xu-ni-ji-an-zhuang-openssh-server">1、Kali Linux虚拟机安装openssh-server</a></li>
 <li><a href="#2-vscode-zhong-de-pei-zhi">2、vscode中的配置</a></li>
-<li><a href="#3-lian-jie-dao-yuan-cheng-linux-xu-ni-ji">3、连接到远程Linux虚拟机</a></li>
+<li><a href="#3-lian-jie-dao-yuan-cheng-linux-xu-ni-ji">3、连接到远程Linux虚拟机</a><ul>
+<li><a href="#yuan-cheng-lian-jie-root-yong-hu-de-qing-kuang">远程连接root用户的情况</a></li>
+</ul>
+</li>
 </ul>
 <!-- tocstop -->
 
@@ -249,6 +252,18 @@
 <p><img src="image-20231031183124291.png" alt="连接主机"></p>
 <p>点击后选择刚刚添加的主机ip就能打开远程连接窗口。</p>
 <p>选择系统为Linux，输入Linux账户的密码就能正常连接了。</p>
+<h3><span id="yuan-cheng-lian-jie-root-yong-hu-de-qing-kuang">远程连接root用户的情况</span><a href="#yuan-cheng-lian-jie-root-yong-hu-de-qing-kuang" class="header-anchor"></a></h3><p>在连接到root用户的时候，出现了需要反复输入密码，密码正确却不能连接上的情况，这是虚拟机ssh服务配置文件安全性设置导致的。</p>
+<p>解决方法：</p>
+<ul>
+<li><p>编辑sshd_config文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit /etc/ssh/sshd_config</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>注释掉 <code>PermitRootLogin without-password</code>，即<code> #PermitRootLogin without-password</code><br>增加一行：<code> PermitRootLogin yes</code></p>
+</li>
+<li><p>重启ssh服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service ssh restart</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>再次尝试连接就能连上了。</p>
 
             
 
@@ -274,7 +289,7 @@
   
         </div>
         <footer class="article-footer">
-            <a data-url="https://t3uk1.github.io/2023/10/31/%E5%9C%A8vscode%E4%BD%BF%E7%94%A8ssh%E8%BF%9E%E6%8E%A5Linux%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B7%A5%E4%BD%9C/" data-id="clrm5e4jg001kckug3zpt4lp0" data-title="在vscode使用ssh连接Linux虚拟机工作"
+            <a data-url="https://t3uk1.github.io/2023/10/31/%E5%9C%A8vscode%E4%BD%BF%E7%94%A8ssh%E8%BF%9E%E6%8E%A5Linux%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B7%A5%E4%BD%9C/" data-id="clwn5bx6o000o10ug8fqdhwz1" data-title="在vscode使用ssh连接Linux虚拟机工作"
                class="article-share-link">分享</a>
             
             
@@ -293,7 +308,7 @@
                 
                     
                     
-                        <img data-src="/covers/QQ图片20221019125535.jpg" data-sizes="auto" alt="深圳大学计算机系统(3)实验 Chisel语言设计" class="lazyload">
+                        <img data-src="/covers/wallhaven-ex63ow.jpg" data-sizes="auto" alt="深圳大学计算机系统(3)实验 Chisel语言设计" class="lazyload">
                     
                 
                 <a href="/2023/12/01/Chisel%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1/"></a>
@@ -310,7 +325,7 @@
                 
                     
                     
-                        <img data-src="/covers/wallhaven-zxg9lw.png" data-sizes="auto" alt="使用docker部署pwn题" class="lazyload">
+                        <img data-src="/covers/wallhaven-ex63ow.jpg" data-sizes="auto" alt="使用docker部署pwn题" class="lazyload">
                     
                 
                 <a href="/2023/10/31/%E4%BD%BF%E7%94%A8docker%E9%83%A8%E7%BD%B2pwn%E9%A2%98/"></a>
@@ -451,7 +466,7 @@
             
                 <div>
                     <span class="icon-brush"></span>
-                    77.5k
+                    77.6k
                     &nbsp;|&nbsp;
                     <span class="icon-coffee"></span>
                     06:15

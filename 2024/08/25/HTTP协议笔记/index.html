@@ -1,0 +1,927 @@
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  data-theme="dark" >
+  <head>
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};</script>
+  
+  
+  <title>
+    HTTP协议笔记 |
+    
+    T3uk1 の 庭院
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+<link rel="stylesheet" href="/css/loader.css">
+
+  <meta name="description" content="HTTP协议笔记 虽然http在计网里学过一次了但是没有做笔记，最近因为在题目见到了用libmicrohttpd写的程序，故在此复习整理一波。 （还不太完善，后面有空补…）  超文本传输协议HTTP（HyperText Transfer Protocol）是一种用于分布式、协作式和超媒体信息系统的应用层协议。HTTP是万维网的数据通信的基础。  HTTP协议  HTTP的特性   HTTP 协议">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP协议笔记">
+<meta property="og:url" content="https://t3uk1.github.io/2024/08/25/HTTP%E5%8D%8F%E8%AE%AE%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="T3uk1 の 庭院">
+<meta property="og:description" content="HTTP协议笔记 虽然http在计网里学过一次了但是没有做笔记，最近因为在题目见到了用libmicrohttpd写的程序，故在此复习整理一波。 （还不太完善，后面有空补…）  超文本传输协议HTTP（HyperText Transfer Protocol）是一种用于分布式、协作式和超媒体信息系统的应用层协议。HTTP是万维网的数据通信的基础。  HTTP协议  HTTP的特性   HTTP 协议">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t3uk1.github.io/2024/08/25/HTTP%E5%8D%8F%E8%AE%AE%E7%AC%94%E8%AE%B0/image-20240825214325983.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/08/25/HTTP%E5%8D%8F%E8%AE%AE%E7%AC%94%E8%AE%B0/image-20240825214445216.png">
+<meta property="article:published_time" content="2024-08-25T03:45:14.000Z">
+<meta property="article:modified_time" content="2024-08-26T07:27:34.837Z">
+<meta property="article:author" content="*月遇丛雲花遇風*">
+<meta property="article:tag" content="HTTP">
+<meta property="article:tag" content="libmicrohttpd">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://t3uk1.github.io/2024/08/25/HTTP%E5%8D%8F%E8%AE%AE%E7%AC%94%E8%AE%B0/image-20240825214325983.png">
+  
+    <link rel="alternate" href="/atom.xml" title="T3uk1 の 庭院" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css">
+
+  
+  
+  
+  
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"></script>
+
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/wowjs@1.1.3/css/libs/animate.css">
+
+    
+<script src="https://npm.webcache.cn/wowjs@1.1.3/dist/wow.min.js"></script>
+
+    <script>
+      new WOW({
+        offset: 0,
+        mobile: true,
+        live: false
+      }).init();
+    </script>
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff6e6b" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z" fill="#fd0d00" />
+          <path d="M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95" fill="#fd0d00" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/">首页</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/archives">归档</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/about">关于</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/friend">友链</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      <img fetchpriority="high" src="/images/banner.jpg" alt="HTTP协议笔记">
+    
+  
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <div id="logo-wrap">
+        
+          
+          
+            <a href="/" id="logo">
+              <h1>HTTP协议笔记</h1>
+            </a>
+          
+        
+      </div>
+      
+        
+        <h2 id="subtitle-wrap">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content" class="outer">
+          
+          <section id="main"><article id="post-HTTP协议笔记" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    <div class="article-meta">
+      <div class="article-date wow slideInLeft">
+  <a href="/2024/08/25/HTTP%E5%8D%8F%E8%AE%AE%E7%AC%94%E8%AE%B0/" class="article-date-link">
+    <time datetime="2024-08-25T03:45:14.000Z" itemprop="datePublished">2024-08-25</time>
+    <time style="display: none;" id="post-update-time">2024-08-26</time>
+  </a>
+</div>
+
+      
+  <div class="article-category wow slideInLeft">
+    <a class="article-category-link" href="/categories/web/">web</a>
+  </div>
+
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <h1 id="http协议笔记"><a class="markdownIt-Anchor" href="#http协议笔记"></a> HTTP协议笔记</h1>
+<p>虽然http在计网里学过一次了但是没有做笔记，最近因为在题目见到了用libmicrohttpd写的程序，故在此复习整理一波。</p>
+<p>（还不太完善，后面有空补…）</p>
+<!-- toc -->
+<p>超文本传输协议HTTP（HyperText Transfer Protocol）是一种用于分布式、协作式和超媒体信息系统的应用层协议。HTTP是万维网的数据通信的基础。</p>
+<h2 id="http协议"><a class="markdownIt-Anchor" href="#http协议"></a> HTTP协议</h2>
+<h3 id="http的特性"><a class="markdownIt-Anchor" href="#http的特性"></a> HTTP的特性</h3>
+<ul>
+<li>
+<p>HTTP 协议构建于 TCP/IP 协议之上，是一个应用层协议，默认端口号是 80</p>
+</li>
+<li>
+<p>HTTP 是<strong>无连接无状态</strong>的</p>
+<blockquote>
+<p>无连接指的是限制每次连接只处理一个请求。服务器处理完客户的请求并收到客户的应答后即断开连接。因为采用这种方式可以节省传输时间</p>
+<p>无状态指的是协议对于事务处理没有记忆能力。缺少状态意味着如果后续处理需要前面的信息，则它必须重传，这样可能导致每次连接传送的数据量增大。另一方面，在服务器不需要先前信息时它的应答就较快。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="http请求"><a class="markdownIt-Anchor" href="#http请求"></a> HTTP请求</h3>
+<p>GET: 请求获取Request-URI所标识的资源</p>
+<p>POST： 在Request-URI所标识的资源后附加新的数据</p>
+<p>HEAD：请求获取由 Request-URI 所标识的资源的响应消息报头</p>
+<p>PUT： 请求服务器存储一个资源，并用Request-URI作为其标识</p>
+<p>DELETE：请求服务器删除Request-URI所标识的资源</p>
+<p>OPTIONS：请求查询服务器的性能，或者查询与资源相关的选项和需求</p>
+<p>TRACE：请求服务器回送收到的请求信息，主要用于测试或诊断</p>
+<p>CONNECT：隧道机制</p>
+<h3 id="http状态响应码"><a class="markdownIt-Anchor" href="#http状态响应码"></a> HTTP状态响应码</h3>
+<ul>
+<li>1XX（信息性状态码）：表示接收的请求正在处理。</li>
+<li>2XX（成功状态码）：表示请求正常处理完毕。</li>
+<li>3XX（重定向状态码）：需要后续操作才能完成这一请求。</li>
+<li>4XX（客户端错误状态码）：表示请求包含语法错误或无法完成。</li>
+<li>5XX（服务器错误状态码）：服务器在处理请求的过程中发生了错误。</li>
+</ul>
+<p>HTTP的所有状态响应码可以在这里查看：<a target="_blank" rel="noopener" href="https://www.runoob.com/http/http-status-codes.html">https://www.runoob.com/http/http-status-codes.html</a></p>
+<p>这里列出几个常见的响应码：</p>
+<table>
+<thead>
+<tr>
+<th>状态码</th>
+<th>状态码英文名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>OK</td>
+<td><strong>请求成功</strong>，一般用于<code>GET</code> 和<code>POST</code>请求</td>
+</tr>
+<tr>
+<td>204</td>
+<td>No Content</td>
+<td>无内容。<strong>服务器成功处理，但未返回内容</strong>。在未更新网页的情况下，可确保浏览器继续显示当前文档</td>
+</tr>
+<tr>
+<td>206</td>
+<td><strong>Partial</strong> Content</td>
+<td>是对资源<strong>某一部分</strong>的请求，服务器成功处理了部分GET请求，响应报文中包含由Content-Range指定范围的实体内容。</td>
+</tr>
+<tr>
+<td>301</td>
+<td>Moved Permanently</td>
+<td><strong>永久性重定向</strong>。请求的资源已被永久的移动到新URI，返回信息会包括新的URI，浏览器会自动定向到新URI。今后任何新的请求都应使用新的URI代替</td>
+</tr>
+<tr>
+<td>302</td>
+<td>Found</td>
+<td><strong>临时性重定向</strong>。与301类似。但资源只是临时被移动。客户端应继续使用原有URI</td>
+</tr>
+<tr>
+<td>303</td>
+<td>See Other</td>
+<td><strong>查看其他地址</strong>。与302类似。使用GET请求查看</td>
+</tr>
+<tr>
+<td>304</td>
+<td>Not Modified</td>
+<td>未修改。所请求的资源未修改，服务器返回此状态码时，不会返回任何资源。客户端通常会缓存访问过的资源，通过提供一个头信息指出客户端希望只返回在指定日期之后修改的资源</td>
+</tr>
+<tr>
+<td>307</td>
+<td>Temporary Redirect</td>
+<td><strong>临时重定向</strong>。与302类似。使用GET请求重定向，会按照浏览器标准，不会从POST变成GET。</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Bad Request</td>
+<td><strong>客户端请求报文中存在语法错误，服务器无法理解</strong>。浏览器会像200 OK一样对待该状态吗</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><strong>请求要求用户的身份认证</strong>，通过HTTP认证（BASIC认证，DIGEST认证）的认证信息，若之前已进行过一次请求，则表示用户认证失败  <em>（未认证）</em></td>
+</tr>
+<tr>
+<td>402</td>
+<td>Payment Required</td>
+<td>保留，将来使用</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td>服务器理解请求客户端的请求，但是<strong>拒绝执行此请求</strong></td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not Found</td>
+<td>服务器无法根据客户端的请求找到资源（网页）。通过此代码，网站设计人员可设置&quot;您所请求的资源无法找到&quot;的个性页面。也可以在服务器拒绝请求且不想说明理由时使用</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal Server Error</td>
+<td><strong>服务器内部错误，无法完成请求</strong>，也可能是web应用存在bug或某些临时故障</td>
+</tr>
+<tr>
+<td>501</td>
+<td>Not Implemented</td>
+<td>服务器不支持请求的功能，无法完成请求</td>
+</tr>
+<tr>
+<td>503</td>
+<td>Service Unavailable</td>
+<td><strong>由于超载或系统维护，服务器暂时的无法处理客户端的请求</strong>。延时的长度可包含在服务器的Retry-After头信息中</td>
+</tr>
+</tbody>
+</table>
+<h3 id="http请求报文"><a class="markdownIt-Anchor" href="#http请求报文"></a> HTTP请求报文</h3>
+<p>HTTP 协议是以 ASCII 码传输，建立在 TCP/IP 协议之上的应用层规范。规范把 HTTP 请求分为三个部分：<strong>请求/状态行、请求/响应头、消息主体</strong>。</p>
+<p>大概结构如下：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;method&gt; &lt;request-URL&gt; &lt;version&gt;</span><br><span class="line">&lt;headers&gt;</span><br><span class="line"></span><br><span class="line">&lt;entity-body&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="客户端请求消息"><a class="markdownIt-Anchor" href="#客户端请求消息"></a> 客户端请求消息</h4>
+<img src="image-20240825214325983.png" alt="http请求报文" style="zoom:67%;">
+<ul>
+<li>
+<p>请求行：</p>
+<ul>
+<li>方法：例如GET、POST、PUT、DELETE等，指定要执行的操作</li>
+<li>请求<strong>URI</strong>（统一资源标识符）：请求资源的<strong>路径</strong>，通常包括主机名、端口号、路径和查询字符串</li>
+<li>HTTP版本：例如HTTP/1.1</li>
+</ul>
+<p>一个请求行的格式示例：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/index.html</span> <span class="meta">HTTP/1.1</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>请求头：</p>
+<ul>
+<li>包含客户端环境信息、请求体的大小（如有）、客户端支持的压缩类型等</li>
+<li>常见的请求头有Host、User=Agent、Accept、Accept-Encoding、Content-Length等</li>
+</ul>
+</li>
+<li>
+<p>空行：</p>
+<ul>
+<li>请求头和请求体之间的分隔符，表示请求头的结束</li>
+</ul>
+</li>
+<li>
+<p>请求体（可选）</p>
+<ul>
+<li>在某些类型的请求中会需要发送数据给服务器，这些数据就通过请求体发送给服务器，例如：POST、PUT</li>
+</ul>
+</li>
+</ul>
+<p>一个完整的请求报文示例如下：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"> Host: www.example.com</span><br><span class="line"> User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.6)</span><br><span class="line"> Gecko/20050225 Firefox/1.0.1</span><br><span class="line"> Content-Type: application/x-www-form-urlencoded</span><br><span class="line"> Content-Length: 40</span><br><span class="line"> Connection: Keep-Alive</span><br><span class="line"></span><br><span class="line"><span class="language-ini"> <span class="attr">sex</span>=man&amp;name=Professional  </span></span><br></pre></td></tr></table></figure>
+<h4 id="服务器响应消息"><a class="markdownIt-Anchor" href="#服务器响应消息"></a> 服务器响应消息</h4>
+<img src="image-20240825214445216.png" alt="http响应报文" style="zoom:67%;">
+<ul>
+<li>
+<p>状态行：</p>
+<ul>
+<li>HTTP版本：与请求报文中HTTP版本相匹配</li>
+<li>状态码：三位数，表示请求的处理结果，状态码的具体表示见前面<u>对状态响应码的说明</u></li>
+<li>状态信息：状态码的简短描述</li>
+</ul>
+<p>状态行的格式示例：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">HTTP/1.1</span> <span class="number">200</span> OK</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>响应头：</p>
+<ul>
+<li>包含服务器环境信息、响应体大小、服务器支持的压缩类型等</li>
+<li>常见响应头有：Content-Type、Content-Length、Server、Set-Cookie等</li>
+</ul>
+</li>
+<li>
+<p>响应体（可选）：</p>
+<ul>
+<li>包含服务器返回的数据，如请求的网页内容、图片、JSON数据等，如果没有要返回的数据就没有响应体</li>
+</ul>
+</li>
+</ul>
+<p>一个完整的http响应报文示例如下（对应上面的请求报文）：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">HTTP/1.1</span> <span class="number">200</span> OK</span><br><span class="line"><span class="attribute">Date</span><span class="punctuation">: </span>Sun, 25 Aug 2024 12:00:00 GMT</span><br><span class="line"><span class="attribute">Server</span><span class="punctuation">: </span>Apache/2.4.7 (Unix)</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>text/html; charset=UTF-8</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>123</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>keep-alive</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">title</span>&gt;</span>Response Page<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Thank you for your submission!<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Received data: sex=man&amp;name=Professional<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="http跨域问题"><a class="markdownIt-Anchor" href="#http跨域问题"></a> HTTP跨域问题</h3>
+<p>跨域请求的定义：</p>
+<ul>
+<li>协议不同，例如http与https</li>
+<li>域名不同</li>
+<li>端口不同</li>
+</ul>
+<p>常见的跨域问题如下图所示：</p>
+<table>
+<thead>
+<tr>
+<th>当前页面url</th>
+<th>被请求页面url</th>
+<th>是否跨域</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.test.com/">http://www.test.com/</a></td>
+<td><a target="_blank" rel="noopener" href="http://www.test.com/index.html">http://www.test.com/index.html</a></td>
+<td>否</td>
+<td>同源（协议、域名、端口号都相同）</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.test.com/">http://www.test.com/</a></td>
+<td><a target="_blank" rel="noopener" href="https://www.test.com/index.html">https://www.test.com/index.html</a></td>
+<td>是</td>
+<td>协议不同（http/ https）</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.test.com/">http://www.test.com/</a></td>
+<td><a target="_blank" rel="noopener" href="http://www.baidu.com/">http://www.baidu.com/</a></td>
+<td>是</td>
+<td>主域名不同（test/ baidu）</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.test.com/">http://www.test.com/</a></td>
+<td><a target="_blank" rel="noopener" href="http://blog.test.com/">http://blog.test.com/</a></td>
+<td>是</td>
+<td>子域名不同（www/ blog）</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.test.com:8080/">http://www.test.com:8080/</a></td>
+<td><a target="_blank" rel="noopener" href="http://www.test.com:7001/">http://www.test.com:7001/</a></td>
+<td>是</td>
+<td>端口号不同（8080/ 7001）</td>
+</tr>
+</tbody>
+</table>
+<p>在前后端分离的应用中，可以在本地通过http与应用进行交互，比如说在本地启动一个项目的前端和后端，假设前端项目占用端口8080，后端项目占用端口9090，这个时候使用前端项目访问后端的端口，由于端口不一样，因此属于跨域请求，在浏览器上会被拦截。</p>
+<p><strong>如何解决跨域问题？</strong></p>
+<p>跨域问题本质上是浏览器为了保证用户的访问安全，方式恶意网站窃取用户数据而进行的拦截操作，因此要解决跨域问题需要告诉浏览器这是一个正常的安全的请求。</p>
+<p>在返回的响应头中设置<code>Access-Control-Allow-Origin</code>参数可以解决跨域问题，这个参数是用来表示允许跨域访问的原始域名，当它设置为 <code>*</code> 的时候，就表示允许所有站点跨域访问。因此对于不同的后端服务器来说，只需要通过各种手段想办法给返回的请求添加一个<code>Access-Control-Allow-Origin</code> 的响应头，就能解决跨域问题。</p>
+<h2 id="libmicrohttpd库"><a class="markdownIt-Anchor" href="#libmicrohttpd库"></a> libmicrohttpd库</h2>
+<p>libmicrohttpd 是 GUN 下开源的一个小型的 HTTP 库，能够方便的嵌入到系统中。支持 HTTP 1.1 可以同时侦听多个端口，具有 select, poll, pthread, thread poo 等多种模式，库平台支持 GNU/Linux, FreeBSD, OpenBSD, NetBSD, Android, Darwin (macOS), W32, OpenIndiana/Solaris, z/OS 等。</p>
+<h3 id="libmicrohttpd库的相关接口和使用介绍"><a class="markdownIt-Anchor" href="#libmicrohttpd库的相关接口和使用介绍"></a> libmicrohttpd库的相关接口和使用介绍</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line">*********************** Main API ***************************</span><br><span class="line"><span class="comment">//创建服务实例</span></span><br><span class="line">MHD_start_daemon</span><br><span class="line"><span class="comment">//允许现有连接，不允许新的连接加入</span></span><br><span class="line">MHD_quiesce_daemon</span><br><span class="line"><span class="comment">//结束服务实例</span></span><br><span class="line">MHD_stop_daemon</span><br><span class="line"><span class="comment">//Add another client connection to the set of connections</span></span><br><span class="line">MHD_add_connection</span><br><span class="line"><span class="comment">//获得当前进程select集合</span></span><br><span class="line">MHD_get_fdset</span><br><span class="line"><span class="comment">//获得poll函数的超时时间</span></span><br><span class="line">MHD_get_timeout</span><br><span class="line"><span class="comment">//启动对文件句柄的监督</span></span><br><span class="line">MHD_run</span><br><span class="line"><span class="comment">//启动服务&amp;select poll</span></span><br><span class="line">MHD_run_from_select</span><br><span class="line"></span><br><span class="line">*********************** Connection ***************************</span><br><span class="line"><span class="comment">//获取连接的所有头信息</span></span><br><span class="line">MHD_get_connection_values</span><br><span class="line"><span class="comment">//设置每个连接的头</span></span><br><span class="line">MHD_set_connection_value</span><br><span class="line"><span class="comment">//获取错误的信息</span></span><br><span class="line">MHD_set_panic_func</span><br><span class="line"><span class="comment">//处理转移字符</span></span><br><span class="line">MHD_http_unescape</span><br><span class="line"><span class="comment">//查询一个连接中的头字段</span></span><br><span class="line">MHD_lookup_connection_value</span><br><span class="line"><span class="comment">//把respons 放入返回队列</span></span><br><span class="line">MHD_queue_response</span><br><span class="line"><span class="comment">//挂起连接</span></span><br><span class="line">MHD_suspend_connection</span><br><span class="line"><span class="comment">//回复连接</span></span><br><span class="line">MHD_resume_connection</span><br><span class="line"></span><br><span class="line">*********************** Response ***************************</span><br><span class="line"><span class="comment">//设置response参数</span></span><br><span class="line">MHD_set_response_options</span><br><span class="line"></span><br><span class="line"><span class="comment">//通过回调创建Response</span></span><br><span class="line">MHD_create_response_from_callback</span><br><span class="line"><span class="comment">//通过data指针创建返回结果</span></span><br><span class="line">MHD_create_response_from_data</span><br><span class="line"><span class="comment">//通过buffer创建返回结果</span></span><br><span class="line">MHD_create_response_from_buffer</span><br><span class="line"><span class="comment">//通过buffer和回调创建返回结果</span></span><br><span class="line">MHD_create_response_from_buffer_with_free_callback</span><br><span class="line"><span class="comment">//通过文件描述符来创建返回结果</span></span><br><span class="line">MHD_create_response_from_fd</span><br><span class="line"><span class="comment">//升级协议，容许我们自己多一些事情（如websocket）</span></span><br><span class="line">MHD_upgrade_action</span><br><span class="line"><span class="comment">//创建升级协议时的返回内容</span></span><br><span class="line">MHD_create_response_for_upgrade</span><br><span class="line"><span class="comment">//销毁response</span></span><br><span class="line">MHD_destroy_response</span><br><span class="line"><span class="comment">//为response添加Header</span></span><br><span class="line">MHD_add_response_header</span><br><span class="line"><span class="comment">//在response中添加页脚</span></span><br><span class="line">MHD_add_response_footer</span><br><span class="line"><span class="comment">//在response中删除头</span></span><br><span class="line">MHD_del_response_header</span><br><span class="line"><span class="comment">//获取</span></span><br><span class="line">MHD_get_response_headers</span><br><span class="line"></span><br><span class="line">******************** PostProcessor functions *********************</span><br><span class="line">MHD_create_post_processor</span><br><span class="line">MHD_post_process</span><br><span class="line">MHD_destroy_post_processor</span><br><span class="line"></span><br><span class="line">******************** Digest Authentication functions ***************</span><br><span class="line">MHD_digest_auth_get_username</span><br><span class="line">MHD_digest_auth_check</span><br><span class="line">MHD_queue_auth_fail_response</span><br><span class="line">MHD_basic_auth_get_username_password</span><br><span class="line"></span><br><span class="line">********************** generic query functions **********************</span><br><span class="line">MHD_get_connection_info</span><br><span class="line">MHD_set_connection_option</span><br><span class="line">MHD_get_daemon_info</span><br><span class="line">MHD_get_version</span><br><span class="line">MHD_is_feature_supported</span><br></pre></td></tr></table></figure>
+<h3 id="一个简单示例get请求"><a class="markdownIt-Anchor" href="#一个简单示例get请求"></a> 一个简单示例（GET请求）</h3>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;microhttpd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PAGE <span class="string">&quot;&lt;html&gt;&lt;head&gt;&lt;title&gt;libmicrohttpd demo&lt;/title&gt;&quot;</span>\</span></span><br><span class="line"><span class="meta">             <span class="string">&quot;&lt;/head&gt;&lt;body&gt;libmicrohttpd demo&lt;/body&gt;&lt;/html&gt;&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">static</span> <span class="type">int</span> <span class="title">ahc_echo</span><span class="params">(<span class="type">void</span> * cls,</span></span></span><br><span class="line"><span class="params"><span class="function">                    <span class="keyword">struct</span> MHD_Connection * connection,</span></span></span><br><span class="line"><span class="params"><span class="function">                    <span class="type">const</span> <span class="type">char</span> * url,</span></span></span><br><span class="line"><span class="params"><span class="function">                    <span class="type">const</span> <span class="type">char</span> * method,</span></span></span><br><span class="line"><span class="params"><span class="function">                    <span class="type">const</span> <span class="type">char</span> * version,</span></span></span><br><span class="line"><span class="params"><span class="function">                    <span class="type">const</span> <span class="type">char</span> * upload_data,</span></span></span><br><span class="line"><span class="params"><span class="function">                    <span class="type">size_t</span> * upload_data_size,</span></span></span><br><span class="line"><span class="params"><span class="function">                    <span class="type">void</span> ** ptr)</span> </span>&#123;</span><br><span class="line">  <span class="type">static</span> <span class="type">int</span> dummy;</span><br><span class="line">  <span class="type">const</span> <span class="type">char</span> * page = cls;</span><br><span class="line">  <span class="keyword">struct</span> <span class="title class_">MHD_Response</span> * response;</span><br><span class="line">  <span class="type">int</span> ret;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="number">0</span> != <span class="built_in">strcmp</span>(method, <span class="string">&quot;GET&quot;</span>))</span><br><span class="line">    <span class="keyword">return</span> MHD_NO; <span class="comment">/* unexpected method */</span></span><br><span class="line">  <span class="keyword">if</span> (&amp;dummy != *ptr)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="comment">/* The first time only the headers are valid,</span></span><br><span class="line"><span class="comment">         do not respond in the first round... */</span></span><br><span class="line">      *ptr = &amp;dummy;</span><br><span class="line">      <span class="keyword">return</span> MHD_YES;</span><br><span class="line">    &#125;</span><br><span class="line">  <span class="keyword">if</span> (<span class="number">0</span> != *upload_data_size)</span><br><span class="line">    <span class="keyword">return</span> MHD_NO; <span class="comment">/* upload data in a GET!? */</span></span><br><span class="line">  *ptr = <span class="literal">NULL</span>; <span class="comment">/* clear context pointer */</span></span><br><span class="line">  response = <span class="built_in">MHD_create_response_from_buffer</span> (<span class="built_in">strlen</span>(page),</span><br><span class="line">                                              (<span class="type">void</span>*) page,</span><br><span class="line">                                              MHD_RESPMEM_PERSISTENT);</span><br><span class="line">  ret = <span class="built_in">MHD_queue_response</span>(connection,</span><br><span class="line">                          MHD_HTTP_OK,</span><br><span class="line">                          response);</span><br><span class="line">  <span class="built_in">MHD_destroy_response</span>(response);</span><br><span class="line">  <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="type">char</span> ** argv)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">struct</span> <span class="title class_">MHD_Daemon</span> * d;</span><br><span class="line">  <span class="keyword">if</span> (argc != <span class="number">2</span>) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s PORT\n&quot;</span>, argv[<span class="number">0</span>]);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  d = <span class="built_in">MHD_start_daemon</span>(MHD_USE_THREAD_PER_CONNECTION,</span><br><span class="line">                      <span class="built_in">atoi</span>(argv[<span class="number">1</span>]),</span><br><span class="line">                      <span class="literal">NULL</span>,</span><br><span class="line">                      <span class="literal">NULL</span>,</span><br><span class="line">                      &amp;ahc_echo,</span><br><span class="line">                      PAGE,</span><br><span class="line">                      MHD_OPTION_END);</span><br><span class="line">  <span class="keyword">if</span> (d == <span class="literal">NULL</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  (<span class="type">void</span>) <span class="built_in">getc</span> (stdin);</span><br><span class="line">  <span class="built_in">MHD_stop_daemon</span>(d);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个示例的效果为访问服务器返回一个简单的页面，页面的内容为PAGE宏定义。</p>
+<p>从上面的代码中可以看出libmicrohttpd的使用流程：</p>
+<p><code>MHD_start_daemon</code>函数启动服务，并需要一个回调参数<code>ahc_echo</code>，这个方法是非阻塞的，在这个示例中使用<code>getc</code>函数等待用户输入的终止。</p>
+<p><code>ahc_echo</code>回调函数在每次请求的时候都会进入。使用<code>MHD_create_response_from_buffer</code>函数创建一个响应结构体，然后使用<code>MHD_queue_response</code>函数把响应结构推入响应队列，libmicrohttpd会帮我们执行相应。最后再使用<code>MHD_destroy_response</code>清理内存。</p>
+<p>这个简单的实例只能够处理GET请求，POST请求的实现还要更为复杂。</p>
+<h3 id="在libmicrohttpd中解决跨域问题"><a class="markdownIt-Anchor" href="#在libmicrohttpd中解决跨域问题"></a> 在libmicrohttpd中解决跨域问题</h3>
+<p>在前面对跨域问题的介绍中，我们已经知道了跨域问题的原理。</p>
+<p>浏览器在发送POST请求之前首先会进行一次OPTION请求，OPTION请求返回的头部信息会决定浏览器是否拦截该请求，关键的头部信息包括下面三个：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Access-Control-Allow-Origin</span><br><span class="line">Access-Control-Allow-Headers</span><br><span class="line">Access-Control-Allow-Methods</span><br></pre></td></tr></table></figure>
+<p>因此在使用libmicrohttpd处理请求的时候可以在请求处理回调函数中先处理一次OPTION请求，示例如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">response = <span class="built_in">MHD_create_response_from_buffer</span>(<span class="built_in">strlen</span>(METHOD_ERROR),</span><br><span class="line">                                            (<span class="type">void</span> *)METHOD_ERROR,</span><br><span class="line">                                            MHD_RESPMEM_PERSISTENT);</span><br><span class="line"></span><br><span class="line"><span class="built_in">MHD_add_response_header</span>(response, <span class="string">&quot;Access-Control-Allow-Origin&quot;</span>, <span class="string">&quot;*&quot;</span>);</span><br><span class="line"><span class="built_in">MHD_add_response_header</span>(response, <span class="string">&quot;Access-Control-Allow-Headers&quot;</span>, <span class="string">&quot;content-type&quot;</span>); <span class="comment">// 包括你定义的额外的头部字段</span></span><br><span class="line"><span class="built_in">MHD_add_response_header</span>(response, <span class="string">&quot;Access-Control-Allow-Methods&quot;</span>, <span class="string">&quot;PUT,POST,GET,DELETE,OPTIONS&quot;</span>);</span><br><span class="line"></span><br><span class="line">ret = <span class="built_in">MHD_queue_response</span>(connection,</span><br><span class="line">                          MHD_HTTP_NOT_ACCEPTABLE,</span><br><span class="line">                          response);</span><br><span class="line"><span class="built_in">MHD_destroy_response</span>(response);</span><br></pre></td></tr></table></figure>
+<p>这样http服务就能处理跨域请求了。</p>
+<h3 id="post请求"><a class="markdownIt-Anchor" href="#post请求"></a> POST请求</h3>
+<p><strong>POST参数获取</strong></p>
+<p>libmicrohttpd支持下面两种格式的POST请求：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MHD_HTTP_POST_ENCODING_FORM_URLENCODED <span class="string">&quot;application/x-www-form-urlencoded&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MHD_HTTP_POST_ENCODING_MULTIPART_FORMDATA <span class="string">&quot;multipart/form-data&quot;</span></span></span><br></pre></td></tr></table></figure>
+<p>libmicrohttpd 不支持 <code>application/json</code> 格式的 post 请求</p>
+<p>一个能处理POST请求的服务完整示例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Data kept per request.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Request</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Post processor handling form data (IF this is</span></span><br><span class="line"><span class="comment">   * a POST request).</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">struct</span> <span class="title class_">MHD_PostProcessor</span> *pp;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * URL to serve in response to this POST (if this request</span></span><br><span class="line"><span class="comment">   * was a &#x27;POST&#x27;)</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="type">const</span> <span class="type">char</span> *post_url;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 用一个 string 来存储 POST 数据，因为 POST 数据是分段进回调接收的。</span></span><br><span class="line"><span class="comment">   * 如果你传输的数据不是字符串，可以使用 char 数组接收。</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  std::string post_data;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">static</span> <span class="type">int</span></span></span><br><span class="line"><span class="function"><span class="title">post_iterator</span><span class="params">(<span class="type">void</span> *cls,</span></span></span><br><span class="line"><span class="params"><span class="function">              <span class="keyword">enum</span> MHD_ValueKind kind,</span></span></span><br><span class="line"><span class="params"><span class="function">              <span class="type">const</span> <span class="type">char</span> *key,</span></span></span><br><span class="line"><span class="params"><span class="function">              <span class="type">const</span> <span class="type">char</span> *filename,</span></span></span><br><span class="line"><span class="params"><span class="function">              <span class="type">const</span> <span class="type">char</span> *content_type,</span></span></span><br><span class="line"><span class="params"><span class="function">              <span class="type">const</span> <span class="type">char</span> *transfer_encoding,</span></span></span><br><span class="line"><span class="params"><span class="function">              <span class="type">const</span> <span class="type">char</span> *data, <span class="type">uint64_t</span> off, <span class="type">size_t</span> size)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">struct</span> <span class="title class_">Request</span> *request = cls;</span><br><span class="line">  <span class="keyword">struct</span> <span class="title class_">Session</span> *session = request-&gt;session;</span><br><span class="line">  (<span class="type">void</span>)kind;              <span class="comment">/* Unused. Silent compiler warning. */</span></span><br><span class="line">  (<span class="type">void</span>)filename;          <span class="comment">/* Unused. Silent compiler warning. */</span></span><br><span class="line">  (<span class="type">void</span>)content_type;      <span class="comment">/* Unused. Silent compiler warning. */</span></span><br><span class="line">  (<span class="type">void</span>)transfer_encoding; <span class="comment">/* Unused. Silent compiler warning. */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 这里也可以处理请求参数，但是这里会进入更多次，经实践是每 512 个字节进入一次。</span></span><br><span class="line">  <span class="comment">// 并且要注意，使用 application/x-www-form-urlencoded 时，POST 请求数据必须是如下格式：</span></span><br><span class="line">  <span class="comment">// key=xxxxxxxx</span></span><br><span class="line">  <span class="comment">// key 就是这个回调的 key 参数， xxxxxxxx 是你的请求参数。</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">static</span> <span class="type">int</span></span></span><br><span class="line"><span class="function"><span class="title">handle_request</span><span class="params">(<span class="type">void</span> *cls,</span></span></span><br><span class="line"><span class="params"><span class="function">                <span class="keyword">struct</span> MHD_Connection *connection,</span></span></span><br><span class="line"><span class="params"><span class="function">                <span class="type">const</span> <span class="type">char</span> *url,</span></span></span><br><span class="line"><span class="params"><span class="function">                <span class="type">const</span> <span class="type">char</span> *method,</span></span></span><br><span class="line"><span class="params"><span class="function">                <span class="type">const</span> <span class="type">char</span> *version,</span></span></span><br><span class="line"><span class="params"><span class="function">                <span class="type">const</span> <span class="type">char</span> *upload_data,</span></span></span><br><span class="line"><span class="params"><span class="function">                <span class="type">size_t</span> *upload_data_size,</span></span></span><br><span class="line"><span class="params"><span class="function">                <span class="type">void</span> **ptr)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">struct</span> <span class="title class_">MHD_Response</span> *response;</span><br><span class="line">  <span class="keyword">struct</span> <span class="title class_">Request</span> *request;</span><br><span class="line">  <span class="keyword">struct</span> <span class="title class_">Session</span> *session;</span><br><span class="line">  <span class="type">int</span> ret;</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">int</span> i;</span><br><span class="line">  (<span class="type">void</span>)cls;     <span class="comment">/* Unused. Silent compiler warning. */</span></span><br><span class="line">  (<span class="type">void</span>)version; <span class="comment">/* Unused. Silent compiler warning. */</span></span><br><span class="line"></span><br><span class="line">  request = *ptr;</span><br><span class="line">  <span class="keyword">if</span> (<span class="literal">NULL</span> == request)</span><br><span class="line">  &#123;</span><br><span class="line">    request = <span class="built_in">calloc</span>(<span class="number">1</span>, <span class="built_in">sizeof</span>(<span class="keyword">struct</span> Request));</span><br><span class="line">    <span class="keyword">if</span> (<span class="literal">NULL</span> == request)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">fprintf</span>(stderr, <span class="string">&quot;calloc error: %s\n&quot;</span>, <span class="built_in">strerror</span>(errno));</span><br><span class="line">      <span class="keyword">return</span> MHD_NO;</span><br><span class="line">    &#125;</span><br><span class="line">    *ptr = request;</span><br><span class="line">    <span class="keyword">if</span> (<span class="number">0</span> == <span class="built_in">strcmp</span>(method, MHD_HTTP_METHOD_POST))</span><br><span class="line">    &#123;</span><br><span class="line">      request-&gt;pp = <span class="built_in">MHD_create_post_processor</span>(connection, <span class="number">1024</span>,</span><br><span class="line">                                              &amp;post_iterator, request);</span><br><span class="line">      <span class="keyword">if</span> (<span class="literal">NULL</span> == request-&gt;pp)</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="built_in">fprintf</span>(stderr, <span class="string">&quot;Failed to setup post processor for `%s&#x27;\n&quot;</span>,</span><br><span class="line">                url);</span><br><span class="line">        <span class="keyword">return</span> MHD_NO; <span class="comment">/* internal error */</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> MHD_YES;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="number">0</span> == <span class="built_in">strcmp</span>(method, MHD_HTTP_METHOD_OPTIONS))</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="comment">// 允许跨域请求</span></span><br><span class="line">    <span class="built_in">MHD_add_response_header</span>(response, <span class="string">&quot;Access-Control-Allow-Origin&quot;</span>, <span class="string">&quot;*&quot;</span>);</span><br><span class="line">    <span class="built_in">MHD_add_response_header</span>(response, <span class="string">&quot;Access-Control-Allow-Headers&quot;</span>, <span class="string">&quot;content-type&quot;</span>); <span class="comment">// 包括你定义的额外的头部字段</span></span><br><span class="line">    <span class="built_in">MHD_add_response_header</span>(response, <span class="string">&quot;Access-Control-Allow-Methods&quot;</span>, <span class="string">&quot;PUT,POST,GET,DELETE,OPTIONS&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *res_get = <span class="string">&quot;you call option method.&quot;</span>;</span><br><span class="line">    response = <span class="built_in">MHD_create_response_from_buffer</span>(<span class="built_in">strlen</span>(res_get),</span><br><span class="line">                                               (<span class="type">void</span> *)res_get,</span><br><span class="line">                                               MHD_RESPMEM_PERSISTENT);</span><br><span class="line">    ret = <span class="built_in">MHD_queue_response</span>(connection,</span><br><span class="line">                             MHD_HTTP_OK,</span><br><span class="line">                             response);</span><br><span class="line">    <span class="built_in">MHD_destroy_response</span>(response);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="number">0</span> == <span class="built_in">strcmp</span>(method, MHD_HTTP_METHOD_POST))</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="comment">/* evaluate POST data */</span></span><br><span class="line">    <span class="built_in">MHD_post_process</span>(request-&gt;pp,</span><br><span class="line">                     upload_data,</span><br><span class="line">                     *upload_data_size);</span><br><span class="line">    <span class="keyword">if</span> (<span class="number">0</span> != *upload_data_size)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="comment">// 请求回调会进入多次，直到 POST 请求的所有数据接收完毕。</span></span><br><span class="line">      <span class="comment">// 我们在这里拼接请求参数</span></span><br><span class="line">      request.post_data += std::<span class="built_in">string</span>(upload_data, *upload_data_size);</span><br><span class="line"></span><br><span class="line">      *upload_data_size = <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">return</span> MHD_YES;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 这里得到了完整的请求参数，可以执行你的代码逻辑</span></span><br><span class="line">    std::string data = request.post_data;</span><br><span class="line">    <span class="comment">// do somthing...</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* done with POST data, serve response */</span></span><br><span class="line">    <span class="built_in">MHD_destroy_post_processor</span>(request-&gt;pp);</span><br><span class="line">    request-&gt;pp = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="literal">NULL</span> != request-&gt;post_url)</span><br><span class="line">      url = request-&gt;post_url;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回最终的 POST 请求</span></span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *res_post = <span class="string">&quot;&#123;\&quot;result\&quot;: \&quot;success\&quot;, \&quot;message\&quot;:\&quot;you call post method.\&quot;&#125;&quot;</span>;</span><br><span class="line">    response = <span class="built_in">MHD_create_response_from_buffer</span>(<span class="built_in">strlen</span>(res_post),</span><br><span class="line">                                               (<span class="type">void</span> *)res_post,</span><br><span class="line">                                               MHD_RESPMEM_PERSISTENT);</span><br><span class="line">    <span class="built_in">MHD_add_response_header</span>(response, <span class="string">&quot;content-type&quot;</span>, <span class="string">&quot;applicaton/json&quot;</span>); <span class="comment">// 返回格式可以是 json</span></span><br><span class="line">    ret = <span class="built_in">MHD_queue_response</span>(connection,</span><br><span class="line">                             MHD_HTTP_OK,</span><br><span class="line">                             response);</span><br><span class="line">    <span class="built_in">MHD_destroy_response</span>(response);</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> ((<span class="number">0</span> == <span class="built_in">strcmp</span>(method, MHD_HTTP_METHOD_GET)) ||</span><br><span class="line">      (<span class="number">0</span> == <span class="built_in">strcmp</span>(method, MHD_HTTP_METHOD_HEAD)))</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *res_get = <span class="string">&quot;you call get method.&quot;</span>;</span><br><span class="line">    response = <span class="built_in">MHD_create_response_from_buffer</span>(<span class="built_in">strlen</span>(res_get),</span><br><span class="line">                                               (<span class="type">void</span> *)res_get,</span><br><span class="line">                                               MHD_RESPMEM_PERSISTENT);</span><br><span class="line">    ret = <span class="built_in">MHD_queue_response</span>(connection,</span><br><span class="line">                             MHD_HTTP_OK,</span><br><span class="line">                             response);</span><br><span class="line">    <span class="built_in">MHD_destroy_response</span>(response);</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/* unsupported HTTP method */</span></span><br><span class="line">  response = <span class="built_in">MHD_create_response_from_buffer</span>(<span class="built_in">strlen</span>(METHOD_ERROR),</span><br><span class="line">                                             (<span class="type">void</span> *)METHOD_ERROR,</span><br><span class="line">                                             MHD_RESPMEM_PERSISTENT);</span><br><span class="line"></span><br><span class="line">  ret = <span class="built_in">MHD_queue_response</span>(connection,</span><br><span class="line">                           MHD_HTTP_NOT_ACCEPTABLE,</span><br><span class="line">                           response);</span><br><span class="line">  <span class="built_in">MHD_destroy_response</span>(response);</span><br><span class="line">  <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">static</span> <span class="type">void</span></span></span><br><span class="line"><span class="function"><span class="title">request_completed_callback</span><span class="params">(<span class="type">void</span> *cls,</span></span></span><br><span class="line"><span class="params"><span class="function">                           <span class="keyword">struct</span> MHD_Connection *connection,</span></span></span><br><span class="line"><span class="params"><span class="function">                           <span class="type">void</span> **con_cls,</span></span></span><br><span class="line"><span class="params"><span class="function">                           <span class="keyword">enum</span> MHD_RequestTerminationCode toe)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">struct</span> <span class="title class_">Request</span> *request = *con_cls;</span><br><span class="line">  (<span class="type">void</span>)cls;        <span class="comment">/* Unused. Silent compiler warning. */</span></span><br><span class="line">  (<span class="type">void</span>)connection; <span class="comment">/* Unused. Silent compiler warning. */</span></span><br><span class="line">  (<span class="type">void</span>)toe;        <span class="comment">/* Unused. Silent compiler warning. */</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="literal">NULL</span> == request)</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  <span class="keyword">if</span> (<span class="literal">NULL</span> != request-&gt;pp)</span><br><span class="line">    <span class="built_in">MHD_destroy_post_processor</span>(request-&gt;pp);</span><br><span class="line">  <span class="built_in">free</span>(request);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> ** argv)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">struct</span> <span class="title class_">MHD_Daemon</span> * d;</span><br><span class="line">  <span class="keyword">if</span> (argc != <span class="number">2</span>) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s PORT\n&quot;</span>, argv[<span class="number">0</span>]);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  d = <span class="built_in">MHD_start_daemon</span>(MHD_USE_ERROR_LOG,</span><br><span class="line">                       <span class="built_in">atoi</span>(argv[<span class="number">1</span>]),</span><br><span class="line">                       <span class="literal">NULL</span>, <span class="literal">NULL</span>,</span><br><span class="line">                       &amp;handle_request, <span class="literal">NULL</span>,</span><br><span class="line">                       MHD_OPTION_CONNECTION_TIMEOUT, (<span class="type">unsigned</span> <span class="type">int</span>)<span class="number">15</span>,</span><br><span class="line">                       MHD_OPTION_NOTIFY_COMPLETED, &amp;request_completed_callback, <span class="literal">NULL</span>,</span><br><span class="line">                       MHD_OPTION_END);</span><br><span class="line">  <span class="keyword">if</span> (d == <span class="literal">NULL</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  (<span class="type">void</span>) <span class="built_in">getc</span> (stdin);</span><br><span class="line">  <span class="built_in">MHD_stop_daemon</span>(d);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当 POST 请求数据量比较大时，请求回调函数 handle_request 是会进入多次来接收数据的。</p>
+<p>因此这里使用了一个结构体 Request 并使用 post_data 字段来存储 POST 请求数据，每次进入时拼接起来，当 0 == *upload_data_size 时就证明数据接收完毕了。</p>
+<h3 id="参考资料"><a class="markdownIt-Anchor" href="#参考资料"></a> 参考资料</h3>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Frankiehp/article/details/113615412">https://blog.csdn.net/Frankiehp/article/details/113615412</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/my___dream/article/details/90105844">https://blog.csdn.net/my___dream/article/details/90105844</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/vipstone/p/16667239.html">https://www.cnblogs.com/vipstone/p/16667239.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <blockquote class="article-copyright">
+    <p><strong>本文作者：</strong>*月遇丛雲花遇風* @ T3uk1 の 庭院</p>
+    <p><strong>本文链接：</strong><a href="https://t3uk1.github.io/2024/08/25/HTTP%E5%8D%8F%E8%AE%AE%E7%AC%94%E8%AE%B0/">https://t3uk1.github.io/2024/08/25/HTTP%E5%8D%8F%E8%AE%AE%E7%AC%94%E8%AE%B0/</a></p>
+    <p><strong>本文标题：</strong>HTTP协议笔记</p>
+    
+    
+    <p><strong>本文版权：</strong>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><span class="icon-creative-commons"></span>BY-NC-SA</a> 许可协议。转载请注明出处！</p>
+  </blockquote>
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/libmicrohttpd/" rel="tag">libmicrohttpd</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+    
+  <nav id="article-nav" class="wow fadeInUp">
+    
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          
+          
+            <img data-src="/covers/wallhaven-ex63ow.jpg" data-sizes="auto" alt="2024羊城杯-Pwn" class="lazyload">
+          
+        
+        <a href="/2024/08/31/2024%E7%BE%8A%E5%9F%8E%E6%9D%AF-Pwn/"></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">
+          
+            2024羊城杯-Pwn
+          
+        </h3>
+      </div>
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="/covers/QQ图片20211014222135.jpg" data-sizes="auto" alt="gdb调试原理" class="lazyload">
+        
+      
+      <a href="/2024/08/16/gdb%E8%B0%83%E8%AF%95%E5%8E%9F%E7%90%86/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          gdb调试原理
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+  
+</article>
+
+
+
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrap wow fadeInRight wrap-sticky">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#http%E5%8D%8F%E8%AE%AE%E7%AC%94%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text"> HTTP协议笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#http%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.1.</span> <span class="toc-text"> HTTP协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#http%E7%9A%84%E7%89%B9%E6%80%A7"><span class="toc-number">1.1.1.</span> <span class="toc-text"> HTTP的特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#http%E8%AF%B7%E6%B1%82"><span class="toc-number">1.1.2.</span> <span class="toc-text"> HTTP请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#http%E7%8A%B6%E6%80%81%E5%93%8D%E5%BA%94%E7%A0%81"><span class="toc-number">1.1.3.</span> <span class="toc-text"> HTTP状态响应码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#http%E8%AF%B7%E6%B1%82%E6%8A%A5%E6%96%87"><span class="toc-number">1.1.4.</span> <span class="toc-text"> HTTP请求报文</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%AF%B7%E6%B1%82%E6%B6%88%E6%81%AF"><span class="toc-number">1.1.4.1.</span> <span class="toc-text"> 客户端请求消息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%93%8D%E5%BA%94%E6%B6%88%E6%81%AF"><span class="toc-number">1.1.4.2.</span> <span class="toc-text"> 服务器响应消息</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#http%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.5.</span> <span class="toc-text"> HTTP跨域问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#libmicrohttpd%E5%BA%93"><span class="toc-number">1.2.</span> <span class="toc-text"> libmicrohttpd库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#libmicrohttpd%E5%BA%93%E7%9A%84%E7%9B%B8%E5%85%B3%E6%8E%A5%E5%8F%A3%E5%92%8C%E4%BD%BF%E7%94%A8%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.2.1.</span> <span class="toc-text"> libmicrohttpd库的相关接口和使用介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%A4%BA%E4%BE%8Bget%E8%AF%B7%E6%B1%82"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 一个简单示例（GET请求）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8libmicrohttpd%E4%B8%AD%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.3.</span> <span class="toc-text"> 在libmicrohttpd中解决跨域问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#post%E8%AF%B7%E6%B1%82"><span class="toc-number">1.2.4.</span> <span class="toc-text"> POST请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.2.5.</span> <span class="toc-text"> 参考资料</span></a></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="*月遇丛雲花遇風*" class="lazyload">
+  <div class="sidebar-author-name">*月遇丛雲花遇風*</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">15</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=1027600674@qq.com itemprop="url" target="_blank" aria-label="email"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/t3uk1 itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+    
+      <div class="sidebar-btn-wrapper" style="position:static">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+    
+  </div>
+
+  
+</aside>
+
+          
+        </div>
+        <footer id="footer" class="wow fadeInUp">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div class="outer">
+    <div id="footer-info">
+      
+      <div>
+        <span class="icon-copyright"></span>
+        2022-2024
+        <span class="footer-info-sep"></span>
+        *月遇丛雲花遇風*
+      </div>
+      
+        <div>
+          基于&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+          Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+        </div>
+      
+      
+        <div>
+          <span class="icon-brush"></span>
+          103.3k
+          &nbsp;|&nbsp;
+          <span class="icon-coffee"></span>
+          07:53
+        </div>
+      
+      
+        <div>
+          <span class="icon-eye"></span>
+          <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+          &nbsp;|&nbsp;
+          <span class="icon-user"></span>
+          <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+        </div>
+      
+    </div>
+  </div>
+</footer>
+
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
+        </div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#http%E5%8D%8F%E8%AE%AE%E7%AC%94%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text"> HTTP协议笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#http%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.1.</span> <span class="toc-text"> HTTP协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#http%E7%9A%84%E7%89%B9%E6%80%A7"><span class="toc-number">1.1.1.</span> <span class="toc-text"> HTTP的特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#http%E8%AF%B7%E6%B1%82"><span class="toc-number">1.1.2.</span> <span class="toc-text"> HTTP请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#http%E7%8A%B6%E6%80%81%E5%93%8D%E5%BA%94%E7%A0%81"><span class="toc-number">1.1.3.</span> <span class="toc-text"> HTTP状态响应码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#http%E8%AF%B7%E6%B1%82%E6%8A%A5%E6%96%87"><span class="toc-number">1.1.4.</span> <span class="toc-text"> HTTP请求报文</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%AF%B7%E6%B1%82%E6%B6%88%E6%81%AF"><span class="toc-number">1.1.4.1.</span> <span class="toc-text"> 客户端请求消息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%93%8D%E5%BA%94%E6%B6%88%E6%81%AF"><span class="toc-number">1.1.4.2.</span> <span class="toc-text"> 服务器响应消息</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#http%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.5.</span> <span class="toc-text"> HTTP跨域问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#libmicrohttpd%E5%BA%93"><span class="toc-number">1.2.</span> <span class="toc-text"> libmicrohttpd库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#libmicrohttpd%E5%BA%93%E7%9A%84%E7%9B%B8%E5%85%B3%E6%8E%A5%E5%8F%A3%E5%92%8C%E4%BD%BF%E7%94%A8%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.2.1.</span> <span class="toc-text"> libmicrohttpd库的相关接口和使用介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%A4%BA%E4%BE%8Bget%E8%AF%B7%E6%B1%82"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 一个简单示例（GET请求）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8libmicrohttpd%E4%B8%AD%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.3.</span> <span class="toc-text"> 在libmicrohttpd中解决跨域问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#post%E8%AF%B7%E6%B1%82"><span class="toc-number">1.2.4.</span> <span class="toc-text"> POST请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.2.5.</span> <span class="toc-text"> 参考资料</span></a></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="*月遇丛雲花遇風*" class="lazyload">
+  <div class="sidebar-author-name">*月遇丛雲花遇風*</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">15</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=1027600674@qq.com itemprop="url" target="_blank" aria-label="email"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/t3uk1 itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    <div class="site-search">
+      <div class="reimu-popup popup">
+        <div class="reimu-search">
+          <div class="reimu-search-input-icon"></div>
+          <div class="reimu-search-input" id="reimu-search-input"></div>
+          <div class="popup-btn-close"></div>
+        </div>
+        <div class="reimu-results">
+          <div id="reimu-stats"></div>
+          <div id="reimu-hits"></div>
+          <div id="reimu-pagination" class="reimu-pagination"></div>
+        </div>
+      </div>
+    </div>
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+<script type="module" data-pjax>
+  import PhotoSwipeLightbox from "https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.js";
+  
+  const pswp = () => {
+    if (_$$('.article-entry a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-entry',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.js")
+      }).init();
+    }
+    if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-gallery',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.js")
+      }).init();
+    }
+    window.lightboxStatus = 'done';
+    window.removeEventListener('lightbox:ready', pswp);
+  }
+  if(window.lightboxStatus === 'ready') {
+    pswp()
+  } else {
+    window.addEventListener('lightbox:ready', pswp);
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/generator_search.js"></script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.4/dist/index.umd.js"></script>
+
+  <script>
+    firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+
+  <script data-pjax>
+    quicklink.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div>
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.2.4' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --></body>
+  </html>
+

@@ -1,0 +1,767 @@
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  data-theme="dark" >
+  <head>
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};</script>
+  
+  
+  <title>
+    protobuf的安装与使用 |
+    
+    T3uk1 の 庭院
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+<link rel="stylesheet" href="/css/loader.css">
+
+  <meta name="description" content="protobuf的安装与使用  关于protobuf，这里推荐一篇文章供参考学习：深入二进制安全：全面解析Protobuf   安装protobuf  安装protobuf：  12345678#在ubuntu22.04下git clone -b v3.21.0 https:&#x2F;&#x2F;github.com&#x2F;protocolbuffers&#x2F;protobuf.git # 需要大于3.20，不然后面会出现依">
+<meta property="og:type" content="article">
+<meta property="og:title" content="protobuf的安装与使用">
+<meta property="og:url" content="https://t3uk1.github.io/2024/08/01/protobuf%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="T3uk1 の 庭院">
+<meta property="og:description" content="protobuf的安装与使用  关于protobuf，这里推荐一篇文章供参考学习：深入二进制安全：全面解析Protobuf   安装protobuf  安装protobuf：  12345678#在ubuntu22.04下git clone -b v3.21.0 https:&#x2F;&#x2F;github.com&#x2F;protocolbuffers&#x2F;protobuf.git # 需要大于3.20，不然后面会出现依">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t3uk1.github.io/2024/08/01/protobuf%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20240813155200748.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/08/01/protobuf%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20240813162104246.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/08/01/protobuf%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20240813173605034.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/08/01/protobuf%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20240813173701476.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/08/01/protobuf%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20240813173725881.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/08/01/protobuf%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20240813173749823.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/08/01/protobuf%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20240815145343952.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/08/01/protobuf%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20240815145429509.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/08/01/protobuf%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20240815145541109.png">
+<meta property="article:published_time" content="2024-08-01T03:45:14.000Z">
+<meta property="article:modified_time" content="2024-08-15T07:01:52.210Z">
+<meta property="article:author" content="*月遇丛雲花遇風*">
+<meta property="article:tag" content="protobuf">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://t3uk1.github.io/2024/08/01/protobuf%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20240813155200748.png">
+  
+    <link rel="alternate" href="/atom.xml" title="T3uk1 の 庭院" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css">
+
+  
+  
+  
+  
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"></script>
+
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/wowjs@1.1.3/css/libs/animate.css">
+
+    
+<script src="https://npm.webcache.cn/wowjs@1.1.3/dist/wow.min.js"></script>
+
+    <script>
+      new WOW({
+        offset: 0,
+        mobile: true,
+        live: false
+      }).init();
+    </script>
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff6e6b" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z" fill="#fd0d00" />
+          <path d="M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95" fill="#fd0d00" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/">首页</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/archives">归档</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/about">关于</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/friend">友链</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      <img fetchpriority="high" src="/images/banner.jpg" alt="protobuf的安装与使用">
+    
+  
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <div id="logo-wrap">
+        
+          
+          
+            <a href="/" id="logo">
+              <h1>protobuf的安装与使用</h1>
+            </a>
+          
+        
+      </div>
+      
+        
+        <h2 id="subtitle-wrap">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content" class="outer">
+          
+          <section id="main"><article id="post-protobuf的安装与使用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    <div class="article-meta">
+      <div class="article-date wow slideInLeft">
+  <a href="/2024/08/01/protobuf%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/" class="article-date-link">
+    <time datetime="2024-08-01T03:45:14.000Z" itemprop="datePublished">2024-08-01</time>
+    <time style="display: none;" id="post-update-time">2024-08-15</time>
+  </a>
+</div>
+
+      
+  <div class="article-category wow slideInLeft">
+    <a class="article-category-link" href="/categories/pwn/">pwn</a>
+  </div>
+
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <h1 id="protobuf的安装与使用"><a class="markdownIt-Anchor" href="#protobuf的安装与使用"></a> protobuf的安装与使用</h1>
+<!-- toc -->
+<p>关于protobuf，这里推荐一篇文章供参考学习：<a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-282203.htm">深入二进制安全：全面解析Protobuf </a></p>
+<h2 id="安装protobuf"><a class="markdownIt-Anchor" href="#安装protobuf"></a> 安装protobuf</h2>
+<ul>
+<li>安装protobuf：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">在ubuntu22.04下</span></span><br><span class="line">git clone -b v3.21.0 https://github.com/protocolbuffers/protobuf.git # 需要大于3.20，不然后面会出现依赖问题</span><br><span class="line">sudo apt-get install autoconf automake libtool curl make g++ unzip # 所需依赖</span><br><span class="line">sudo ./autogen.sh   # 生成配置脚本</span><br><span class="line">sudo ./configure    # 可选 --prefix=path ，默认路径为/usr/local/</span><br><span class="line">make -j`nproc`          </span><br><span class="line">sudo make install </span><br><span class="line">protoc --version    # 检查protoc是否安装成功</span><br></pre></td></tr></table></figure>
+<p>在完成上述过程后，如果出现报错：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protoc: error while loading shared libraries: libprotoc.so.32: cannot open shared object file: No such file or directory</span><br></pre></td></tr></table></figure>
+<p>就执行下面的命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ldconfig # refresh shared library cache.</span><br></pre></td></tr></table></figure>
+<ul>
+<li>安装protobuf-c：</li>
+</ul>
+<p>下载地址：<a target="_blank" rel="noopener" href="https://github.com/protobuf-c/protobuf-c/tags">https://github.com/protobuf-c/protobuf-c/tags</a></p>
+<p>从上面的地址中找最新版本的压缩包，然后再linux下解压，在项目目录下执行下面的命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./configure</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<p>至此protobuf-c安装完成。</p>
+<p>检验安装情况：</p>
+<p><img src="image-20240813155200748.png" alt="image-20240813155200748"></p>
+<p>如果出现装好了protobuf还找不到libprotobuf.so.10的情况</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error while loading shared libraries: libprotobuf.so.10: cannot open shared object file: No such file or directory</span><br></pre></td></tr></table></figure>
+<p>就将下面这行加到环境变量中：</p>
+<p><em>建议临时使用或者直接patch文件，直接放到环境变量配置文件里会造成其他影响，解决方法未知所以不推荐使用（</em></p>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=/usr/local/lib:<span class="variable">$LD_LIBRARY_PATH</span></span><br></pre></td></tr></table></figure>
+<p>测试样例：</p>
+<p>样例来源：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/Anker/p/3416541.html">https://www.cnblogs.com/Anker/p/3416541.html</a></p>
+<p>编写一个学生信息的proto：</p>
+<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">message </span><span class="title class_">Student</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">required</span> <span class="type">string</span> id = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">required</span> <span class="type">string</span> name = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">required</span> <span class="type">string</span> gender = <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">required</span> <span class="type">int32</span>  age = <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">required</span> <span class="type">string</span> object = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">required</span> <span class="type">string</span> home_address = <span class="number">6</span>;</span><br><span class="line">    <span class="keyword">required</span> <span class="type">string</span> phone = <span class="number">7</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protoc --c_out=./ student.proto</span><br></pre></td></tr></table></figure>
+<p>会生成student.pb-c.c 和 student.pb-c.h两个文件。student.pb-c.h文件内容如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Generated by the protocol buffer compiler.  DO NOT EDIT! */</span></span><br><span class="line"><span class="comment">/* Generated from: student.proto */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span> PROTOBUF_C_student_2eproto__INCLUDED</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PROTOBUF_C_student_2eproto__INCLUDED</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;protobuf-c/protobuf-c.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">PROTOBUF_C__BEGIN_DECLS</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">if</span> PROTOBUF_C_VERSION_NUMBER &lt; 1000000</span></span><br><span class="line"><span class="meta"># <span class="keyword">error</span> This file was generated by a newer version of protoc-c which is incompatible with your libprotobuf-c headers. Please update your headers.</span></span><br><span class="line"><span class="meta">#<span class="keyword">elif</span> 1005000 &lt; PROTOBUF_C_MIN_COMPILER_VERSION</span></span><br><span class="line"><span class="meta"># <span class="keyword">error</span> This file was generated by an older version of protoc-c which is incompatible with your libprotobuf-c headers. Please regenerate this file with a newer version of protoc-c.</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Student</span> <span class="title">Student</span>;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* --- enums --- */</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* --- messages --- */</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span>  <span class="title">Student</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  ProtobufCMessage base;</span><br><span class="line">  <span class="type">char</span> *id;</span><br><span class="line">  <span class="type">char</span> *name;</span><br><span class="line">  <span class="type">char</span> *gender;</span><br><span class="line">  <span class="type">int32_t</span> age;</span><br><span class="line">  <span class="type">char</span> *object;</span><br><span class="line">  <span class="type">char</span> *home_address;</span><br><span class="line">  <span class="type">char</span> *phone;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> STUDENT__INIT \</span></span><br><span class="line"><span class="meta"> &#123; PROTOBUF_C_MESSAGE_INIT (&amp;student__descriptor) \</span></span><br><span class="line"><span class="meta">    , NULL, NULL, NULL, 0, NULL, NULL, NULL &#125;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Student methods */</span></span><br><span class="line"><span class="type">void</span>   <span class="title function_">student__init</span></span><br><span class="line">                     <span class="params">(Student         *message)</span>;</span><br><span class="line"><span class="type">size_t</span> <span class="title function_">student__get_packed_size</span></span><br><span class="line">                     <span class="params">(<span class="type">const</span> Student   *message)</span>;</span><br><span class="line"><span class="type">size_t</span> <span class="title function_">student__pack</span></span><br><span class="line">                     <span class="params">(<span class="type">const</span> Student   *message,</span></span><br><span class="line"><span class="params">                      <span class="type">uint8_t</span>             *out)</span>;</span><br><span class="line"><span class="type">size_t</span> <span class="title function_">student__pack_to_buffer</span></span><br><span class="line">                     <span class="params">(<span class="type">const</span> Student   *message,</span></span><br><span class="line"><span class="params">                      ProtobufCBuffer     *buffer)</span>;</span><br><span class="line">Student *</span><br><span class="line">       <span class="title function_">student__unpack</span></span><br><span class="line">                     <span class="params">(ProtobufCAllocator  *allocator,</span></span><br><span class="line"><span class="params">                      <span class="type">size_t</span>               len,</span></span><br><span class="line"><span class="params">                      <span class="type">const</span> <span class="type">uint8_t</span>       *data)</span>;</span><br><span class="line"><span class="type">void</span>   <span class="title function_">student__free_unpacked</span></span><br><span class="line">                     <span class="params">(Student *message,</span></span><br><span class="line"><span class="params">                      ProtobufCAllocator *allocator)</span>;</span><br><span class="line"><span class="comment">/* --- per-message closures --- */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="title function_">void</span> <span class="params">(*Student_Closure)</span></span><br><span class="line">                 <span class="params">(<span class="type">const</span> Student *message,</span></span><br><span class="line"><span class="params">                  <span class="type">void</span> *closure_data)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* --- services --- */</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* --- descriptors --- */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="type">const</span> ProtobufCMessageDescriptor student__descriptor;</span><br><span class="line"></span><br><span class="line">PROTOBUF_C__END_DECLS</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span>  <span class="comment">/* PROTOBUF_C_student_2eproto__INCLUDED */</span></span></span><br></pre></td></tr></table></figure>
+<p>测试文件（代码有点长，要看下面的内容建议先折叠此段）：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;errno.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;student.pb-c.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ID_LEN         11</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> NAME_LEN       32</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> GENDER_LEN     10</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> OBJECT_LEN     20</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> HOME_ADDR_LEN  96</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PHONE_LEN      12</span></span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">int</span> <span class="title function_">malloc_student_info</span><span class="params">(Student *stu)</span> &#123;</span><br><span class="line">    stu-&gt;id = (<span class="type">char</span>*)<span class="built_in">malloc</span>(ID_LEN);</span><br><span class="line">    <span class="keyword">if</span> (!stu-&gt;id) &#123;</span><br><span class="line">        <span class="keyword">goto</span> FAILED;</span><br><span class="line">    &#125;</span><br><span class="line">    stu-&gt;name = (<span class="type">char</span>*)<span class="built_in">malloc</span>(NAME_LEN);</span><br><span class="line">    <span class="keyword">if</span> (!stu-&gt;name) &#123;</span><br><span class="line">        <span class="keyword">goto</span> FAILED;</span><br><span class="line">    &#125;</span><br><span class="line">    stu-&gt;gender = (<span class="type">char</span>*)<span class="built_in">malloc</span>(GENDER_LEN);</span><br><span class="line">    <span class="keyword">if</span> (!stu-&gt;gender) &#123;</span><br><span class="line">        <span class="keyword">goto</span> FAILED;</span><br><span class="line">    &#125;</span><br><span class="line">    stu-&gt;object = (<span class="type">char</span>*)<span class="built_in">malloc</span>(OBJECT_LEN);</span><br><span class="line">    <span class="keyword">if</span> (!stu-&gt;object) &#123;</span><br><span class="line">        <span class="keyword">goto</span> FAILED;</span><br><span class="line">    &#125;</span><br><span class="line">    stu-&gt;home_address = (<span class="type">char</span>*)<span class="built_in">malloc</span>(HOME_ADDR_LEN);</span><br><span class="line">    <span class="keyword">if</span> (!stu-&gt;home_address) &#123;</span><br><span class="line">        <span class="keyword">goto</span> FAILED;</span><br><span class="line">    &#125;</span><br><span class="line">    stu-&gt;phone = (<span class="type">char</span>*)<span class="built_in">malloc</span>(PHONE_LEN);</span><br><span class="line">    <span class="keyword">if</span> (!stu-&gt;phone) &#123;</span><br><span class="line">        <span class="keyword">goto</span> FAILED;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">FAILED:</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stdout</span>, <span class="string">&quot;malloc error.errno:%u,reason:%s\n&quot;</span>,</span><br><span class="line">            errno, strerror(errno));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">free_student_info</span><span class="params">(Student *stu)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (stu-&gt;id) &#123;</span><br><span class="line">        <span class="built_in">free</span>(stu-&gt;id);</span><br><span class="line">        stu-&gt;id = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (stu-&gt;name) &#123;</span><br><span class="line">        <span class="built_in">free</span>(stu-&gt;name);</span><br><span class="line">        stu-&gt;name = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (stu-&gt;gender) &#123;</span><br><span class="line">        <span class="built_in">free</span>(stu-&gt;gender);</span><br><span class="line">        stu-&gt;gender = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (stu-&gt;object) &#123;</span><br><span class="line">        <span class="built_in">free</span>(stu-&gt;object);</span><br><span class="line">        stu-&gt;object = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (stu-&gt;home_address) &#123;</span><br><span class="line">        <span class="built_in">free</span>(stu-&gt;home_address);</span><br><span class="line">        stu-&gt;home_address = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (stu-&gt;phone) &#123;</span><br><span class="line">        <span class="built_in">free</span>(stu-&gt;phone);</span><br><span class="line">        stu-&gt;phone = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">set_student_info</span><span class="params">(Student *stu)</span> &#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *id = <span class="string">&quot;2013111011&quot;</span>;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *name = <span class="string">&quot;Anker&quot;</span>;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *gender = <span class="string">&quot;male&quot;</span>;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *object = <span class="string">&quot;computer&quot;</span>;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *address = <span class="string">&quot;shen zheng&quot;</span>;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *phone = <span class="string">&quot;0102345678&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">strncpy</span>(stu-&gt;id, id, ID_LEN);</span><br><span class="line">    <span class="built_in">strncpy</span>(stu-&gt;name, name, NAME_LEN);</span><br><span class="line">    <span class="built_in">strncpy</span>(stu-&gt;gender, gender, GENDER_LEN);</span><br><span class="line">    stu-&gt;age = <span class="number">23</span>;</span><br><span class="line">    <span class="built_in">strncpy</span>(stu-&gt;object, object, OBJECT_LEN);</span><br><span class="line">    <span class="built_in">strncpy</span>(stu-&gt;home_address, address, HOME_ADDR_LEN);</span><br><span class="line">    <span class="built_in">strncpy</span>(stu-&gt;phone, phone, PHONE_LEN);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">print_student_info</span><span class="params">(Student *stu)</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;id: %s\n&quot;</span>, stu-&gt;id);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;name: %s\n&quot;</span>, stu-&gt;name);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;age: %d\n&quot;</span>, stu-&gt;age);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;gender:%s\n&quot;</span>, stu-&gt;gender);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;object: %s\n&quot;</span>, stu-&gt;object);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;home address: %s\n&quot;</span>, stu-&gt;home_address);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;phone: %s\n&quot;</span>, stu-&gt;phone);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    Student stu = STUDENT__INIT;</span><br><span class="line">    <span class="type">void</span> *buf = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> len;</span><br><span class="line">    Student *msg = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (malloc_student_info(&amp;stu) == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    set_student_info(&amp;stu);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//get student packed size</span></span><br><span class="line">    len = student__get_packed_size(&amp;stu);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;size of student info : %u\n&quot;</span>, len);</span><br><span class="line">    buf = <span class="built_in">malloc</span>(len);</span><br><span class="line">    <span class="comment">//put student info pack to buf</span></span><br><span class="line">    student__pack(&amp;stu, buf);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//unpack student info from buf</span></span><br><span class="line">    msg = student__unpack(<span class="literal">NULL</span>, len, buf);</span><br><span class="line">    print_student_info(msg);</span><br><span class="line">    <span class="comment">//free msg</span></span><br><span class="line">    student__free_unpacked(msg, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">free</span>(buf);</span><br><span class="line">    free_student_info(&amp;stu);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译及测试：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc student.pb-c.c test.c -o test_stuent_protoc -lprotobuf-c</span><br><span class="line">./test_student_protoc </span><br></pre></td></tr></table></figure>
+<p><img src="image-20240813162104246.png" alt="测试运行结果"></p>
+<p>可以正常使用。</p>
+<h3 id="proto结构分析"><a class="markdownIt-Anchor" href="#proto结构分析"></a> proto结构分析</h3>
+<p>由student.pb-c.h中这句<code>extern const ProtobufCMessageDescriptor student__descriptor;</code>，在student.pb-c.c 中找到这个结构：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> ProtobufCMessageDescriptor student__descriptor =</span><br><span class="line">&#123;</span><br><span class="line">  PROTOBUF_C__MESSAGE_DESCRIPTOR_MAGIC,</span><br><span class="line">  <span class="string">&quot;Student&quot;</span>,</span><br><span class="line">  <span class="string">&quot;Student&quot;</span>,</span><br><span class="line">  <span class="string">&quot;Student&quot;</span>,</span><br><span class="line">  <span class="string">&quot;&quot;</span>,</span><br><span class="line">  <span class="keyword">sizeof</span>(Student),</span><br><span class="line">  <span class="number">7</span>,</span><br><span class="line">  student__field_descriptors,</span><br><span class="line">  student__field_indices_by_name,</span><br><span class="line">  <span class="number">1</span>,  student__number_ranges,</span><br><span class="line">  (ProtobufCMessageInit) student__init,</span><br><span class="line">  <span class="literal">NULL</span>,<span class="literal">NULL</span>,<span class="literal">NULL</span>    <span class="comment">/* reserved[123] */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这个student__descriptor是ProtobufCMessageDescriptor类型的一个结构。</p>
+<h4 id="protobufcmessagedescriptor分析"><a class="markdownIt-Anchor" href="#protobufcmessagedescriptor分析"></a> ProtobufCMessageDescriptor分析</h4>
+<p>ProtobufCMessageDescriptor类型定义如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Describes a message.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ProtobufCMessageDescriptor</span> &#123;</span></span><br><span class="line">	<span class="comment">/** Magic value checked to ensure that the API is used correctly. */</span></span><br><span class="line">	<span class="type">uint32_t</span>			magic;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/** The qualified name (e.g., &quot;namespace.Type&quot;). */</span></span><br><span class="line">	<span class="type">const</span> <span class="type">char</span>			*name;</span><br><span class="line">	<span class="comment">/** The unqualified name as given in the .proto file (e.g., &quot;Type&quot;). */</span></span><br><span class="line">	<span class="type">const</span> <span class="type">char</span>			*short_name;</span><br><span class="line">	<span class="comment">/** Identifier used in generated C code. */</span></span><br><span class="line">	<span class="type">const</span> <span class="type">char</span>			*c_name;</span><br><span class="line">	<span class="comment">/** The dot-separated namespace. */</span></span><br><span class="line">	<span class="type">const</span> <span class="type">char</span>			*package_name;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Size in bytes of the C structure representing an instance of this</span></span><br><span class="line"><span class="comment">	 * type of message.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="type">size_t</span>				sizeof_message;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/** Number of elements in `fields`. */</span></span><br><span class="line">	<span class="type">unsigned</span>			n_fields;</span><br><span class="line">	<span class="comment">/** Field descriptors, sorted by tag number. */</span></span><br><span class="line">	<span class="type">const</span> ProtobufCFieldDescriptor	*fields;</span><br><span class="line">	<span class="comment">/** Used for looking up fields by name. */</span></span><br><span class="line">	<span class="type">const</span> <span class="type">unsigned</span>			*fields_sorted_by_name;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/** Number of elements in `field_ranges`. */</span></span><br><span class="line">	<span class="type">unsigned</span>			n_field_ranges;</span><br><span class="line">	<span class="comment">/** Used for looking up fields by id. */</span></span><br><span class="line">	<span class="type">const</span> ProtobufCIntRange		*field_ranges;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/** Message initialisation function. */</span></span><br><span class="line">	ProtobufCMessageInit		message_init;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/** Reserved for future use. */</span></span><br><span class="line">	<span class="type">void</span>				*reserved1;</span><br><span class="line">	<span class="comment">/** Reserved for future use. */</span></span><br><span class="line">	<span class="type">void</span>				*reserved2;</span><br><span class="line">	<span class="comment">/** Reserved for future use. */</span></span><br><span class="line">	<span class="type">void</span>				*reserved3;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这里面有几个关键点：</p>
+<ul>
+<li>
+<ol>
+<li>magic，这个值一般为<strong>0x28AAEEF9</strong></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>n_fields，关系到原始的message结构内有几条记录，比如上年的student__descripto中的n_fields为7，就说明student.proto里的message结构有7条记录。</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>fields，这个指向message内所有记录类型组成的一个数组，可以借助此部分内容逆向分析message结构。</li>
+</ol>
+</li>
+</ul>
+<h4 id="fields结构体分析"><a class="markdownIt-Anchor" href="#fields结构体分析"></a> fields结构体分析</h4>
+<p>fields结构体源码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ProtobufCFieldDescriptor</span> &#123;</span></span><br><span class="line">	<span class="comment">/** Name of the field as given in the .proto file. */</span></span><br><span class="line">	<span class="type">const</span> <span class="type">char</span>		*name;</span><br><span class="line">	<span class="comment">/** Tag value of the field as given in the .proto file. */</span></span><br><span class="line">	<span class="type">uint32_t</span>		id;</span><br><span class="line">	<span class="comment">/** Whether the field is `REQUIRED`, `OPTIONAL`, or `REPEATED`. */</span></span><br><span class="line">	ProtobufCLabel		label;</span><br><span class="line">	<span class="comment">/** The type of the field. */</span></span><br><span class="line">	ProtobufCType		type;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * The offset in bytes of the message&#x27;s C structure&#x27;s quantifier field</span></span><br><span class="line"><span class="comment">	 * (the `has_MEMBER` field for optional members or the `n_MEMBER` field</span></span><br><span class="line"><span class="comment">	 * for repeated members or the case enum for oneofs).</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="type">unsigned</span>		quantifier_offset;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * The offset in bytes into the message&#x27;s C structure for the member</span></span><br><span class="line"><span class="comment">	 * itself.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="type">unsigned</span>		offset;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * A type-specific descriptor.</span></span><br><span class="line"><span class="comment">	 *</span></span><br><span class="line"><span class="comment">	 * If `type` is `PROTOBUF_C_TYPE_ENUM`, then `descriptor` points to the</span></span><br><span class="line"><span class="comment">	 * corresponding `ProtobufCEnumDescriptor`.</span></span><br><span class="line"><span class="comment">	 *</span></span><br><span class="line"><span class="comment">	 * If `type` is `PROTOBUF_C_TYPE_MESSAGE`, then `descriptor` points to</span></span><br><span class="line"><span class="comment">	 * the corresponding `ProtobufCMessageDescriptor`.</span></span><br><span class="line"><span class="comment">	 *</span></span><br><span class="line"><span class="comment">	 * Otherwise this field is NULL.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="type">const</span> <span class="type">void</span>		*descriptor; <span class="comment">/* for MESSAGE and ENUM types */</span></span><br><span class="line">	<span class="comment">/** The default value for this field, if defined. May be NULL. */</span></span><br><span class="line">	<span class="type">const</span> <span class="type">void</span>		*default_value;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * A flag word. Zero or more of the bits defined in the</span></span><br><span class="line"><span class="comment">	 * `ProtobufCFieldFlag` enum may be set.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="type">uint32_t</span>		flags;</span><br><span class="line">	<span class="comment">/** Reserved for future use. */</span></span><br><span class="line">	<span class="type">unsigned</span>		reserved_flags;</span><br><span class="line">	<span class="comment">/** Reserved for future use. */</span></span><br><span class="line">	<span class="type">void</span>			*reserved2;</span><br><span class="line">	<span class="comment">/** Reserved for future use. */</span></span><br><span class="line">	<span class="type">void</span>			*reserved3;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>其中要注意的关键点有：</p>
+<ul>
+<li>name： 变量名</li>
+<li>id：序号（即在message结构体中的顺序）</li>
+<li>label（在proto2语法中对应的是required、optional）</li>
+<li>type：数据类型（string或者int64等），label和type都是枚举类型，占4字节。</li>
+</ul>
+<p>示例，这里截取了上面student.pb-c.c的 student__field_descriptors中的一部分，旨在展示结构体：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">const</span> ProtobufCFieldDescriptor student__field_descriptors[<span class="number">7</span>] =</span><br><span class="line">&#123;</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="string">&quot;id&quot;</span>,</span><br><span class="line">    <span class="number">1</span>,</span><br><span class="line">    PROTOBUF_C_LABEL_REQUIRED,</span><br><span class="line">    PROTOBUF_C_TYPE_STRING,</span><br><span class="line">    <span class="number">0</span>,   <span class="comment">/* quantifier_offset */</span></span><br><span class="line">    offsetof(Student, id),</span><br><span class="line">    <span class="literal">NULL</span>,</span><br><span class="line">    <span class="literal">NULL</span>,</span><br><span class="line">    <span class="number">0</span>,             <span class="comment">/* flags */</span></span><br><span class="line">    <span class="number">0</span>,<span class="literal">NULL</span>,<span class="literal">NULL</span>    <span class="comment">/* reserved1,reserved2, etc */</span></span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="string">&quot;name&quot;</span>,</span><br><span class="line">    <span class="number">2</span>,</span><br><span class="line">    PROTOBUF_C_LABEL_REQUIRED,</span><br><span class="line">    PROTOBUF_C_TYPE_STRING,</span><br><span class="line">    <span class="number">0</span>,   <span class="comment">/* quantifier_offset */</span></span><br><span class="line">    offsetof(Student, name),</span><br><span class="line">    <span class="literal">NULL</span>,</span><br><span class="line">    <span class="literal">NULL</span>,</span><br><span class="line">    <span class="number">0</span>,             <span class="comment">/* flags */</span></span><br><span class="line">    <span class="number">0</span>,<span class="literal">NULL</span>,<span class="literal">NULL</span>    <span class="comment">/* reserved1,reserved2, etc */</span></span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+<p>关于ProtobufCType的定义如下：</p>
+<p>从上往下从0开始编号</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">enum</span> &#123;</span></span><br><span class="line">	PROTOBUF_C_TYPE_INT32,      <span class="comment">/**&lt; int32 */</span></span><br><span class="line">	PROTOBUF_C_TYPE_SINT32,     <span class="comment">/**&lt; signed int32 */</span></span><br><span class="line">	PROTOBUF_C_TYPE_SFIXED32,   <span class="comment">/**&lt; signed int32 (4 bytes) */</span></span><br><span class="line">	PROTOBUF_C_TYPE_INT64,      <span class="comment">/**&lt; int64 */</span></span><br><span class="line">	PROTOBUF_C_TYPE_SINT64,     <span class="comment">/**&lt; signed int64 */</span></span><br><span class="line">	PROTOBUF_C_TYPE_SFIXED64,   <span class="comment">/**&lt; signed int64 (8 bytes) */</span></span><br><span class="line">	PROTOBUF_C_TYPE_UINT32,     <span class="comment">/**&lt; unsigned int32 */</span></span><br><span class="line">	PROTOBUF_C_TYPE_FIXED32,    <span class="comment">/**&lt; unsigned int32 (4 bytes) */</span></span><br><span class="line">	PROTOBUF_C_TYPE_UINT64,     <span class="comment">/**&lt; unsigned int64 */</span></span><br><span class="line">	PROTOBUF_C_TYPE_FIXED64,    <span class="comment">/**&lt; unsigned int64 (8 bytes) */</span></span><br><span class="line">	PROTOBUF_C_TYPE_FLOAT,      <span class="comment">/**&lt; float */</span></span><br><span class="line">	PROTOBUF_C_TYPE_DOUBLE,     <span class="comment">/**&lt; double */</span></span><br><span class="line">	PROTOBUF_C_TYPE_BOOL,       <span class="comment">/**&lt; boolean */</span></span><br><span class="line">	PROTOBUF_C_TYPE_ENUM,       <span class="comment">/**&lt; enumerated type */</span></span><br><span class="line">	PROTOBUF_C_TYPE_STRING,     <span class="comment">/**&lt; UTF-8 or ASCII string */</span></span><br><span class="line">	PROTOBUF_C_TYPE_BYTES,      <span class="comment">/**&lt; arbitrary byte sequence */</span></span><br><span class="line">	PROTOBUF_C_TYPE_MESSAGE,    <span class="comment">/**&lt; nested message */</span></span><br><span class="line">&#125; ProtobufCType;</span><br></pre></td></tr></table></figure>
+<p>由上述信息，可以分析与ProtobufCFieldDescriptor类型对应的结构来还原message结构体。</p>
+<h2 id="使用python配合protobuf打包"><a class="markdownIt-Anchor" href="#使用python配合protobuf打包"></a> 使用python配合protobuf打包</h2>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protoc --python_out=./ student.proto</span><br></pre></td></tr></table></figure>
+<p>打包模板：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> student_pb2.py</span><br><span class="line">data = student_pb2.Student()<span class="comment">#方法命名随.proto中结构体名称变化</span></span><br><span class="line">data.<span class="built_in">id</span> = <span class="string">&#x27;1&#x27;</span></span><br><span class="line">data.name = <span class="string">&#x27;1&#x27;</span></span><br><span class="line">data.gender = <span class="string">&#x27;1&#x27;</span></span><br><span class="line">data.age = <span class="number">114</span></span><br><span class="line">data.<span class="built_in">object</span> = <span class="string">&#x27;123123&#x27;</span></span><br><span class="line">data.home_address = <span class="string">&#x27;1&#x27;</span></span><br><span class="line">data.phone = <span class="string">&#x27;123123123&#x27;</span></span><br><span class="line">data.SerializeToString()<span class="comment">#序列化为bytes字节流</span></span><br></pre></td></tr></table></figure>
+<h2 id="利用pbtk提取proto结构"><a class="markdownIt-Anchor" href="#利用pbtk提取proto结构"></a> 利用Pbtk提取proto结构</h2>
+<p>使用pbtk工具可以直接提取程序中的proto结构，这样就方便生成python包然后进行解题。</p>
+<p>安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install python3-pip git openjdk-9-jre libqt5x11extras5 python3-pyqt5.qtwebengine python3-pyqt5</span><br><span class="line">sudo pip3 install protobuf pyqt5 pyqtwebengine requests websocket-client</span><br><span class="line"></span><br><span class="line">git clone https://github.com/marin-m/pbtk</span><br><span class="line">cd pbtk</span><br><span class="line">./gui.py</span><br></pre></td></tr></table></figure>
+<p>如果执行gui.py出现缺库的情况应该是上面的没有装好，再重新单独安装即可。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python3-pyqt5 </span><br><span class="line">sudo apt-get install python3-pyqt5.qtwebengine</span><br></pre></td></tr></table></figure>
+<p>可以直接用图形化界面提取proto结构：</p>
+<p><img src="image-20240813173605034.png" alt></p>
+<p>选第一个选项，然后选择from binary file，选择要分析的二进制文件。</p>
+<p><img src="image-20240813173701476.png" alt></p>
+<p>出现下面的提示说明提取成功：</p>
+<p><img src="image-20240813173725881.png" alt></p>
+<p>可以点右下角按钮打开目录查看还原的proto结构体。</p>
+<p><img src="image-20240813173749823.png" alt="proto结构体提取"></p>
+<h2 id="通过逆向还原proto结构"><a class="markdownIt-Anchor" href="#通过逆向还原proto结构"></a> 通过逆向还原proto结构</h2>
+<p>当使用pbtk无法成功提取proto结构的时候就需要自己通过逆向来还原proto结构了，下面是一个例子：<code>ciscn2024的ezbuf</code></p>
+<p>首先通过查找magic找到protobuf结构体（alt+B查找二进制串）：</p>
+<img src="image-20240815145343952.png" alt="image-20240815145343952" style="zoom:67%;">
+<p>找到如下结果：</p>
+<p><img src="image-20240815145429509.png" alt="image-20240815145429509"></p>
+<p>可以确认这就是protobuf结构体，通过下面的字符串可以分析得到这个消息结构体名称为heybro。接下来继续分析其他字段。</p>
+<p><img src="image-20240815145541109.png" alt="image-20240815145541109"></p>
+<blockquote>
+<p>ida小技巧の快捷键D：通过D将不确定的数据类型转化为byte、word或dwrod等常见类型。</p>
+</blockquote>
+<p>先d一下让这些数据可读性强一点。</p>
+<p>可以看出这显然是ProtobufCFieldDescriptor类型的结构，比如第一个就是name为<code>whatcon</code>，id为1，label为3，type为0xF（即bytes）。以此类推，将后面的信息全部提取出来就是如下的proto结构体：</p>
+<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">syntax <span class="string">&quot;proto3&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">message </span><span class="title class_">heybro</span> &#123;</span><br><span class="line">	<span class="type">bytes</span> whatcon = <span class="number">1</span>;</span><br><span class="line">	<span class="type">sint64</span> whattodo = <span class="number">2</span>;</span><br><span class="line">	<span class="type">sint64</span> whatidx = <span class="number">3</span>;</span><br><span class="line">	<span class="type">sint64</span> whatsize = <span class="number">4</span>;</span><br><span class="line">	<span class="type">uint32</span> whatsthis = <span class="number">5</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样就通过逆向的方法还原了proto结构，就可以进行后面的操作了。</p>
+<h6 id="参考资料"><a class="markdownIt-Anchor" href="#参考资料"></a> 参考资料</h6>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Anker/p/3416541.html">https://www.cnblogs.com/Anker/p/3416541.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.siascert.cn/2024/07/27/4-Protobuf%E5%AD%A6%E4%B9%A0/">https://www.siascert.cn/2024/07/27/4-Protobuf学习/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <blockquote class="article-copyright">
+    <p><strong>本文作者：</strong>*月遇丛雲花遇風* @ T3uk1 の 庭院</p>
+    <p><strong>本文链接：</strong><a href="https://t3uk1.github.io/2024/08/01/protobuf%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/">https://t3uk1.github.io/2024/08/01/protobuf%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/</a></p>
+    <p><strong>本文标题：</strong>protobuf的安装与使用</p>
+    
+    
+    <p><strong>本文版权：</strong>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><span class="icon-creative-commons"></span>BY-NC-SA</a> 许可协议。转载请注明出处！</p>
+  </blockquote>
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/protobuf/" rel="tag">protobuf</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+    
+  <nav id="article-nav" class="wow fadeInUp">
+    
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          
+          
+            <img data-src="/covers/QQ图片20211219112951.jpg" data-sizes="auto" alt="gdb调试原理" class="lazyload">
+          
+        
+        <a href="/2024/08/16/gdb%E8%B0%83%E8%AF%95%E5%8E%9F%E7%90%86/"></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">
+          
+            gdb调试原理
+          
+        </h3>
+      </div>
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="/covers/wallhaven-z8dypw.jpg" data-sizes="auto" alt="2024ciscn pwn 复现" class="lazyload">
+        
+      
+      <a href="/2024/05/23/2024ciscn-pwn-%E5%A4%8D%E7%8E%B0/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          2024ciscn pwn 复现
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+  
+</article>
+
+
+
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrap wow fadeInRight wrap-sticky">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#protobuf%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text"> protobuf的安装与使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85protobuf"><span class="toc-number">1.1.</span> <span class="toc-text"> 安装protobuf</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#proto%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90"><span class="toc-number">1.1.1.</span> <span class="toc-text"> proto结构分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#protobufcmessagedescriptor%E5%88%86%E6%9E%90"><span class="toc-number">1.1.1.1.</span> <span class="toc-text"> ProtobufCMessageDescriptor分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fields%E7%BB%93%E6%9E%84%E4%BD%93%E5%88%86%E6%9E%90"><span class="toc-number">1.1.1.2.</span> <span class="toc-text"> fields结构体分析</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8python%E9%85%8D%E5%90%88protobuf%E6%89%93%E5%8C%85"><span class="toc-number">1.2.</span> <span class="toc-text"> 使用python配合protobuf打包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8pbtk%E6%8F%90%E5%8F%96proto%E7%BB%93%E6%9E%84"><span class="toc-number">1.3.</span> <span class="toc-text"> 利用Pbtk提取proto结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E8%BF%98%E5%8E%9Fproto%E7%BB%93%E6%9E%84"><span class="toc-number">1.4.</span> <span class="toc-text"> 通过逆向还原proto结构</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.4.0.0.0.1.</span> <span class="toc-text"> 参考资料</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="*月遇丛雲花遇風*" class="lazyload">
+  <div class="sidebar-author-name">*月遇丛雲花遇風*</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">15</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=1027600674@qq.com itemprop="url" target="_blank" aria-label="email"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/t3uk1 itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+    
+      <div class="sidebar-btn-wrapper" style="position:static">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+    
+  </div>
+
+  
+</aside>
+
+          
+        </div>
+        <footer id="footer" class="wow fadeInUp">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div class="outer">
+    <div id="footer-info">
+      
+      <div>
+        <span class="icon-copyright"></span>
+        2022-2024
+        <span class="footer-info-sep"></span>
+        *月遇丛雲花遇風*
+      </div>
+      
+        <div>
+          基于&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+          Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+        </div>
+      
+      
+        <div>
+          <span class="icon-brush"></span>
+          103.3k
+          &nbsp;|&nbsp;
+          <span class="icon-coffee"></span>
+          07:53
+        </div>
+      
+      
+        <div>
+          <span class="icon-eye"></span>
+          <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+          &nbsp;|&nbsp;
+          <span class="icon-user"></span>
+          <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+        </div>
+      
+    </div>
+  </div>
+</footer>
+
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
+        </div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#protobuf%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text"> protobuf的安装与使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85protobuf"><span class="toc-number">1.1.</span> <span class="toc-text"> 安装protobuf</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#proto%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90"><span class="toc-number">1.1.1.</span> <span class="toc-text"> proto结构分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#protobufcmessagedescriptor%E5%88%86%E6%9E%90"><span class="toc-number">1.1.1.1.</span> <span class="toc-text"> ProtobufCMessageDescriptor分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fields%E7%BB%93%E6%9E%84%E4%BD%93%E5%88%86%E6%9E%90"><span class="toc-number">1.1.1.2.</span> <span class="toc-text"> fields结构体分析</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8python%E9%85%8D%E5%90%88protobuf%E6%89%93%E5%8C%85"><span class="toc-number">1.2.</span> <span class="toc-text"> 使用python配合protobuf打包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8pbtk%E6%8F%90%E5%8F%96proto%E7%BB%93%E6%9E%84"><span class="toc-number">1.3.</span> <span class="toc-text"> 利用Pbtk提取proto结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E8%BF%98%E5%8E%9Fproto%E7%BB%93%E6%9E%84"><span class="toc-number">1.4.</span> <span class="toc-text"> 通过逆向还原proto结构</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.4.0.0.0.1.</span> <span class="toc-text"> 参考资料</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="*月遇丛雲花遇風*" class="lazyload">
+  <div class="sidebar-author-name">*月遇丛雲花遇風*</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">15</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=1027600674@qq.com itemprop="url" target="_blank" aria-label="email"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/t3uk1 itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    <div class="site-search">
+      <div class="reimu-popup popup">
+        <div class="reimu-search">
+          <div class="reimu-search-input-icon"></div>
+          <div class="reimu-search-input" id="reimu-search-input"></div>
+          <div class="popup-btn-close"></div>
+        </div>
+        <div class="reimu-results">
+          <div id="reimu-stats"></div>
+          <div id="reimu-hits"></div>
+          <div id="reimu-pagination" class="reimu-pagination"></div>
+        </div>
+      </div>
+    </div>
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+<script type="module" data-pjax>
+  import PhotoSwipeLightbox from "https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.js";
+  
+  const pswp = () => {
+    if (_$$('.article-entry a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-entry',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.js")
+      }).init();
+    }
+    if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-gallery',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.js")
+      }).init();
+    }
+    window.lightboxStatus = 'done';
+    window.removeEventListener('lightbox:ready', pswp);
+  }
+  if(window.lightboxStatus === 'ready') {
+    pswp()
+  } else {
+    window.addEventListener('lightbox:ready', pswp);
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/generator_search.js"></script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.4/dist/index.umd.js"></script>
+
+  <script>
+    firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+
+  <script data-pjax>
+    quicklink.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div>
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.2.4' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --></body>
+  </html>
+

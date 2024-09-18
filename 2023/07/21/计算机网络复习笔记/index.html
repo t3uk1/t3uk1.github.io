@@ -1,0 +1,1385 @@
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  data-theme="dark" >
+  <head>
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};</script>
+  
+  
+  <title>
+    计算机网络复习笔记 |
+    
+    T3uk1 の 庭院
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+<link rel="stylesheet" href="/css/loader.css">
+
+  <meta name="description" content="计算机网络复习笔记 当时计网考前复习的时候写的笔记，搬运一下   基础知识  OSI模型结构： 物理层–数据链路层–网络层–传输层–会话层–表示层–应用层 七个层次  应用层  URL URL：www上网页的网址 URL组成结构：协议名称  |  主机名  |  文件名 例如：https:(协议名称) www.myhost.com（主机名） &#x2F;index.html（文件名）  HTTP协议  浏">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络复习笔记">
+<meta property="og:url" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="T3uk1 の 庭院">
+<meta property="og:description" content="计算机网络复习笔记 当时计网考前复习的时候写的笔记，搬运一下   基础知识  OSI模型结构： 物理层–数据链路层–网络层–传输层–会话层–表示层–应用层 七个层次  应用层  URL URL：www上网页的网址 URL组成结构：协议名称  |  主机名  |  文件名 例如：https:(协议名称) www.myhost.com（主机名） &#x2F;index.html（文件名）  HTTP协议  浏">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230627204249016.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230627210014763.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230627210033495.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230417090326746.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230417090653023.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230417091331199.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230417091543680.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230417092409698.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230417093336455.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230514094718467.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230514092918468.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230514101054609.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230514101221157.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230514101322640.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230514101351220.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230514102322494.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230514102739461.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230514103001315.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230514103147641.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230514103412344.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230514103552160.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230629171138579.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230627220725495.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230627221129768.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230627221202853.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230627221216999.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230627213313345.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230627213344610.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230627214159943.png">
+<meta property="article:published_time" content="2023-07-21T13:12:47.000Z">
+<meta property="article:modified_time" content="2024-08-20T13:31:19.248Z">
+<meta property="article:author" content="*月遇丛雲花遇風*">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20230627204249016.png">
+  
+    <link rel="alternate" href="/atom.xml" title="T3uk1 の 庭院" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css">
+
+  
+  
+  
+  
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"></script>
+
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/wowjs@1.1.3/css/libs/animate.css">
+
+    
+<script src="https://npm.webcache.cn/wowjs@1.1.3/dist/wow.min.js"></script>
+
+    <script>
+      new WOW({
+        offset: 0,
+        mobile: true,
+        live: false
+      }).init();
+    </script>
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff6e6b" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z" fill="#fd0d00" />
+          <path d="M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95" fill="#fd0d00" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/">首页</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/archives">归档</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/about">关于</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/friend">友链</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      <img fetchpriority="high" src="/images/banner.jpg" alt="计算机网络复习笔记">
+    
+  
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <div id="logo-wrap">
+        
+          
+          
+            <a href="/" id="logo">
+              <h1>计算机网络复习笔记</h1>
+            </a>
+          
+        
+      </div>
+      
+        
+        <h2 id="subtitle-wrap">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content" class="outer">
+          
+          <section id="main"><article id="post-计算机网络复习笔记" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    <div class="article-meta">
+      <div class="article-date wow slideInLeft">
+  <a href="/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="article-date-link">
+    <time datetime="2023-07-21T13:12:47.000Z" itemprop="datePublished">2023-07-21</time>
+    <time style="display: none;" id="post-update-time">2024-08-20</time>
+  </a>
+</div>
+
+      
+  <div class="article-category wow slideInLeft">
+    <a class="article-category-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+  </div>
+
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <h1 id="计算机网络复习笔记"><a class="markdownIt-Anchor" href="#计算机网络复习笔记"></a> 计算机网络复习笔记</h1>
+<p>当时计网考前复习的时候写的笔记，搬运一下</p>
+<!-- toc -->
+<h2 id="基础知识"><a class="markdownIt-Anchor" href="#基础知识"></a> 基础知识</h2>
+<h3 id="osi模型结构"><a class="markdownIt-Anchor" href="#osi模型结构"></a> OSI模型结构：</h3>
+<p><strong>物理层–数据链路层–网络层–传输层</strong>–会话层–表示层–<strong>应用层</strong> 七个层次</p>
+<h2 id="应用层"><a class="markdownIt-Anchor" href="#应用层"></a> 应用层</h2>
+<h3 id="url"><a class="markdownIt-Anchor" href="#url"></a> URL</h3>
+<p>URL：www上网页的网址</p>
+<p>URL组成结构：协议名称  |  主机名  |  文件名</p>
+<p>例如：<u>https:</u>(协议名称) <a target="_blank" rel="noopener" href="http://www.myhost.com">www.myhost.com</a>（主机名） <u>/index.html</u>（文件名）</p>
+<h3 id="http协议"><a class="markdownIt-Anchor" href="#http协议"></a> HTTP协议</h3>
+<ul>
+<li>浏览器与web服务器之间使用的协议</li>
+</ul>
+<p>HTTP请求报文：有四个部分构成：请求行，报头，空白行，正文</p>
+<p>请求行结构：方法，URL，HTTP版本</p>
+<p>常见HTTP请求头的作用：</p>
+<p>HTTP应答报文结构：与请求报文结构基本一致，区别在于请求头处变为应答头。</p>
+<p>常见HTTP应答报文代码说明：</p>
+<p>200：OK，请求成功</p>
+<p>202：Accepted，请求被接受但还没有马上起作用</p>
+<p>403：Forbidden，服务被拒绝</p>
+<p>404：Not Found，文档未发现</p>
+<img src="image-20230627204249016.png" alt="image-20230627204249016" style="zoom: 67%;">
+<h3 id="电子邮件协议"><a class="markdownIt-Anchor" href="#电子邮件协议"></a> 电子邮件协议</h3>
+<p>电子邮件客户端发送邮件：SMTP</p>
+<p>接收邮件常用协议：POP4 或 IMAP   （POP3）</p>
+<p>基于Web的电子邮件用户与远程邮箱之间的通信<strong>使用的是HTTP协议</strong>，而不是POP3或IMAP4协议</p>
+<h3 id="telnet交互式会话协议"><a class="markdownIt-Anchor" href="#telnet交互式会话协议"></a> TELNET（交互式会话）协议</h3>
+<p>TELNET是一种远程登录协议，用于在网络上远程操作计算机系统。TELNET协议<strong>基于TCP/IP协议</strong>，它允许用户通过TCP/IP网络连接到远程主机（支持远程登录应用），以便在远程主机上执行命令和程序，就像直接在本地计算机上一样。</p>
+<h3 id="非持续连接与持续连接"><a class="markdownIt-Anchor" href="#非持续连接与持续连接"></a> 非持续连接与持续连接</h3>
+<ul>
+<li>
+<p>**非持续连接：在只有接收到前一个请求的响应的时候才会发送新的请求。**在非持久连接中，每个HTTP请求/响应交换都需要建立一个新的TCP连接。当客户端向服务器发送HTTP请求时，它会建立一个TCP连接并发送一个HTTP请求报文，服务器收到请求后会发送一个HTTP响应报文，并关闭TCP连接。如果客户端需要发送另一个HTTP请求，它需要再次建立一个新的TCP连接，然后发送第二个HTTP请求报文，以此类推。</p>
+<p>在非持续链接的http文件传输中，每一个文件的传输之前都要进行握手验证。</p>
+</li>
+<li>
+<p>**持续连接：客户端在没有收到前一个响应的时候就发出新的请求（流水线）。**在持久连接（persistent connection）中，一个TCP连接可以用于传输多个HTTP请求和响应，而不需要每次都建立新的TCP连接。在持久连接中，多个HTTP请求和响应可以使用同一个TCP连接进行传输，从而减少了TCP连接的建立和关闭次数，提高了网络传输的效率。</p>
+<p>在持续连接过程中，除了第一次传输之前要进行握手，后面的文件传输无需握手。</p>
+</li>
+</ul>
+<h3 id="工作模式"><a class="markdownIt-Anchor" href="#工作模式"></a> 工作模式</h3>
+<ul>
+<li>
+<p>C/S： Client-Server</p>
+<p>例如：Web应用程序、邮件客户端、FTP、数据库管理系统等</p>
+<p>采用C/S模式原因：<strong>网络资源分布的不均匀性</strong></p>
+</li>
+<li>
+<p>P2P：Point to Point</p>
+<p>例如：BitTorrent</p>
+<ul>
+<li>P2P网络并不是一个新的网络结构，而是一种新的网络应用模式</li>
+</ul>
+</li>
+</ul>
+<h3 id="ftp"><a class="markdownIt-Anchor" href="#ftp"></a> FTP</h3>
+<p>文件传输协议</p>
+<p>FTP基于TCP协议</p>
+<p>FTP连接中，客户端端口号为临时端口号，服务器端口号为固定端口号，其中控制连接端口号为21，数据连接端口号为20.</p>
+<p><strong>FTP</strong>的特点</p>
+<ul>
+<li>
+<p><strong>交互式用户界面</strong>：利用FTP命令方便与服务器对话</p>
+</li>
+<li>
+<p><strong>对文件格式说明</strong>：允许指定数据类型和格式（文本方式、二进制方式）</p>
+</li>
+<li>
+<p><strong>权限控制</strong>：文件传输之前，向服务器提供登录用户名和口令</p>
+</li>
+</ul>
+<h3 id="tftp"><a class="markdownIt-Anchor" href="#tftp"></a> TFTP</h3>
+<p>TFTP基于UDP协议</p>
+<p><strong>TFTP</strong>的特点</p>
+<ul>
+<li>
+<p>传输可靠性：FTP面向连接的可靠传输，采用<strong>TCP</strong>；TFTP<strong>简洁</strong>、采用<strong>UDP</strong></p>
+</li>
+<li>
+<p>协议命令集：FTP包含发送/接收文件、<strong>列出目录与删除文件</strong>等<strong>复杂命令</strong>，TFTP协议<strong>只定义文件发送</strong>/<strong>接收</strong>基本命令</p>
+</li>
+<li>
+<p>数据表示：FTP可<strong>指定数据类型</strong>，TFTP只允许传输<strong>ASCII</strong>码或二进制文本文件</p>
+</li>
+<li>
+<p>用户鉴别：FTP有登录用户鉴别功能，TFTP<strong>不提供用户鉴别</strong>功能</p>
+</li>
+</ul>
+<h3 id="dns"><a class="markdownIt-Anchor" href="#dns"></a> DNS</h3>
+<ul>
+<li>DNS基于<strong>UDP协议</strong>，使用无连接服务</li>
+</ul>
+<p>DNS的作用</p>
+<ul>
+<li>
+<p><strong>主机域名转换成IP地址</strong></p>
+</li>
+<li>
+<p>能够方便访问各种网络资源和服务</p>
+</li>
+<li>
+<p>实现互联网应用层协议的基础</p>
+</li>
+</ul>
+<h4 id="dns域名解析模式"><a class="markdownIt-Anchor" href="#dns域名解析模式"></a> DNS域名解析模式</h4>
+<ul>
+<li>
+<p>迭代解析：</p>
+<img src="image-20230627210014763.png" alt="image-20230627210014763" style="zoom:67%;">
+</li>
+<li>
+<p>递归解析</p>
+<img src="image-20230627210033495.png" alt="image-20230627210033495" style="zoom:67%;">
+</li>
+<li>
+<p>高速缓存解析</p>
+</li>
+</ul>
+<h3 id="其他"><a class="markdownIt-Anchor" href="#其他"></a> 其他</h3>
+<p>网络协议相关：</p>
+<ul>
+<li>
+<p>网络协议三要素：语法、语义、同步</p>
+</li>
+<li>
+<p>协议是控制两个对等实体之间的通信规则集合</p>
+</li>
+<li>
+<p>协议规定了对等层实体之间所交换的信息的格式和含义</p>
+</li>
+</ul>
+<p>TFTP协议：基于<strong>UDP协议</strong>实现，常用于在局域网内进行小文件传输。TFTP协议的主要目的是提供一种简单的文件传输机制，以支持网络启动、配置文件传输、固件更新等应用场景。</p>
+<h2 id="传输层"><a class="markdownIt-Anchor" href="#传输层"></a> 传输层</h2>
+<ul>
+<li>
+<p>根本目的：在网络层提供的数据通信服务基础上，实现主机<strong>进程间可靠</strong>服务，实现“<strong>端到端</strong>”服务（主机-主机 → 端-端）</p>
+</li>
+<li>
+<p>两大功能：</p>
+<ul>
+<li>加强、弥补网络层提供的网络服务</li>
+<li>进一步提供进程间“可靠”通信机制</li>
+</ul>
+</li>
+<li>
+<p>关键属性：传输层协议软件属于OS内核软件而非用户软件！</p>
+</li>
+</ul>
+<p>传输层与应用层之间的关系：<strong>传输层提供应用进程间的逻辑通信</strong></p>
+<h4 id="应用进程-传输层接口与套接字"><a class="markdownIt-Anchor" href="#应用进程-传输层接口与套接字"></a> 应用进程、传输层接口与套接字</h4>
+<ul>
+<li>
+<p>传输层协议在本地主机操作系统控制下，为应用程序提供确定的服务</p>
+</li>
+<li>
+<p>网络层解决IP地址，传输层解决<strong>进程标识</strong></p>
+</li>
+<li>
+<p><strong>套接字</strong>：建立网络应用程序的可编程接口（应用编程接口API）</p>
+</li>
+</ul>
+<h4 id="应用进程标识的基本方法"><a class="markdownIt-Anchor" href="#应用进程标识的基本方法"></a> 应用进程标识的基本方法：</h4>
+<ul>
+<li>
+<p>传输层<strong>进程寻址</strong>：通过TCP/UDP<strong>端口号</strong>实现</p>
+</li>
+<li>
+<p><strong>套接字</strong>：IP地址+端口号，比如：202.1.2.5:80</p>
+</li>
+<li>
+<p>进程标识<strong>三元组</strong>：协议、本地地址、本地端口，也叫半相关</p>
+<ul>
+<li>比如：TCP, 202.1.2.5:3022</li>
+</ul>
+</li>
+<li>
+<p>进程通信标识<strong>五元组</strong>：协议、本地地址、本地端口、远程地址、远程端口号，也叫全相关<img src="image-20230417090326746.png" alt="image-20230417090326746" style="zoom:67%;"></p>
+</li>
+</ul>
+<h4 id="端口号的分配方法"><a class="markdownIt-Anchor" href="#端口号的分配方法"></a> 端口号的分配方法：</h4>
+<ul>
+<li>
+<p><strong>熟知端口号</strong>：给每种<strong>服务器</strong>分配的确定的全局端口号，也叫公认端口号，范围在0~1023，统一分配与控制</p>
+<p><em>一般来说，客户端进程不建议采用熟知端口号范围内的端口</em></p>
+</li>
+<li>
+<p><strong>注册端口号</strong>：在IANA注册的端口号，没有明确的定义服务对象，不同程序可根据实际需要自己定义，范围在1024~49152</p>
+</li>
+<li>
+<p><strong>临时端口号</strong>：<strong>客户端</strong>程序使用的临时端口号，由客户端上TCP/IP软件随机选取，范围在49152~65535</p>
+</li>
+<li>
+<p>常用熟知端口号：</p>
+<img src="image-20230417090653023.png" alt="image-20230417090653023" style="zoom:50%;">
+</li>
+</ul>
+<h3 id="tcp协议与udp协议"><a class="markdownIt-Anchor" href="#tcp协议与udp协议"></a> TCP协议与UDP协议</h3>
+<p>两种协议的比较：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">特征/描述</th>
+<th><strong>TCP</strong></th>
+<th><strong>UDP</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">一般描述</td>
+<td>允许应用程序<strong>可靠</strong>地发送数据，<strong>功能齐全</strong></td>
+<td><strong>简单</strong>、<strong>高速</strong>，<strong>只</strong>负责将应用层与网络层衔接起来</td>
+</tr>
+<tr>
+<td style="text-align:left">面向连接与无连接</td>
+<td><strong>面向连接</strong>，在TPDU传输之前需要建立TCP连接</td>
+<td><strong>无连接</strong>，在TPDU传输之前不需要建立UDP连接</td>
+</tr>
+<tr>
+<td style="text-align:left">与应用层的数据接口</td>
+<td><strong>基于字节流</strong>，应用层不需要规定特点的数据格式</td>
+<td><strong>基于报文</strong>，应用层需要将数据分成包来传送</td>
+</tr>
+<tr>
+<td style="text-align:left">可靠性与确认</td>
+<td><strong>可靠</strong>报文传输，对所有的数据均要确认</td>
+<td><strong>不可靠</strong>，不需要对传输的数据确认，尽力而为地交付</td>
+</tr>
+<tr>
+<td style="text-align:left">重传</td>
+<td><strong>自动重传</strong>丢失的数据</td>
+<td><strong>不负责检查</strong>是否丢失数据和重传</td>
+</tr>
+<tr>
+<td style="text-align:left">开销</td>
+<td><strong>低</strong>，但高于UDP</td>
+<td><strong>很低</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">传输速率</td>
+<td><strong>高</strong>，但低于UDP</td>
+<td><strong>很高</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">适用的数据量</td>
+<td>从少量到几个GB的数据</td>
+<td>从少量到几百个字节的数据</td>
+</tr>
+<tr>
+<td style="text-align:left">适用的应用类型</td>
+<td>对数据传输可靠性要求较高的应用，例如文件与报文传输</td>
+<td>发送数量比较少，对数据传输可靠性要求低的应用，例如IP电话、视频会议、多播与广播</td>
+</tr>
+</tbody>
+</table>
+<h3 id="udp协议"><a class="markdownIt-Anchor" href="#udp协议"></a> UDP协议</h3>
+<p>主要特点：</p>
+<ul>
+<li>
+<p><strong>无连接、不可靠</strong>：开销低、尽力而为  <em>存在数据包丢失、重复、顺序错乱等问题。</em></p>
+</li>
+<li>
+<p><strong>面向报文</strong>的传输层协议：UDP 对应用层传递下来的报文，既不合并，也不拆分，而是保留这些报文的边界。UDP 层<u>一次向对方交付一个完整的报文</u></p>
+</li>
+<li>
+<p><strong>没有拥塞控制</strong>：网络出现的拥塞时，UDP不会使源主机的发送速率降低，适合实时通信应用</p>
+</li>
+<li>
+<p><strong>首部开销小</strong>：只有8字节</p>
+</li>
+</ul>
+<p>适用范围：</p>
+<ul>
+<li>
+<p><strong>对性能的要求高于对数据完整性的要求</strong></p>
+<p>如： 视频播放实时交付的要求高于对数据交付可靠性要求（<strong>可丢失个别数据包</strong>）</p>
+</li>
+<li>
+<p>需要“<strong>简短快捷</strong>”的数据交换</p>
+<p>简单的请求与应答报文交互</p>
+</li>
+<li>
+<p>需要<strong>多播和广播</strong>的应用</p>
+<p>源主机以恒定速率发送报文，拥塞发生时<u>允许丢弃</u>部分报文</p>
+</li>
+</ul>
+<h4 id="udp数据报格式"><a class="markdownIt-Anchor" href="#udp数据报格式"></a> UDP数据报格式</h4>
+<img src="image-20230417091331199.png" alt="image-20230417091331199" style="zoom:67%;">
+<ul>
+<li>
+<p>**端口号：**包括源端口号和目的端口号，分别表示发送方和接收方的进程端口号，各为2字节</p>
+</li>
+<li>
+<p><strong>UDP总长度</strong>：包括报头在内的用户数据报的总长度，2字节</p>
+</li>
+<li>
+<p>**校验和：**用于检查整个数据报（含报头）是否传输出错，可选，若无，填0</p>
+<p>校验和计算：伪报头+UDP数据报</p>
+<p>伪报头：验证UDP数据报是否正确传送到目的进程</p>
+<p><img src="image-20230417091543680.png" alt="image-20230417091543680"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">UDP checksum算法：</span><br><span class="line">UDP校验和是用来检测数据报文在传输过程中是否发生错误的一种方法。它是对数据报文中的所有字段，以及一些来自IP报头的字段，进行一种特殊的加法运算得到的一个16位的值。这些字段构成了一个伪首部，用于进行校验和计算。</span><br><span class="line"></span><br><span class="line">校验和计算的步骤如下：</span><br><span class="line"></span><br><span class="line">- 将数据报文中的所有字段，以及伪首部中的字段，按照16位为一组，进行二进制求和。</span><br><span class="line">- 如果最后有不足16位的部分，就在其后面补0，使其成为16位。</span><br><span class="line">- 如果求和过程中出现溢出，就将溢出的部分加到最低位上。</span><br><span class="line">- 将求和得到的结果取反码，即将所有的0变为1，所有的1变为0。这就是校验和。</span><br><span class="line">- 将校验和放入数据报文的校验和字段中，发送给接收方。</span><br><span class="line"></span><br><span class="line">接收方收到数据报文后，也要进行校验和计算。它将数据报文中的所有字段，以及伪首部中的字段，按照同样的方法进行二进制求和，并取反码。然后，它将这个结果与数据报文中的校验和字段进行比较。如果相等，就说明没有发生错误。如果不相等，就说明发生了错误。</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>思考题：UDP协议要求一个UDP数据报的数据字段长度必须是16位比特的整数倍，不足补0。为什么？</p>
+<p>UDP数据报的数据字段长度必须是16位比特的整数倍，是因为UDP报文头中有一个16位的字段表示UDP总长度，这个字段包括了UDP报头和数据区的长度，而UDP报头的长度是固定的8字节，所以数据区的长度必须是8字节的整数倍，也就是16位比特的整数倍。如果数据区的长度不足，就需要在后面补0，以保证UDP总长度字段的正确性。</p>
+</li>
+</ul>
+<h3 id="tcp协议"><a class="markdownIt-Anchor" href="#tcp协议"></a> TCP协议</h3>
+<p>特点及应用：</p>
+<ul>
+<li>
+<p>支持<strong>面向连接</strong>的服务：打电话式、会话式通信</p>
+</li>
+<li>
+<p>支持<strong>字节流</strong>传输：字节管道、字节按序传输和到达</p>
+</li>
+<li>
+<p>支持<strong>全双工</strong>服务：一个应用进程可以<u>同时收发数据、捎带确认</u></p>
+</li>
+<li>
+<p>支持建立多个<strong>并发的</strong>TCP连接（服务器同时响应多个连接）</p>
+</li>
+<li>
+<p>支持<strong>可靠</strong>传输服务：不丢失、不重复、有序</p>
+</li>
+</ul>
+<h5 id="tcp报文格式"><a class="markdownIt-Anchor" href="#tcp报文格式"></a> TCP报文格式</h5>
+<p><img src="image-20230417092409698.png" alt="image-20230417092409698"></p>
+<ul>
+<li>源端口号：TCP报文发送方的端口号，占16 bit，所能表示的序号范围是：0~(216-1)</li>
+<li>目的端口号：TCP报文接收方的端口号，占16 bit，所能表示的序号范围是：0~(216-1)</li>
+<li>发送序号(seq)：表示TCP<strong>数据字段</strong>的第一个<strong>字节</strong>的序号
+<ul>
+<li>连接建立时（即SYN=1），初始序号（ISN）由随机数生成器生成，发送端和接收端<strong>独立产生</strong>，可能不一样</li>
+<li>占32 bit，所能表示的序号范围是：0~(232-1)</li>
+</ul>
+</li>
+<li>确认序号(ack)：只有当<strong>ACK</strong>位=1时有效，表示发送此报文段的进程<strong>期望接收的</strong>下一个新字节的序号。
+<ul>
+<li>确认序号=N+1，表示接收方已经成功接收了序号为N及之前的所有字节，要求发送方接下来应该发送起始序号为N+1的字节段。</li>
+<li>注意区分<strong>ack</strong>与<strong>ACK</strong>（ack为确认序号，ACK为确认位）</li>
+</ul>
+</li>
+<li><strong>窗口值</strong>：指示当前进程<strong>可以接收的</strong>数据长度 (单位: 字节)。
+<ul>
+<li>准备接收下一个TCP报文的接收方，通知即将发送报文的发送方下一个报文中最多可以发送的字节数，是发送方确定<strong>发送窗口</strong>的依据，是<strong>动态可变</strong>的。</li>
+</ul>
+</li>
+<li>报头长度：TCP报文<strong>首部</strong>的大小，单位是<strong>4字节</strong>
+<ul>
+<li><em>思考：TCP和UDP报头中的长度字段有什么不同？该字段的取值范围是[5,15]，为什么?</em>
+<ul>
+<li><em>TCP报头中的长度字段表示TCP报头的长度，单位为32位字，占4位，最小值为5，最大值为15。UDP报头中的长度字段表示UDP数据报的总长度（包括报头和数据），单位为字节，占16位，最小值为8，最大值为65535。</em></li>
+<li><em>TCP报头中的<u>长度字段是可变的，因为TCP报头有可选部分</u>。UDP报头中的长度字段是固定的，因为UDP报头没有可选部分。</em></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>校验和：
+<ul>
+<li>与UDP校验和的<strong>相同点</strong>：1）计算方式相同；2）也需要伪首部。</li>
+<li>与UDP校验和的<strong>不同点</strong>：1）UDP校验和可选，<u>TCP校验和必须</u>；2）伪首部协议字段值为6。</li>
+</ul>
+</li>
+</ul>
+<h5 id="tcp报文标志位的含义"><a class="markdownIt-Anchor" href="#tcp报文标志位的含义"></a> TCP报文标志位的含义</h5>
+<img src="image-20230417093336455.png" alt="image-20230417093336455" style="zoom:67%;">
+<p><strong>TCP最大段长度（MSS）</strong>：TCP报文<strong>数据部分</strong>的最大长度，<strong>不包括TCP报头长度</strong>。默认值为536字节</p>
+<p>MSS与窗口长度的区别：</p>
+<ul>
+<li>MSS是最大报文段长度，表示TCP报文段中数据部分的最大长度，单位为字节。窗口长度是TCP滑动窗口的大小，表示接收方能够接收的数据量，单位为字节。</li>
+<li><strong>MSS是一个静态的值</strong>，只出现在TCP连接建立时的SYN报文段中，由发送方和接收方协商确定。<strong>窗口长度是一个动态的值</strong>，随着数据的发送和接收而变化，由接收方根据自身的缓存空间和网络状况来通知发送方。</li>
+</ul>
+<p>MSS大小选择：1) 考虑协议开销，不能太小；2) 考虑分段导致的网络层开销和传输出错概率，不能太大；3) 考虑发送和接收缓冲区的限制</p>
+<p>思考题：</p>
+<p>1.TCP报文段为什么没有字段定义数据字段的长度？这样做会有什么潜在的问题？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- 原因：TCP报文段是基于IP协议传输的，IP首部中已经有了整个数据报的总长度字段，而TCP首部中也有了TCP首部的长度字段，因此可以通过减法得到数据字段的长度。另外，TCP提供的是面向字节流的传输，所传输的数据是无边界的，不需要定义数据字段的长度。</span><br><span class="line">- 潜在的问题：TCP报文段没有字段定义数据字段的长度可能会导致一些安全问题，比如攻击者可以利用TCP首部中的可选项字段来插入恶意代码或数据，从而篡改或破坏正常的数据传输。另外，TCP报文段没有字段定义数据字段的长度也可能会影响传输效率，比如如果TCP首部中的可选项字段过长，会占用更多的带宽和缓存空间。</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>TCPv6的数据结构与TCPv4的数据结构有何不同？</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TCPv6和TCPv4的数据结构基本上是一样的，都是由源端口、目的端口、序号、确认号、数据偏移、保留位、控制位、窗口大小、校验和、紧急指针和选项字段组成的。不过，TCPv6是在IPv6的网络层上运行的，而TCPv4是在IPv4的网络层上运行的。IPv6和IPv4的主要区别是地址长度，IPv6有128位，而IPv4只有32位。这意味着IPv6可以提供更多的地址空间，更好的安全性和更高的效率。</span><br></pre></td></tr></table></figure>
+<h4 id="tcp通信过程"><a class="markdownIt-Anchor" href="#tcp通信过程"></a> TCP通信过程</h4>
+<p>三个阶段：建立连接——数据双向传输——释放连接</p>
+<ul>
+<li>
+<p>建立连接阶段：</p>
+<p>三个报文段交互，三次握手</p>
+<p>1、<strong>客户端</strong>：发送连接建立请求，SYN=1，<mark>ACK=0</mark>，Seq=x。SYN=1的报文段不携带数据，但要消耗掉一个序号。</p>
+<p>2、<strong>服务器端</strong>：收到请求并同意，SYN=1，<mark>ACK=1</mark>，Seq=y, ack=x+1（回复的ack为接收的seq+1）。该报文段也是SYN=1的报文段，不携带数据，但要消耗掉一个序号</p>
+<p>3、<strong>客户端</strong>：收到服务器的确认，并对此进行确认。ACK=1, <strong>Seq=x+1, ack=y+1</strong></p>
+</li>
+<li>
+<p>释放连接阶段：</p>
+<img src="image-20230514094718467.png" alt="image-20230514094718467" style="zoom: 50%;">
+<ul>
+<li>两个方向的连接，可以间隔开来释放</li>
+<li>每个方向的连接释放，需要2个报文段</li>
+</ul>
+<p>其中，图中的MSL为<u>最大报文生存时间（Maximum Segment Lifetime）</u>，是任何报文段被丢弃前在网络内的最长时间。</p>
+<p>思考：需要等待2MSL的原因</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TCP通讯释放连接时需要等待2MSL的原因是为了保证网络中所有的数据包都被接收方接收完毕，防止这些数据包在网络中滞留，导致新的连接误认为这些数据包是自己的数据包，从而出现错误。2MSL即两倍的MSL，TCP的TIME_WAIT状态也称为2MSL等待状态。当TCP的一端发起主动关闭，在发出最后一个ACK包后，即第3次握手完成后发送了第四次握手的ACK包后就进入了TIME_WAIT状态，必须在此状态上停留两倍的MSL时间，等待2MSL时间主要目的是怕最后一个ACK包对方没收到，那么对方在超时后将重发第三次握手的FIN包，主动关闭端接到重发的FIN包后可以再发一个ACK应答包。</span><br></pre></td></tr></table></figure>
+<p>假如客户端建立了到服务器的连接，传输了一些数据，但是突发故障崩溃。此种情况下，服务器将处于一种什么状态？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">服务器此时应处于等待应答状态，为了避免客户端崩溃占用服务器资源，服务器设置保持定时器来检验客户端的连接状态。</span><br><span class="line">保持定时器（服务器端）：每次收到客户端发来的消息就复位；定时器设定为2小时，超时则发送探测包。连续十个探测包还没收到回应，则中断连接。</span><br></pre></td></tr></table></figure>
+<p>客户端最终进入的TIME-WAIT状态该如何实现？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">使用时间等待定时器（客户端）：设定为报文寿命的2倍</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>TCP通过三次握手建立连接，通过四次握手释放连接</strong></p>
+</li>
+</ul>
+<p>思考1：TCP通讯为什么要用三次握手，一次，两次，四次行不行？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">一次握手显然不可行，因为没有收到对方的任何回复，无法确定对方是否同意建立连接并进行通信。</span><br><span class="line">四次握手肯定可以，但是相比于三次握手，没有增加任何必要的信息，浪费了信道资源，没有必要。</span><br><span class="line">两次握手不可行的原因：</span><br><span class="line">（1）客户端和服务器无法通过两次握手确认彼此的收发功能是否正常</span><br><span class="line">（2）客户端与服务器之间的序列号无法同步，也就是服务器返回的确认可能会丢失，导致客户端无法知道服务器的起始序列号，自然无法保证可靠性</span><br><span class="line">（3）防止已失效的连接请求报文段突然又传送到了服务器端</span><br></pre></td></tr></table></figure>
+<p>思考2：什么是SYN攻击？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SYN攻击也叫SYN洪泛（SYN Flood），是指攻击者发送大量的SYN包给服务器，但是并不回复ACK包，导致连接处于“半打开” 状况，消耗了服务器大量的资源。当合法用户发送SYN包请求建立连接时，服务器由于资源被占用而拒绝与其连接并提供服务。因此，SYN攻击属于拒绝服务攻击（Denial-of-service attack）</span><br><span class="line">应对措施主要包括：过滤（Filtering）、增加积压（Increasing Backlog）、减少SYN-RECEIVED定时（Reducing SYN-RECEIVED Timer）、SYN缓存（SYN Cache）等</span><br></pre></td></tr></table></figure>
+<p>思考3：初始序列号为什么每次都要动态随机选取而不能固定不变？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TCP通讯初始序列号需要动态随机选取，主要是为了保证网络安全。TCP在开始传输数据前，客户端和服务器需要随机生成自己的初始序列号（initial sequence number-ISN），然后通过三次握手进行交换确认。这样做的目的是为了防止网络中的攻击者通过猜测序列号来伪造数据包，从而达到攻击的目的。如果序列号是固定的，那么攻击者可以通过猜测序列号来伪造数据包，从而达到攻击的目的。</span><br></pre></td></tr></table></figure>
+<p><strong>思考4：1.对于数据字段长度=0的SYN/FIN报文段S，假定S的序号为x，为什么其ACK报文段的序号等于x+1？</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TCP协议中，对于数据字段长度为0的SYN/FIN报文段S，假定S的序号为x，其ACK报文段的序号等于x+1。这是因为SYN/FIN报文段不携带数据，但是需要占用一个序号。因此，当SYN/FIN报文段的序号为x时，其ACK报文段的序号应该为x+1。</span><br></pre></td></tr></table></figure>
+<p>总结：</p>
+<ul>
+<li>
+<p>以<mark>滑动窗口</mark>中的多个报文段为单位的双向传输（数据传输阶段）</p>
+</li>
+<li>
+<p>应用进程将数据以<mark>字节流</mark>发送，无需考虑发送数据字节长度，由TCP负责将字节流分段 打包</p>
+</li>
+<li>
+<p>借助滑动窗口，实现<mark>按序的，无差错、不丢失、不重复</mark>传送字节流</p>
+</li>
+<li>
+<p>提供<mark>差错控制</mark>功能，保证正确接收字节流（通过差错检测、确认、重传实现）</p>
+</li>
+</ul>
+<h3 id="传输控制协议"><a class="markdownIt-Anchor" href="#传输控制协议"></a> 传输控制协议</h3>
+<h4 id="tcp的滑动窗口与确认重传机制"><a class="markdownIt-Anchor" href="#tcp的滑动窗口与确认重传机制"></a> TCP的滑动窗口与确认重传机制</h4>
+<img src="image-20230514092918468.png" alt="image-20230514092918468" style="zoom: 80%;">
+<p>字节流<strong>分段</strong>，按<strong>段</strong>（序号）传输，捎带确认（确认号）</p>
+<p>通过滑动窗口跟踪、记录发送状态，实现差错控制</p>
+<p>两个缓存，两个窗口：</p>
+<ul>
+<li>
+<p>发送方缓存：用于存储准备发送的数据</p>
+</li>
+<li>
+<p>发送窗口：窗口值<strong>不为0</strong>，可以发送报文段</p>
+</li>
+<li>
+<p>接收方缓存：将正确接收的字节流写入缓存，等待接收读取</p>
+</li>
+<li>
+<p>接收窗口：窗口值<strong>等于接收缓存可以接收</strong>的字节流</p>
+</li>
+</ul>
+<p>发送方使用发送缓存和发送窗口，接收方使用接收缓存和接收窗口，发送方窗口大小大于接收方窗口大小时，发送方需等待接收方确认完毕后才能继续发送数据。</p>
+<p><img src="image-20230514101054609.png" alt="image-20230514101054609"></p>
+<p>注意：已经发送的数据要等接收方确认后发送窗口才能进行滑动</p>
+<p><img src="image-20230514101221157.png" alt="image-20230514101221157"></p>
+<p><img src="image-20230514101322640.png" alt="image-20230514101322640"></p>
+<p>假定进程A与B建立了一个TCP连接，A向B发送了一个报文段，覆盖字节编号**[1,6]<strong>。A 收到了 B 发来的ACK报文段，其中</strong>确认号<strong>是</strong>4**，<strong>窗口大小</strong>是<strong>6</strong>字节。</p>
+<p>则<strong>B的接收窗口的一种可能形式：</strong></p>
+<img src="image-20230514101351220.png" alt="image-20230514101351220" style="zoom:50%;">
+<p>对上图的说明：</p>
+<p>1）B期望接收的字节在范围[4,9]之内</p>
+<p>2）若收到的字节的序号&lt;=3，则是<strong>重复</strong>的数据，<strong>丢弃</strong></p>
+<p>3）若收到的字节的序号&gt;=10，则是<strong>跳序</strong>的数据，<strong>丢弃</strong></p>
+<p>4）只有当收到的字节序号距离RCV.NXT指针是<strong>连续的</strong>(如收到序号为4,5的两个字节)，接收窗口才会向右滑动(如RCV.NXT += 2)</p>
+<p>5）TCP支持SACK选项，即可以对[4,9]之间的<strong>非连续字节</strong>进行选择确认。如收到序号4,5,7,8的四个字节，B向A发送ACK报文段，其中确认号是<strong>6</strong>，TCP选项为[7,8]，表示序号7到8之间的字节被收到。</p>
+<p>总结：对于接收窗口，重复收到的数据（已经确认）和跳序数据（超出接收窗口范围）直接丢弃，只有收到字节序号在接受窗口范围内切连续，接收窗口才会向右滑动，同时支持非连续字节传输，利用SACK补全缺失的序号。</p>
+<p>滑动窗口的特点：</p>
+<ul>
+<li>使用发送和接受缓冲区，以及滑动窗口机制控制TCP连接上的字节传输</li>
+<li>TCP滑动窗口面向字节流，可以起到<strong>差错控制</strong>和<strong>流量控制</strong>作用</li>
+<li>接收方可以在任何时候发送确认，窗口大小可由接收方根据需要增大或减少</li>
+<li>发送窗口值<strong>不能超过</strong>接收窗口值，发送方可以根据自身需要来决定</li>
+</ul>
+<h5 id="接收窗口-发送窗口与拥塞窗口的关系"><a class="markdownIt-Anchor" href="#接收窗口-发送窗口与拥塞窗口的关系"></a> 接收窗口、发送窗口与拥塞窗口的关系</h5>
+<p>拥塞窗口每次收到一个确认段之后大小对应增加该段的大小</p>
+<p>接收窗口大小为分配大小 - 已确认的数据的大小</p>
+<p>发送窗口大小 = min{ 拥塞窗口， 接收窗口 }</p>
+<p>确认重传的方式：</p>
+<p>当传输过程中出现了报文段丢失，需要重新传输</p>
+<ul>
+<li>回退方式（Go-back-N, GBN）：假设丢失了第2个报文段，不管之后的报文段是否已正确接收，从第2个报文段的第1个字节序号151开始，重发所有的4个报文段。即重新发送包含确实段的整个报文，显然，效率低下！</li>
+<li>选择重发（Selective Acknowledgment，SACK）：接收方收到不连续的字节时，如果这些字节的序号都在接收窗口之内，则首先接收缓存这些字节，并将丢失的字节流序号通知发送方，发送方只需重发丢失的报文段，而不需要重发已经接收的报文段。</li>
+</ul>
+<p>超时重传机制：</p>
+<p>**重传定时器：**处理报文确认与等待重传的时间。发送一个报文，将其副本放入重传队列</p>
+<p>定时器的时间应当如何设置？</p>
+<ul>
+<li>
+<p>如果把超时重传时间设置得<strong>太短</strong>，就会引起很多报文段<strong>不必要的重传</strong>，使网络<mark>负荷增大</mark>；</p>
+</li>
+<li>
+<p>但若把超时重传时间设置得<strong>过长</strong>，则又使网络的<strong>空闲时间增大</strong>，<mark>降低了传输效率</mark>。</p>
+</li>
+<li>
+<p>定时器设置与报文段往返时间<strong>RTT</strong>紧密相关。RTT表示一个报文段自发出到收到ACK的时间间隔。</p>
+</li>
+</ul>
+<h5 id="rtt的特点"><a class="markdownIt-Anchor" href="#rtt的特点"></a> RTT的特点</h5>
+<ul>
+<li>
+<p>RTT随网络状态而<strong>随机</strong>波动，既<u>非定值，也无规律</u></p>
+</li>
+<li>
+<p>发送数据报的<strong>同时</strong>，需要对该报文的RTT进行估计</p>
+</li>
+</ul>
+<p>RTT计算的方法（*不要求掌握）：</p>
+<img src="image-20230514102322494.png" alt="image-20230514102322494" style="zoom: 50%;">
+<h4 id="tcp流量控制与拥塞控制"><a class="markdownIt-Anchor" href="#tcp流量控制与拥塞控制"></a> TCP流量控制与拥塞控制</h4>
+<h5 id="流量控制"><a class="markdownIt-Anchor" href="#流量控制"></a> 流量控制</h5>
+<p>由发送方控制发送速率，使之不超过接收速率，防止接收方来不及接收字节流，而出现报文丢失现象</p>
+<p>基本流程：</p>
+<p>触发零窗口事件的流量控制基本事件逻辑：</p>
+<p><strong>1)</strong> <strong>零窗口</strong>(Zero window)<strong>通告</strong></p>
+<p>当TCP接收方的缓冲区满(如应用层未能及时提取数据)，则接收方往发送方发送<strong>纯ACK报文段</strong>(数据长度=0，窗口字段=0)，称之为零窗口通告</p>
+<p><strong>2) 窗口更新(Window update)</strong></p>
+<p>当接收方缓冲区<mark>从满状态变到有可用空间</mark>时，接收方向发送方发送纯ACK报文段(数据长度=0，窗口字段&gt;0)，称之为窗口更新</p>
+<p><strong>3) 窗口探测(Window probe)</strong></p>
+<p>因为纯ACK报文段(数据长度=0, ACK=1的报文段)不被TCP可靠递送，则第2步的窗口更新有<strong>可能在网络中丢失</strong>，导致收发双方都处于等待的死锁状态。</p>
+<p>为避免活锁，发送方使用一种叫**坚持定时器(persist timer)**来定期触发：发送方往接收方发送窗口探测报文段(数据长度&gt;0, 保证被TCP递送)。作为响应，<u>接收方将自己的缓冲区可用空间大小放入ACK报文段的窗口字段</u>，由此，发送方获知接收方是否能继续接收数据。</p>
+<p><img src="image-20230514102739461.png" alt="image-20230514102739461"></p>
+<p>红字1：<strong>零窗口通告</strong>：纯ACK报文段，数据长度=0，窗口字段**=0**</p>
+<p>红字2：<strong>窗口更新</strong>：纯ACK报文段，数据长度=0，窗口字段=0</p>
+<p>红字3：<strong>窗口探测</strong>：纯ACK报文段，数据长度=0，ACK=1，发送方发送</p>
+<h5 id="拥塞控制"><a class="markdownIt-Anchor" href="#拥塞控制"></a> 拥塞控制</h5>
+<p>拥塞现象：当多个主机端点通过TCP向整个网络注入数据时，TCP如果不对注入数据的速率进行控制，将导致整个网络出现拥堵：</p>
+<ul>
+<li>
+<p>往返时延增大导致TCP重传，进一步增加拥堵</p>
+</li>
+<li>
+<p>中间路由器的缓冲容量有限。当IP数据报的到达率持续超过发出率时，中间路由器的缓冲变满, 只好丢弃新进的数据包，导致TCP重传。</p>
+</li>
+</ul>
+<img src="image-20230514103001315.png" alt="image-20230514103001315" style="zoom: 80%;">
+<p>拥塞判定：</p>
+<p>1）<strong>重传定时器超时</strong></p>
+<p>现在通信线路的传输质量一般都很好，因传输出差错而丢弃分组的概率是很小的（远小于 1 %）。只要出现了超时，就可以猜想网络可能出现了拥塞)</p>
+<p>2）<strong>收到三个相同（重复）的</strong> <strong>ACK</strong></p>
+<p>个别报文段会在网络中丢失，预示可能会出现拥塞（实际未发生拥塞），因此可以尽快采取控制措施，避免拥塞</p>
+<p>拥塞控制：慢开始，拥塞避免，快重传，快恢复</p>
+<img src="image-20230514103147641.png" alt="image-20230514103147641" style="zoom: 67%;">
+<ul>
+<li>
+<p>慢开始：</p>
+<ul>
+<li>
+<p>慢开始阔值SST：慢开始阶段和拥塞避免阶段的分界线，初始值有算法设定</p>
+</li>
+<li>
+<p>慢开始阶段：<mark>cwnd≤SST</mark>。在该阶段，cwnd初始值为1，且每结束一个RTT，cwnd<strong>翻倍</strong></p>
+</li>
+<li>
+<p>当<mark>cwnd=SST</mark>时：进入拥塞避免阶段</p>
+</li>
+</ul>
+</li>
+<li>
+<p>拥塞避免：发生拥塞时，Tahoe版本进入慢开始，Reno版本直接进入快恢复</p>
+<p><strong><img src="image-20230514103412344.png" alt="image-20230514103412344" style="zoom: 50%;">、</strong></p>
+</li>
+<li>
+<p>快重传：发送方连续收到3个ACK确认后执行</p>
+<img src="image-20230514103552160.png" alt="image-20230514103552160" style="zoom:50%;">
+<ul>
+<li>
+<p>“快重传”规定：接收方应及时向发送方连续3次发出对M2的“重复确认”，要求尽早重传未被确认的报文</p>
+</li>
+<li>
+<p>当发送方接收到重复的<strong>ACK</strong>时，立即重传丢失的报文段M3，而不必等到M3的重传定时器超时才重传</p>
+</li>
+<li>
+<p>TCP Tahoe版和TCP Reno版都支持快重传</p>
+</li>
+</ul>
+</li>
+<li>
+<p>快恢复：TCP Reno版在发生拥塞事件时，<u>将cwnd减半，直接进入拥塞避免阶段</u></p>
+</li>
+</ul>
+<h2 id="网络层"><a class="markdownIt-Anchor" href="#网络层"></a> 网络层</h2>
+<p>网络层提供：主机之间的<strong>不可靠的，无连接的</strong>分组传输服务。</p>
+<p>获取HTTP服务器地址：DNS协议</p>
+<h3 id="icmp"><a class="markdownIt-Anchor" href="#icmp"></a> ICMP</h3>
+<p>常见ICMP报文的类型：</p>
+<ul>
+<li>路由重定向：用于通知发送方，数据报应该通过不同的网关进行传输。其中，代码字段指定了新的网关地址。</li>
+<li>目的不可达：用于通知发送方，目标主机或目标网络不可达。其中，代码字段可以表示具体的原因，如目标主机未响应、目标网络不可达等。</li>
+<li>源站抑制：用于通知发送方，由于网络拥塞或其他原因，接收方无法处理所有接收到的数据报。发送方应该减缓发送速度，以避免发送过多的数据报。</li>
+<li>超时：用于通知发送方，数据报的 TTL（生存时间）已经减至 0，导致数据报被丢弃。</li>
+</ul>
+<p>上述几种报文类型也是ICMP差错报文的主要内容。</p>
+<img src="image-20230629171138579.png" alt="image-20230629171138579" style="zoom:67%;">
+<ul>
+<li>PING指令使用了ICMP报文，但并没有使用差错报文。</li>
+</ul>
+<p>路由器没有定义缺省路由，当接收ip不在路由表中时，将会采取如下策略：丢弃数据报或发送ICMP不可达消息。</p>
+<h3 id="nat技术"><a class="markdownIt-Anchor" href="#nat技术"></a> NAT技术</h3>
+<p>用于将私有网络中的 IP 地址映射为公共网络中的 IP 地址，以实现内部网络与外部网络的通信。</p>
+<ul>
+<li>静态NAT：一对多</li>
+<li>动态NAT：多对多</li>
+</ul>
+<p>NAT协议丢弃IP分组的情况：</p>
+<ol>
+<li><strong>未匹配到转换规则</strong>：当 NAT 设备接收到来自内部网络或外部网络的 IP 分组时，如果未找到与该分组匹配的转换规则，那么该分组将被丢弃。</li>
+<li><strong>安全策略限制</strong>：当 NAT 设备配置了安全策略时，可能会根据策略规则拦截某些 IP 分组，以保护内部网络的安全。例如，可能会拦截来自未授权的 IP 地址的分组，或者拦截包含恶意代码的分组。</li>
+<li><strong>资源限制</strong>：当 NAT 设备的资源不足时，可能会丢弃某些 IP 分组，以确保设备的正常运行。例如，可能会丢弃优先级较低的分组，或者丢弃过期的分组。</li>
+<li>转发规则限制：当 NAT 设备配置了转发规则时，可能会根据规则限制某些 IP 分组的转发。例如，可能会限制外部网络中的主机访问内部网络中的某些主机，或者限制内部网络中的主机访问外部网络的某些服务。</li>
+</ol>
+<h3 id="路由协议"><a class="markdownIt-Anchor" href="#路由协议"></a> 路由协议</h3>
+<ul>
+<li>
+<p>RIP协议</p>
+</li>
+<li>
+<p>OSPF协议</p>
+</li>
+</ul>
+<h2 id="链路层物理层"><a class="markdownIt-Anchor" href="#链路层物理层"></a> 链路层&amp;物理层：</h2>
+<p>数据编码技术</p>
+<p>脉冲编码调制（PCM）流程：采样→量化→编码</p>
+<h3 id="链路层中的差错控制"><a class="markdownIt-Anchor" href="#链路层中的差错控制"></a> 链路层中的差错控制</h3>
+<h5 id="差错检测与纠正"><a class="markdownIt-Anchor" href="#差错检测与纠正"></a> 差错检测与纠正</h5>
+<ul>
+<li>
+<p>检测：检错码，自动发现差错的编码</p>
+</li>
+<li>
+<p>纠错：纠错码，不仅能发现差错，且能够自动纠错的编码</p>
+</li>
+<li>
+<p>检错与纠错思想：在向信道发送数据前，先按照某种关系增加<strong>冗余位</strong>，构成码字发送。接收方收到码字后检查信息位和冗余位，进行校验以发现差错。</p>
+</li>
+</ul>
+<p>校验和：常用于传输层，检错码</p>
+<p>奇偶校验：较简单，检错码</p>
+<p>循环冗余校验：较复杂，检错码</p>
+<p>海明码：纠错码</p>
+<ul>
+<li>奇偶校验：在信息位最后添加一位作为校验位，使得码字中 ‘1’ 的个数为奇（偶）数。</li>
+</ul>
+<h4 id="crc校验"><a class="markdownIt-Anchor" href="#crc校验"></a> CRC校验</h4>
+<p>#CRC校验码可以检测出所有的单比特错误</p>
+<p><img src="image-20230627220725495.png" alt="image-20230627220725495"></p>
+<p>步骤：</p>
+<p>1、选取生成多项式，根据该多项式的最高次项对原数据进行左移（例如最高次项为4次，则左移4位），后面多出的位数为冗余位，用于循环校验。</p>
+<p>2、将左移后的数据<strong>模2除</strong>上述生成多项式，得到的余数即为冗余码，发送的时候将原数据+冗余码一并发送。</p>
+<p>具体样例见上图</p>
+<img src="image-20230627221129768.png" alt="image-20230627221129768" style="zoom:50%;">
+<p><img src="image-20230627221202853.png" alt="image-20230627221202853"></p>
+<p><img src="image-20230627221216999.png" alt="image-20230627221216999"></p>
+<h6 id="ipv6"><a class="markdownIt-Anchor" href="#ipv6"></a> Ipv6</h6>
+<p>Ipv6分组的结构：基本头、扩展头部、数据</p>
+<h3 id="介质控制访问"><a class="markdownIt-Anchor" href="#介质控制访问"></a> 介质控制访问</h3>
+<ul>
+<li>
+<p><strong>定义：<strong>用来决定广播信道中</strong>信道分配</strong>的协议，属于数据链路层的一个子层，称为介质访问控制（Medium Access Control，MAC）子层</p>
+</li>
+<li>
+<p>**任务：**为使用介质的每个节点隔离来自同一信道上其它节点所传送的信号，以协调活动节点的传输</p>
+</li>
+<li>
+<p><strong>分类：</strong></p>
+</li>
+</ul>
+<p>信道划分介质访问控制：<strong>频分多路复用</strong>、<strong>时分多路复用</strong>、波分多路复用、码分多路复用 【<strong>静态划分</strong>】</p>
+<p>随机访问介质访问控制：ALOHA、<strong>CSMA/CD</strong>、CSMA/CA  【<strong>动态划分</strong>】</p>
+<p>轮询访问介质访问控制：令牌传递协议</p>
+<ul>
+<li>
+<p>频分多路复用（FDMA）：</p>
+<p>将基带信号调制到不同频率载波上再进行叠加形成一个复合信号的技术</p>
+<p>一般需引入“保护频带”</p>
+<p>效率高、技术成熟、易实现</p>
+<img src="image-20230627213313345.png" alt="image-20230627213313345" style="zoom:50%;">
+</li>
+<li>
+<p>时分多路复用（TDMA）</p>
+<p>将物理信道按照时间分成若干个时间片，轮流地分配给多个信号使用</p>
+<p>每个时间片由复用的一个信号占用</p>
+<p><strong>统计时分复用</strong>是一种改进，不固定地分配时隙，而是<strong>按需动态分配</strong>时隙</p>
+<img src="image-20230627213344610.png" alt="image-20230627213344610" style="zoom:50%;">
+</li>
+</ul>
+<h4 id="csmacd"><a class="markdownIt-Anchor" href="#csmacd"></a> CSMA/CD</h4>
+<p><strong>Carrier sense medium access/ collision detection</strong></p>
+<p>CSMA/CD技术十六字真言：</p>
+<ul>
+<li>
+<p>先听后发：监听到总线空闲才发送数据</p>
+</li>
+<li>
+<p>边听边发：监听到空闲开始发，听是为了判断是否发生碰撞</p>
+<ul>
+<li>碰撞：不同用户发送的数据在信道混叠</li>
+</ul>
+</li>
+<li>
+<p>冲突停止：发生冲突停止数据发送</p>
+</li>
+<li>
+<p>延迟重发：发生冲突后进行延迟重发</p>
+</li>
+</ul>
+<h5 id="冲突窗口"><a class="markdownIt-Anchor" href="#冲突窗口"></a> 冲突窗口</h5>
+<img src="image-20230627214159943.png" alt="image-20230627214159943" style="zoom: 67%;">
+<p>定义：2D（Distance）/ V（传输速度），即发送数据到发生冲突的节点并接收到发生冲突的时间</p>
+<p>#这里的冲突域窗口的定义应是主机发送数据后能够接收到发生冲突信息的时间</p>
+<p>冲突域窗口时间不能小于数据帧发送时间，即接收到冲突的时间应该在数据发送完毕后。</p>
+<p>冲突域时间最小值：冲突点位于两台主机中间</p>
+<p>冲突域时间最大值：冲突点位于某一主机附近</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <blockquote class="article-copyright">
+    <p><strong>本文作者：</strong>*月遇丛雲花遇風* @ T3uk1 の 庭院</p>
+    <p><strong>本文链接：</strong><a href="https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/">https://t3uk1.github.io/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/</a></p>
+    <p><strong>本文标题：</strong>计算机网络复习笔记</p>
+    
+    
+    <p><strong>本文版权：</strong>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><span class="icon-creative-commons"></span>BY-NC-SA</a> 许可协议。转载请注明出处！</p>
+  </blockquote>
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+    
+  <nav id="article-nav" class="wow fadeInUp">
+    
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          
+          
+            <img data-src="/covers/QQ图片20211219112939.jpg" data-sizes="auto" alt="OpenGL环境手动安装配置记录" class="lazyload">
+          
+        
+        <a href="/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/"></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">
+          
+            OpenGL环境手动安装配置记录
+          
+        </h3>
+      </div>
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="/covers/QQ20220127125306.jpg" data-sizes="auto" alt="JS学习笔记" class="lazyload">
+        
+      
+      <a href="/2023/01/02/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          JS学习笔记
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+  
+</article>
+
+
+
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrap wow fadeInRight wrap-sticky">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text"> 计算机网络复习笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#osi%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84"><span class="toc-number">1.1.1.</span> <span class="toc-text"> OSI模型结构：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%B1%82"><span class="toc-number">1.2.</span> <span class="toc-text"> 应用层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#url"><span class="toc-number">1.2.1.</span> <span class="toc-text"> URL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#http%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.2.2.</span> <span class="toc-text"> HTTP协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.2.3.</span> <span class="toc-text"> 电子邮件协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#telnet%E4%BA%A4%E4%BA%92%E5%BC%8F%E4%BC%9A%E8%AF%9D%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.2.4.</span> <span class="toc-text"> TELNET（交互式会话）协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%9E%E6%8C%81%E7%BB%AD%E8%BF%9E%E6%8E%A5%E4%B8%8E%E6%8C%81%E7%BB%AD%E8%BF%9E%E6%8E%A5"><span class="toc-number">1.2.5.</span> <span class="toc-text"> 非持续连接与持续连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.2.6.</span> <span class="toc-text"> 工作模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ftp"><span class="toc-number">1.2.7.</span> <span class="toc-text"> FTP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tftp"><span class="toc-number">1.2.8.</span> <span class="toc-text"> TFTP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dns"><span class="toc-number">1.2.9.</span> <span class="toc-text"> DNS</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#dns%E5%9F%9F%E5%90%8D%E8%A7%A3%E6%9E%90%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.2.9.1.</span> <span class="toc-text"> DNS域名解析模式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">1.2.10.</span> <span class="toc-text"> 其他</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%A0%E8%BE%93%E5%B1%82"><span class="toc-number">1.3.</span> <span class="toc-text"> 传输层</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E8%BF%9B%E7%A8%8B-%E4%BC%A0%E8%BE%93%E5%B1%82%E6%8E%A5%E5%8F%A3%E4%B8%8E%E5%A5%97%E6%8E%A5%E5%AD%97"><span class="toc-number">1.3.0.1.</span> <span class="toc-text"> 应用进程、传输层接口与套接字</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E8%BF%9B%E7%A8%8B%E6%A0%87%E8%AF%86%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95"><span class="toc-number">1.3.0.2.</span> <span class="toc-text"> 应用进程标识的基本方法：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3%E5%8F%B7%E7%9A%84%E5%88%86%E9%85%8D%E6%96%B9%E6%B3%95"><span class="toc-number">1.3.0.3.</span> <span class="toc-text"> 端口号的分配方法：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tcp%E5%8D%8F%E8%AE%AE%E4%B8%8Eudp%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.1.</span> <span class="toc-text"> TCP协议与UDP协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#udp%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.2.</span> <span class="toc-text"> UDP协议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#udp%E6%95%B0%E6%8D%AE%E6%8A%A5%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.3.2.1.</span> <span class="toc-text"> UDP数据报格式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tcp%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.3.</span> <span class="toc-text"> TCP协议</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#tcp%E6%8A%A5%E6%96%87%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.3.3.0.1.</span> <span class="toc-text"> TCP报文格式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#tcp%E6%8A%A5%E6%96%87%E6%A0%87%E5%BF%97%E4%BD%8D%E7%9A%84%E5%90%AB%E4%B9%89"><span class="toc-number">1.3.3.0.2.</span> <span class="toc-text"> TCP报文标志位的含义</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#tcp%E9%80%9A%E4%BF%A1%E8%BF%87%E7%A8%8B"><span class="toc-number">1.3.3.1.</span> <span class="toc-text"> TCP通信过程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%A0%E8%BE%93%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.4.</span> <span class="toc-text"> 传输控制协议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#tcp%E7%9A%84%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E4%B8%8E%E7%A1%AE%E8%AE%A4%E9%87%8D%E4%BC%A0%E6%9C%BA%E5%88%B6"><span class="toc-number">1.3.4.1.</span> <span class="toc-text"> TCP的滑动窗口与确认重传机制</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8E%A5%E6%94%B6%E7%AA%97%E5%8F%A3-%E5%8F%91%E9%80%81%E7%AA%97%E5%8F%A3%E4%B8%8E%E6%8B%A5%E5%A1%9E%E7%AA%97%E5%8F%A3%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">1.3.4.1.1.</span> <span class="toc-text"> 接收窗口、发送窗口与拥塞窗口的关系</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#rtt%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-number">1.3.4.1.2.</span> <span class="toc-text"> RTT的特点</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#tcp%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6%E4%B8%8E%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="toc-number">1.3.4.2.</span> <span class="toc-text"> TCP流量控制与拥塞控制</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6"><span class="toc-number">1.3.4.2.1.</span> <span class="toc-text"> 流量控制</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="toc-number">1.3.4.2.2.</span> <span class="toc-text"> 拥塞控制</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%B1%82"><span class="toc-number">1.4.</span> <span class="toc-text"> 网络层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#icmp"><span class="toc-number">1.4.1.</span> <span class="toc-text"> ICMP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nat%E6%8A%80%E6%9C%AF"><span class="toc-number">1.4.2.</span> <span class="toc-text"> NAT技术</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.4.3.</span> <span class="toc-text"> 路由协议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%BE%E8%B7%AF%E5%B1%82%E7%89%A9%E7%90%86%E5%B1%82"><span class="toc-number">1.5.</span> <span class="toc-text"> 链路层&amp;物理层：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E8%B7%AF%E5%B1%82%E4%B8%AD%E7%9A%84%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6"><span class="toc-number">1.5.1.</span> <span class="toc-text"> 链路层中的差错控制</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B7%AE%E9%94%99%E6%A3%80%E6%B5%8B%E4%B8%8E%E7%BA%A0%E6%AD%A3"><span class="toc-number">1.5.1.0.1.</span> <span class="toc-text"> 差错检测与纠正</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#crc%E6%A0%A1%E9%AA%8C"><span class="toc-number">1.5.1.1.</span> <span class="toc-text"> CRC校验</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#ipv6"><span class="toc-number">1.5.1.1.0.1.</span> <span class="toc-text"> Ipv6</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E8%B4%A8%E6%8E%A7%E5%88%B6%E8%AE%BF%E9%97%AE"><span class="toc-number">1.5.2.</span> <span class="toc-text"> 介质控制访问</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#csmacd"><span class="toc-number">1.5.2.1.</span> <span class="toc-text"> CSMA&#x2F;CD</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%86%B2%E7%AA%81%E7%AA%97%E5%8F%A3"><span class="toc-number">1.5.2.1.1.</span> <span class="toc-text"> 冲突窗口</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="*月遇丛雲花遇風*" class="lazyload">
+  <div class="sidebar-author-name">*月遇丛雲花遇風*</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">15</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=1027600674@qq.com itemprop="url" target="_blank" aria-label="email"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/t3uk1 itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+    
+      <div class="sidebar-btn-wrapper" style="position:static">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+    
+  </div>
+
+  
+</aside>
+
+          
+        </div>
+        <footer id="footer" class="wow fadeInUp">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div class="outer">
+    <div id="footer-info">
+      
+      <div>
+        <span class="icon-copyright"></span>
+        2022-2024
+        <span class="footer-info-sep"></span>
+        *月遇丛雲花遇風*
+      </div>
+      
+        <div>
+          基于&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+          Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+        </div>
+      
+      
+        <div>
+          <span class="icon-brush"></span>
+          103.3k
+          &nbsp;|&nbsp;
+          <span class="icon-coffee"></span>
+          07:53
+        </div>
+      
+      
+        <div>
+          <span class="icon-eye"></span>
+          <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+          &nbsp;|&nbsp;
+          <span class="icon-user"></span>
+          <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+        </div>
+      
+    </div>
+  </div>
+</footer>
+
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
+        </div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text"> 计算机网络复习笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#osi%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84"><span class="toc-number">1.1.1.</span> <span class="toc-text"> OSI模型结构：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%B1%82"><span class="toc-number">1.2.</span> <span class="toc-text"> 应用层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#url"><span class="toc-number">1.2.1.</span> <span class="toc-text"> URL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#http%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.2.2.</span> <span class="toc-text"> HTTP协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.2.3.</span> <span class="toc-text"> 电子邮件协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#telnet%E4%BA%A4%E4%BA%92%E5%BC%8F%E4%BC%9A%E8%AF%9D%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.2.4.</span> <span class="toc-text"> TELNET（交互式会话）协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%9E%E6%8C%81%E7%BB%AD%E8%BF%9E%E6%8E%A5%E4%B8%8E%E6%8C%81%E7%BB%AD%E8%BF%9E%E6%8E%A5"><span class="toc-number">1.2.5.</span> <span class="toc-text"> 非持续连接与持续连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.2.6.</span> <span class="toc-text"> 工作模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ftp"><span class="toc-number">1.2.7.</span> <span class="toc-text"> FTP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tftp"><span class="toc-number">1.2.8.</span> <span class="toc-text"> TFTP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dns"><span class="toc-number">1.2.9.</span> <span class="toc-text"> DNS</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#dns%E5%9F%9F%E5%90%8D%E8%A7%A3%E6%9E%90%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.2.9.1.</span> <span class="toc-text"> DNS域名解析模式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">1.2.10.</span> <span class="toc-text"> 其他</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%A0%E8%BE%93%E5%B1%82"><span class="toc-number">1.3.</span> <span class="toc-text"> 传输层</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E8%BF%9B%E7%A8%8B-%E4%BC%A0%E8%BE%93%E5%B1%82%E6%8E%A5%E5%8F%A3%E4%B8%8E%E5%A5%97%E6%8E%A5%E5%AD%97"><span class="toc-number">1.3.0.1.</span> <span class="toc-text"> 应用进程、传输层接口与套接字</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E8%BF%9B%E7%A8%8B%E6%A0%87%E8%AF%86%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95"><span class="toc-number">1.3.0.2.</span> <span class="toc-text"> 应用进程标识的基本方法：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3%E5%8F%B7%E7%9A%84%E5%88%86%E9%85%8D%E6%96%B9%E6%B3%95"><span class="toc-number">1.3.0.3.</span> <span class="toc-text"> 端口号的分配方法：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tcp%E5%8D%8F%E8%AE%AE%E4%B8%8Eudp%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.1.</span> <span class="toc-text"> TCP协议与UDP协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#udp%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.2.</span> <span class="toc-text"> UDP协议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#udp%E6%95%B0%E6%8D%AE%E6%8A%A5%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.3.2.1.</span> <span class="toc-text"> UDP数据报格式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tcp%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.3.</span> <span class="toc-text"> TCP协议</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#tcp%E6%8A%A5%E6%96%87%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.3.3.0.1.</span> <span class="toc-text"> TCP报文格式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#tcp%E6%8A%A5%E6%96%87%E6%A0%87%E5%BF%97%E4%BD%8D%E7%9A%84%E5%90%AB%E4%B9%89"><span class="toc-number">1.3.3.0.2.</span> <span class="toc-text"> TCP报文标志位的含义</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#tcp%E9%80%9A%E4%BF%A1%E8%BF%87%E7%A8%8B"><span class="toc-number">1.3.3.1.</span> <span class="toc-text"> TCP通信过程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%A0%E8%BE%93%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.4.</span> <span class="toc-text"> 传输控制协议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#tcp%E7%9A%84%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E4%B8%8E%E7%A1%AE%E8%AE%A4%E9%87%8D%E4%BC%A0%E6%9C%BA%E5%88%B6"><span class="toc-number">1.3.4.1.</span> <span class="toc-text"> TCP的滑动窗口与确认重传机制</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8E%A5%E6%94%B6%E7%AA%97%E5%8F%A3-%E5%8F%91%E9%80%81%E7%AA%97%E5%8F%A3%E4%B8%8E%E6%8B%A5%E5%A1%9E%E7%AA%97%E5%8F%A3%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">1.3.4.1.1.</span> <span class="toc-text"> 接收窗口、发送窗口与拥塞窗口的关系</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#rtt%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-number">1.3.4.1.2.</span> <span class="toc-text"> RTT的特点</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#tcp%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6%E4%B8%8E%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="toc-number">1.3.4.2.</span> <span class="toc-text"> TCP流量控制与拥塞控制</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6"><span class="toc-number">1.3.4.2.1.</span> <span class="toc-text"> 流量控制</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="toc-number">1.3.4.2.2.</span> <span class="toc-text"> 拥塞控制</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%B1%82"><span class="toc-number">1.4.</span> <span class="toc-text"> 网络层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#icmp"><span class="toc-number">1.4.1.</span> <span class="toc-text"> ICMP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nat%E6%8A%80%E6%9C%AF"><span class="toc-number">1.4.2.</span> <span class="toc-text"> NAT技术</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.4.3.</span> <span class="toc-text"> 路由协议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%BE%E8%B7%AF%E5%B1%82%E7%89%A9%E7%90%86%E5%B1%82"><span class="toc-number">1.5.</span> <span class="toc-text"> 链路层&amp;物理层：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E8%B7%AF%E5%B1%82%E4%B8%AD%E7%9A%84%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6"><span class="toc-number">1.5.1.</span> <span class="toc-text"> 链路层中的差错控制</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B7%AE%E9%94%99%E6%A3%80%E6%B5%8B%E4%B8%8E%E7%BA%A0%E6%AD%A3"><span class="toc-number">1.5.1.0.1.</span> <span class="toc-text"> 差错检测与纠正</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#crc%E6%A0%A1%E9%AA%8C"><span class="toc-number">1.5.1.1.</span> <span class="toc-text"> CRC校验</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#ipv6"><span class="toc-number">1.5.1.1.0.1.</span> <span class="toc-text"> Ipv6</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E8%B4%A8%E6%8E%A7%E5%88%B6%E8%AE%BF%E9%97%AE"><span class="toc-number">1.5.2.</span> <span class="toc-text"> 介质控制访问</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#csmacd"><span class="toc-number">1.5.2.1.</span> <span class="toc-text"> CSMA&#x2F;CD</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%86%B2%E7%AA%81%E7%AA%97%E5%8F%A3"><span class="toc-number">1.5.2.1.1.</span> <span class="toc-text"> 冲突窗口</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="*月遇丛雲花遇風*" class="lazyload">
+  <div class="sidebar-author-name">*月遇丛雲花遇風*</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">15</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=1027600674@qq.com itemprop="url" target="_blank" aria-label="email"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/t3uk1 itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    <div class="site-search">
+      <div class="reimu-popup popup">
+        <div class="reimu-search">
+          <div class="reimu-search-input-icon"></div>
+          <div class="reimu-search-input" id="reimu-search-input"></div>
+          <div class="popup-btn-close"></div>
+        </div>
+        <div class="reimu-results">
+          <div id="reimu-stats"></div>
+          <div id="reimu-hits"></div>
+          <div id="reimu-pagination" class="reimu-pagination"></div>
+        </div>
+      </div>
+    </div>
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+<script type="module" data-pjax>
+  import PhotoSwipeLightbox from "https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.js";
+  
+  const pswp = () => {
+    if (_$$('.article-entry a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-entry',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.js")
+      }).init();
+    }
+    if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-gallery',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.js")
+      }).init();
+    }
+    window.lightboxStatus = 'done';
+    window.removeEventListener('lightbox:ready', pswp);
+  }
+  if(window.lightboxStatus === 'ready') {
+    pswp()
+  } else {
+    window.addEventListener('lightbox:ready', pswp);
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/generator_search.js"></script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.4/dist/index.umd.js"></script>
+
+  <script>
+    firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+
+  <script data-pjax>
+    quicklink.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div>
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.2.4' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --></body>
+  </html>
+

@@ -1,0 +1,917 @@
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  data-theme="dark" >
+  <head>
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};</script>
+  
+  
+  <title>
+    形式语言与自动机期末复习总结 |
+    
+    T3uk1 の 庭院
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+<link rel="stylesheet" href="/css/loader.css">
+
+  <meta name="description" content="形式语言与自动机期末复习总结 本文为本人考前复习自动机的时候简单总结的一些知识点和题型的做法的人话版本，对于概念、专有名词的说明可能不够准确，只适用于考前突击能做出题就行的情况，若时间充裕请认真理解课本以及ppt对相关概念、定理和算法的描述与证明。一些内容可能存在问题，水平有限敬请谅解。   第一章 绪论 笛卡尔积：  两个集合叉乘相当于将两个集合元素全排列 例题： 123集合A&#x3D;&#123;1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="形式语言与自动机期末复习总结">
+<meta property="og:url" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="T3uk1 の 庭院">
+<meta property="og:description" content="形式语言与自动机期末复习总结 本文为本人考前复习自动机的时候简单总结的一些知识点和题型的做法的人话版本，对于概念、专有名词的说明可能不够准确，只适用于考前突击能做出题就行的情况，若时间充裕请认真理解课本以及ppt对相关概念、定理和算法的描述与证明。一些内容可能存在问题，水平有限敬请谅解。   第一章 绪论 笛卡尔积：  两个集合叉乘相当于将两个集合元素全排列 例题： 123集合A&#x3D;&#123;1">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240111230116137.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240111230227666.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240111232250755.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240111233619094.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240112174118391.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240111233231821.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240112004404023.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240112004430577.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240112004437391.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240112012000062.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240112012008981.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240112012032984.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240112011819710.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240112011834789.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240112165403.jpg">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240112012753904.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240112012908905.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240112013214125.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240112030130624.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240112030841025.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240112030830458.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240112163635120.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240112014419364.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240112170905448.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240112171711097.png">
+<meta property="article:published_time" content="2024-01-12T07:30:30.000Z">
+<meta property="article:modified_time" content="2024-01-20T12:39:55.685Z">
+<meta property="article:author" content="*月遇丛雲花遇風*">
+<meta property="article:tag" content="形式语言与自动机">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/image-20240111230116137.png">
+  
+    <link rel="alternate" href="/atom.xml" title="T3uk1 の 庭院" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css">
+
+  
+  
+  
+  
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"></script>
+
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/wowjs@1.1.3/css/libs/animate.css">
+
+    
+<script src="https://npm.webcache.cn/wowjs@1.1.3/dist/wow.min.js"></script>
+
+    <script>
+      new WOW({
+        offset: 0,
+        mobile: true,
+        live: false
+      }).init();
+    </script>
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff6e6b" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z" fill="#fd0d00" />
+          <path d="M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95" fill="#fd0d00" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/">首页</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/archives">归档</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/about">关于</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/friend">友链</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      <img fetchpriority="high" src="/images/banner.jpg" alt="形式语言与自动机期末复习总结">
+    
+  
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <div id="logo-wrap">
+        
+          
+          
+            <a href="/" id="logo">
+              <h1>形式语言与自动机期末复习总结</h1>
+            </a>
+          
+        
+      </div>
+      
+        
+        <h2 id="subtitle-wrap">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content" class="outer">
+          
+          <section id="main"><article id="post-形式语言与自动机期末复习总结" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    <div class="article-meta">
+      <div class="article-date wow slideInLeft">
+  <a href="/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/" class="article-date-link">
+    <time datetime="2024-01-12T07:30:30.000Z" itemprop="datePublished">2024-01-12</time>
+    <time style="display: none;" id="post-update-time">2024-01-20</time>
+  </a>
+</div>
+
+      
+  <div class="article-category wow slideInLeft">
+    <a class="article-category-link" href="/categories/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA/">形式语言与自动机</a>
+  </div>
+
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <h1 id="形式语言与自动机期末复习总结"><a class="markdownIt-Anchor" href="#形式语言与自动机期末复习总结"></a> 形式语言与自动机期末复习总结</h1>
+<p>本文为本人考前复习自动机的时候简单总结的一些知识点和题型的做法的人话版本，对于概念、专有名词的说明可能不够准确，<strong>只适用于考前突击能做出题就行的情况</strong>，若时间充裕请认真理解课本以及ppt对相关概念、定理和算法的描述与证明。一些内容可能存在问题，水平有限敬请谅解。</p>
+<!-- toc -->
+<h3 id="第一章-绪论"><a class="markdownIt-Anchor" href="#第一章-绪论"></a> 第一章 绪论</h3>
+<p>笛卡尔积：</p>
+<img src="image-20240111230116137.png" alt="image-20240111230116137" style="zoom:67%;">
+<p>两个集合叉乘相当于将两个集合元素全排列</p>
+<p>例题：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">集合A=&#123;1,2,3&#125;，集合B=&#123;a,b,c&#125;, 计算笛卡尔积AXB</span><br><span class="line"></span><br><span class="line">AXB=&#123;(1,a),(1,b),(1,c),(2,a),(2,b),(2,c),(3,a),(3,b),(3,c)&#125;</span><br></pre></td></tr></table></figure>
+<p>幂集：</p>
+<img src="image-20240111230227666.png" alt="image-20240111230227666" style="zoom:67%;">
+<p>例题：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">集合A=&#123;a,b,c&#125;,计算A的幂集2A</span><br><span class="line"></span><br><span class="line">2A=&#123;Φ, &#123;a&#125;, &#123;b&#125; , &#123;c&#125; , &#123;a,b&#125; , &#123;a,c&#125; , &#123;b,c&#125; , &#123;a,b,c&#125;&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p><strong>闭包(closure)</strong><br>
+设P是关于关系的性质的集合，关系R的P闭包(closure)是包含R并且具有P中所有性质的最小关系。<br>
+<strong>正闭包(positive closure)</strong><br>
+(1)R是R+的子集。<br>
+(2)如果(a，b)，(b，c)∈R+ 则(a，c)∈R+。<br>
+(3)除(1)、(2)外，R+不再含有其他任何元素。</p>
+<p><strong>克林闭包</strong>R*</p>
+<p>正闭包+0次幂</p>
+</li>
+</ul>
+<h4 id="字母表"><a class="markdownIt-Anchor" href="#字母表"></a> <strong>字母表</strong></h4>
+<p>字母表是一个**<u>非空有穷</u>**集合，字母表中的元素称为该字母表的一个字母(letter)。又叫做符号(symbol)、或者字符(character)。</p>
+<p>字符具有整体性（<strong>不可分性</strong>）和可辨认性（<strong>可区分性</strong>）</p>
+<p>例题：</p>
+<p><strong><img src="image-20240111232250755.png" alt="image-20240111232250755" style="zoom:67%;"></strong></p>
+<h4 id="递归证明"><a class="markdownIt-Anchor" href="#递归证明"></a> 递归证明</h4>
+<ul>
+<li><strong>递归定义：</strong><br>
+又称为归纳定义(inductive definition)，它来定义一个集合。<br>
+集合的递归定义由三部分组成：<br>
+**基础(basis)：**用来定义该集合的最基本的元素。<br>
+**归纳(induction)：**指出用集合中的元素来构造集合的新元素的规则。<br>
+**极小性限定：**指出一个对象是所定义集合中的元素的充要条件是它可以通过有限次的使用基础和归纳条款中所给的规定构造出来。</li>
+<li><strong>归纳证明 ：</strong><br>
+与递归定义相对应。<br>
+归纳证明方法包括三大步：<br>
+基础(basis)：证明最基本元素具有相应性质。<br>
+**归纳(induction)：**证明如果某些元素具有相应性质，则根据这些元素用所规定的方法得到的新元素也具有相应的性质。<br>
+根据归纳法原理，所有的元素具有相应的性质。</li>
+</ul>
+<p><strong>归纳证明流程：</strong></p>
+<p>①基础：在n=0的时候，满足条件</p>
+<p>②归纳：假设n的时候成立，试证n+1的时候同样成立</p>
+<p>③由归纳法原理，结论对任意有穷集合成立</p>
+<p>归纳证明例题：</p>
+<p><img src="image-20240111233619094.png" alt="image-20240111233619094"></p>
+<p><img src="image-20240112174118391.png" alt="image-20240112174118391"></p>
+<p><strong>语言例题：</strong></p>
+<p>设∑={0，1} ，请给出上∑的下列语言的形式表示：</p>
+<p>(1) 所有以0开头的串。       {0}{0,1}*</p>
+<p>(2) 所有以11开头，以11结尾的串     {11}{0,1}*{11}</p>
+<p>(3) 所有包含子串001的串    {0,1}<em>{001}{0,1}</em></p>
+<p>(4) 所有正数第10个字符是0的串    {0,1}^9{0}{0,1}*</p>
+<p>(5) 所有不包含3个连续0的串   {001, 01, 1}*</p>
+<p>几个重要的基本概念：</p>
+<img src="image-20240111233231821.png" alt="image-20240111233231821" style="zoom:67%;">
+<h3 id="第二章-文法"><a class="markdownIt-Anchor" href="#第二章-文法"></a> 第二章 文法</h3>
+<p>文法定义：</p>
+<p><strong>G=(V, T, P, S)</strong></p>
+<p>V—变量</p>
+<p>T—终结符</p>
+<p>P—产生式</p>
+<p>S—起始符号</p>
+<p>例如：({A}，{0，1}，{A→01，A→0A1，A→1A0}，A)</p>
+<p>候选式：产生式  A→a|b|c  中，a，b，c分别为候选式</p>
+<p><strong>文法推导</strong></p>
+<p>给出文法和句子，根据文法推导句子的产生过程</p>
+<p>例2-4： 设G=({A}，{a}，{A→a|aA}，A)，句子aaaaa的推导过程？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">A→aA→aaA→aaaA→aaaaA→aaaaa</span><br><span class="line">其中前四步使用产生式A→aA，最后一步使用产生式A→a</span><br></pre></td></tr></table></figure>
+<p><strong>文法的乔姆斯基体系</strong></p>
+<p>0型文法（<strong>PSG</strong>）：短语结构文法</p>
+<p>1型文法（<strong>CSG</strong>）：对于任意产生式，都有右边数量大于等于左边，则为1型文法，也称之为<strong>上下文有关文法</strong></p>
+<p>2型文法（<strong>CFG</strong>）：在1型文法的基础上，若满足产生式左边的都为非终结符，则为2型文法，也称之为<strong>上下文无关文法</strong></p>
+<p>3型文法（<strong>RG</strong>）：正则文法，产生式左边为单一终结符，右边为一串终结符和一个非终结符的组合（左线性或右线性）</p>
+<p>左线性文法：基本形式为A→Aa</p>
+<p>右线性文法：基本形式为A→aA</p>
+<p><strong>文法设计：</strong></p>
+<h3 id="第三章-dfa-nfa"><a class="markdownIt-Anchor" href="#第三章-dfa-nfa"></a> 第三章 DFA NFA</h3>
+<p>即时描述迁移：</p>
+<p>例子：对于如下DFA，写出其即时描述迁移：</p>
+<p><img src="image-20240112004404023.png" alt="image-20240112004404023"></p>
+<img src="image-20240112004430577.png" alt="image-20240112004430577" style="zoom:67%;">
+<img src="image-20240112004437391.png" alt="image-20240112004437391" style="zoom:67%;">
+<p>根据接受的输入变化状态</p>
+<h4 id="ε-nfa-fa"><a class="markdownIt-Anchor" href="#ε-nfa-fa"></a> ε-NFA FA</h4>
+<h4 id="线性文法dfa构造"><a class="markdownIt-Anchor" href="#线性文法dfa构造"></a> <strong>线性文法DFA构造：</strong></h4>
+<p>右线性文法DFA构造：</p>
+<img src="image-20240112012000062.png" alt="image-20240112012000062" style="zoom: 50%;">
+<p>使用产生式对应的方式，构造路径</p>
+<img src="image-20240112012008981.png" alt="image-20240112012008981" style="zoom: 50%;">
+<img src="image-20240112012032984.png" alt="image-20240112012032984" style="zoom:67%;">
+<p>左线性文法DFA构造：</p>
+<img src="image-20240112011819710.png" alt="image-20240112011819710" style="zoom:67%;">
+<p>同样使用产生式对应的方式，构造路径</p>
+<img src="image-20240112011834789.png" alt="image-20240112011834789" style="zoom:67%;">
+<p>​                                                                                    终结符用 <strong>Z</strong> 表示</p>
+<p>右线性文法DFA转换为等价左线性文法：</p>
+<p>将DFA的所有箭头反过来，S输入改到Z处，将E作为终结状态，即改为左线性文法对应的DFA。</p>
+<p>对于每个状态，产生式为来源状态后跟读入数据。例如：A→C1|1</p>
+<h4 id="ε-nfa转dfa"><a class="markdownIt-Anchor" href="#ε-nfa转dfa"></a> ε-NFA转DFA</h4>
+<p>两步：</p>
+<p>①ε-NFA转NFA： 根据ε-NFA状态转移表画出NFA的状态转移表</p>
+<p>②NFA转DFA： 根据NFA状态转移表，先将初始状态放入，查看到达的状态集合，并将新出现的集合放入列表，类似下表的形式。最后，将包含原NFA终止态的节点设置为终止节点，然后画出对应的DFA即可（可以对新的节点重命名）</p>
+<img src="微信图片_20240112165403.jpg" alt="微信图片_20240112165403" style="zoom:30%;">
+<h3 id="第四章-re"><a class="markdownIt-Anchor" href="#第四章-re"></a> 第四章 RE</h3>
+<h4 id="re到fa的等价变换归纳构造法"><a class="markdownIt-Anchor" href="#re到fa的等价变换归纳构造法"></a> <strong>RE到FA的等价变换：归纳构造法</strong></h4>
+<p>对于一个正则表达式，不同的单元可以变换为如下形式的FA部分，其中形如（0+1）类型则表示为分支</p>
+<p>(下图箭头上没内容的都为ε)</p>
+<img src="image-20240112012753904.png" alt="image-20240112012753904" style="zoom:30%;">
+<p>例子：</p>
+<img src="image-20240112012908905.png" alt="image-20240112012908905" style="zoom:67%;">
+<h4 id="dfa转正则表达式"><a class="markdownIt-Anchor" href="#dfa转正则表达式"></a> DFA转正则表达式</h4>
+<p>初始化：设定一个x状态，空转移指向起始状态，设定一个Y状态，将所有终结状态空转移指向Y、</p>
+<p>按指定顺序依次去掉所有状态，直到最后只剩下X指向Y的路径，则此时的表达式为DFA的等价正则表达式</p>
+<h3 id="第五章-正则语言的封闭性"><a class="markdownIt-Anchor" href="#第五章-正则语言的封闭性"></a> 第五章 正则语言的封闭性</h3>
+<p><strong>定理：RL在交运算下封闭</strong></p>
+<p>使用场景：要求构造同时满足多个条件的DFA时，可以通过分别构造满足对应条件的DFA，然后通过交运算合成最终的DFA</p>
+<p>例子：</p>
+<p><img src="image-20240112013214125.png" alt="image-20240112013214125"></p>
+<p>左边两个DFA在经过交运算后形成右边的DFA</p>
+<h4 id="dfa极小化"><a class="markdownIt-Anchor" href="#dfa极小化"></a> DFA极小化</h4>
+<p>对于一个DFA，可以使用画表法进行极小化：</p>
+<p>这里采用的是下三角画表</p>
+<p>以下图为例：</p>
+<img src="image-20240112030130624.png" alt="image-20240112030130624" style="zoom:50%;">
+<p>假设DFA有n个状态，行为0-n-1，列为1-n</p>
+<p>目标：找出可区分状态并在标上标上x</p>
+<p>初始化：首先，最先能找到的可区分的状态为非终止状态和终止状态，如下图q0是非终结状态，q2为终结状态，则q0与q2是可区分的，因此在表上对应q0-q2处应打x</p>
+<img src="image-20240112030841025.png" alt="image-20240112030841025" style="zoom:50%;">
+<p>下一步：不断循环下面的过程：找到两个未标记的状态p，q，若存在一个输入a，使得{δ(p,a)，δ(q,a)}是已经被标记的，即p和q经过a输入跳转到的状态是否是可区分的，如果是可区分的，则为{p,q}加上标记，在表上p-q处打x。对于状态p和q，只有遍历所有的输入之后到达的状态都是不可区分的，p和q才是不可区分的。</p>
+<p>遍历所有对之后，在表中下三角部分观察是否存在未标记，即不可区分的状态，若有，则极小化后的DFA中这些状态要合并为一个状态。</p>
+<img src="image-20240112030830458.png" alt="image-20240112030830458" style="zoom:50%;">
+<h4 id="正则语言的性质"><a class="markdownIt-Anchor" href="#正则语言的性质"></a> 正则语言的性质</h4>
+<ul>
+<li>判定性质：<strong>泵引理</strong>及其应用</li>
+<li>封闭性质：并、乘积、闭包、补、交的封闭性</li>
+</ul>
+<p>判定性质：</p>
+<ul>
+<li>
+<p>成员判定：判定某一字符串是否在一个正则语言L中</p>
+</li>
+<li>
+<p>空否判定：判定正则语言L是否为空</p>
+<p>步骤：假定语言描述为DFA：<br>
+1、构建状态转移图；<br>
+2、计算从开始状态q0出发，所有可达到状态的集合；<br>
+3、若任何接受状态是可到达的，则该语言非空，否则该语言为空。</p>
+</li>
+<li>
+<p>无穷判定：判定正则语言L是否为无穷</p>
+<p>步骤：给定L对应的DFA：</p>
+<ul>
+<li>若<strong>该DFA有n个状态, L包含长度大于等于n的字符串，则该语言无穷。</strong></li>
+<li>否则，该语言L一定是有穷的。</li>
+</ul>
+</li>
+</ul>
+<p>无穷判定的证明：如果一个DFA有n个状态，并接受长度大于等于n的字符串w，<strong>那么在w的路径上，一定包含一个状态出现了至少两次。</strong></p>
+<p>原因：长度大于等于n的字符串w的路径上<strong>经过的状态数量至少为n+1</strong></p>
+<h4 id="泵引理"><a class="markdownIt-Anchor" href="#泵引理"></a> 泵引理</h4>
+<p>用于证明一个语言L<strong>不是</strong>RL</p>
+<p>直接上题，抄板子基本就能做题</p>
+<p>z=uvw</p>
+<p>假设v=0<sup>k</sup> ，由于|uv|≤N，则设w=0<sup>j</sup>， u=0<sup>N-k-j</sup>，这里的N为一个常量</p>
+<p>然后求uv<sup>i</sup>w的值，计算指数，检验结果是否和原来的是等价的</p>
+<img src="image-20240112163635120.png" alt="image-20240112163635120" style="zoom:67%;">
+<p><img src="image-20240112014419364.png" alt="image-20240112014419364"></p>
+<p>使用泵引理证明一个语言不是RL的目标：证明最后推出的正则表达式中，不符合一开始给出的语言的格式。例如形如0<sup>N</sup>1<sup>N</sup>，则最后证明出N+k&gt;N</p>
+<p>形如0<sup>N</sup>，N为素数，则是证明最后的计算结果不是素数，不满足原始的条件</p>
+<h5 id="等价性判断"><a class="markdownIt-Anchor" href="#等价性判断"></a> 等价性判断</h5>
+<p>给定一个RL语言L与M，判断L是否等于M</p>
+<p><strong>从L跟M的DFA出发，构建一个乘积DFA</strong></p>
+<p><em>构造了然后呢？</em></p>
+<h3 id="第六章-上下文无关语言"><a class="markdownIt-Anchor" href="#第六章-上下文无关语言"></a> 第六章 上下文无关语言</h3>
+<h4 id="消除无用符号"><a class="markdownIt-Anchor" href="#消除无用符号"></a> 消除无用符号：</h4>
+<p>1、去不可派生：</p>
+<p>①初始化OLDV={∅}，根据产生式找到存在能够推出终结符的产生式的非终结符，将其加入NEWV中</p>
+<p>②将上一步得到的NEWV作为新的OLDV，首先新的NEWV中包含OLDV的所有元素，然后查找所有能够推导出OLDV中非终结符的非终结符（父亲），将它们加入新的NEWV中</p>
+<p>③重复②，直到OLDV=NEWV，终止</p>
+<p>④终止后，删去原文法中在NEWV中不存在的符号（非终结符）</p>
+<p>2、去不可达：</p>
+<p>①初始化OLDV={∅}，OLDT={∅}，其中OLDV保存非终结符，OLDT保存终结符，然后从S开始，先将S加入NEWV，然后看S的产生式，将其能够到达的非终结符加入NEWV中，NEWT同理</p>
+<p>②查找OLDV对应的所有产生式，将可达的非终结符加入NEWV，终结符加入NEWT</p>
+<p>③重复②，直到OLDV=NEWV, OLDT=NEWT，终止</p>
+<p>④新的文法中只保留在NEWV和NEWT的元素的产生式</p>
+<p>例子：</p>
+<img src="image-20240112170905448.png" alt="image-20240112170905448" style="zoom:67%;">
+<h4 id="去ε产生式"><a class="markdownIt-Anchor" href="#去ε产生式"></a> <strong>去ε产生式：</strong></h4>
+<p>①初始化OLDU={∅}，NEWU中加入能够推导出空串的非终结符</p>
+<p>②OLDU为上一步的NEWU，NEWU先包含OLDU的所有元素，然后查找其他产生式，如果存在有非终结符能够推导出的整体为空（所有部分都位于OLDU中），则将其加入NEWU中</p>
+<p>③重复②，直到NEWU=OLDU，终止</p>
+<p>④对于NEWU中存在的非终结符，将其空产生式去掉，然后增加在其他情况中，该终结符为空的情况；对于推导出这些非终结符中的非终结符，将原来可能为空的非终结符替换为前面更新的所有产生式。特别地，如果推导出S→ε，则这一条是无法消除的。</p>
+<p>例子：</p>
+<img src="image-20240112171711097.png" alt="image-20240112171711097" style="zoom: 67%;">
+<h3 id="一些定义"><a class="markdownIt-Anchor" href="#一些定义"></a> 一些定义</h3>
+<ul>
+<li>
+<p>文法定义：G=(V，T，P，S) ，V：变量， T：终结符， P：产生式， S：开始符号</p>
+</li>
+<li>
+<p>DFA元组定义：M=(Q，∑，δ，q0，F)，Q：状态集合， ∑：字母表， δ：状态转移函数， q0：起始状态， F：终止状态</p>
+</li>
+</ul>
+<p>​		<em>文法定义中的成分容易与DFA定义成分混淆</em></p>
+<ul>
+<li>
+<p>左线性文法与有限自动机等价</p>
+</li>
+<li>
+<p>Moore机和Mealy机等价</p>
+</li>
+<li>
+<p>不是正则语言的经典例子：{a<sup>n</sup>b<sup>n</sup>|n≥0}</p>
+</li>
+<li>
+<p>对于两个正则表达式r和s，以下几个等式是正确的：r+s=s+r, r<sup>*</sup>r=rr<sup>*</sup>，以下等式是错误的：rs=sr</p>
+</li>
+<li>
+<p>任意派生树的最左推导是唯一的</p>
+</li>
+<li>
+<p>设计一个无穷语言最少需要2个产生式</p>
+</li>
+<li>
+<p>对于任意非空集合Σ，ε∉Σ</p>
+</li>
+<li>
+<p>2NFA 允许双向移动，因此 2NFA 的描述能力比 NFA 强。×</p>
+</li>
+<li>
+<p>有穷语言都是正则语言 ×</p>
+</li>
+<li>
+<p>一个问题，如果不存在一个 FA 接受它的语言，则称此问题是不可判定的。 ×</p>
+</li>
+<li>
+<p>空串是任意串的真前缀和真后缀。 ×  空串不能是自己的真前缀</p>
+</li>
+<li>
+<p>ε-NFA 允许空迁移和非空迁移，而 NFA 只允许非空迁移，因此 ε-NFA 比 NFA 强。×</p>
+</li>
+<li>
+<p>对于上面，ε-NFA，NFA，DFA是等价，可以相互转换，因此这几个都是一样强</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <blockquote class="article-copyright">
+    <p><strong>本文作者：</strong>*月遇丛雲花遇風* @ T3uk1 の 庭院</p>
+    <p><strong>本文链接：</strong><a href="https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/">https://t3uk1.github.io/2024/01/12/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/</a></p>
+    <p><strong>本文标题：</strong>形式语言与自动机期末复习总结</p>
+    
+    
+    <p><strong>本文版权：</strong>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><span class="icon-creative-commons"></span>BY-NC-SA</a> 许可协议。转载请注明出处！</p>
+  </blockquote>
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA/" rel="tag">形式语言与自动机</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+    
+  <nav id="article-nav" class="wow fadeInUp">
+    
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          
+          
+            <img data-src="/covers/QQ图片20221019125535.jpg" data-sizes="auto" alt="git相关报错的解决方法汇总" class="lazyload">
+          
+        
+        <a href="/2024/01/17/git%E7%9B%B8%E5%85%B3%E6%8A%A5%E9%94%99%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%E6%B1%87%E6%80%BB/"></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">
+          
+            git相关报错的解决方法汇总
+          
+        </h3>
+      </div>
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="/covers/微信图片_20210910164253.png" data-sizes="auto" alt="深圳大学计算机系统(3)实验 Chisel语言设计" class="lazyload">
+        
+      
+      <a href="/2023/12/01/Chisel%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          深圳大学计算机系统(3)实验 Chisel语言设计
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+  
+</article>
+
+
+
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrap wow fadeInRight wrap-sticky">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93"><span class="toc-number">1.</span> <span class="toc-text"> 形式语言与自动机期末复习总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-%E7%BB%AA%E8%AE%BA"><span class="toc-number">1.0.1.</span> <span class="toc-text"> 第一章 绪论</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E6%AF%8D%E8%A1%A8"><span class="toc-number">1.0.1.1.</span> <span class="toc-text"> 字母表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E8%AF%81%E6%98%8E"><span class="toc-number">1.0.1.2.</span> <span class="toc-text"> 递归证明</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E6%96%87%E6%B3%95"><span class="toc-number">1.0.2.</span> <span class="toc-text"> 第二章 文法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0-dfa-nfa"><span class="toc-number">1.0.3.</span> <span class="toc-text"> 第三章 DFA NFA</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%CE%B5-nfa-fa"><span class="toc-number">1.0.3.1.</span> <span class="toc-text"> ε-NFA FA</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E6%96%87%E6%B3%95dfa%E6%9E%84%E9%80%A0"><span class="toc-number">1.0.3.2.</span> <span class="toc-text"> 线性文法DFA构造：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%CE%B5-nfa%E8%BD%ACdfa"><span class="toc-number">1.0.3.3.</span> <span class="toc-text"> ε-NFA转DFA</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0-re"><span class="toc-number">1.0.4.</span> <span class="toc-text"> 第四章 RE</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#re%E5%88%B0fa%E7%9A%84%E7%AD%89%E4%BB%B7%E5%8F%98%E6%8D%A2%E5%BD%92%E7%BA%B3%E6%9E%84%E9%80%A0%E6%B3%95"><span class="toc-number">1.0.4.1.</span> <span class="toc-text"> RE到FA的等价变换：归纳构造法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dfa%E8%BD%AC%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-number">1.0.4.2.</span> <span class="toc-text"> DFA转正则表达式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0-%E6%AD%A3%E5%88%99%E8%AF%AD%E8%A8%80%E7%9A%84%E5%B0%81%E9%97%AD%E6%80%A7"><span class="toc-number">1.0.5.</span> <span class="toc-text"> 第五章 正则语言的封闭性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#dfa%E6%9E%81%E5%B0%8F%E5%8C%96"><span class="toc-number">1.0.5.1.</span> <span class="toc-text"> DFA极小化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A3%E5%88%99%E8%AF%AD%E8%A8%80%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="toc-number">1.0.5.2.</span> <span class="toc-text"> 正则语言的性质</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%B5%E5%BC%95%E7%90%86"><span class="toc-number">1.0.5.3.</span> <span class="toc-text"> 泵引理</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AD%89%E4%BB%B7%E6%80%A7%E5%88%A4%E6%96%AD"><span class="toc-number">1.0.5.3.1.</span> <span class="toc-text"> 等价性判断</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E7%AB%A0-%E4%B8%8A%E4%B8%8B%E6%96%87%E6%97%A0%E5%85%B3%E8%AF%AD%E8%A8%80"><span class="toc-number">1.0.6.</span> <span class="toc-text"> 第六章 上下文无关语言</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B6%88%E9%99%A4%E6%97%A0%E7%94%A8%E7%AC%A6%E5%8F%B7"><span class="toc-number">1.0.6.1.</span> <span class="toc-text"> 消除无用符号：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%BB%CE%B5%E4%BA%A7%E7%94%9F%E5%BC%8F"><span class="toc-number">1.0.6.2.</span> <span class="toc-text"> 去ε产生式：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%AE%9A%E4%B9%89"><span class="toc-number">1.0.7.</span> <span class="toc-text"> 一些定义</span></a></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="*月遇丛雲花遇風*" class="lazyload">
+  <div class="sidebar-author-name">*月遇丛雲花遇風*</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">15</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=1027600674@qq.com itemprop="url" target="_blank" aria-label="email"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/t3uk1 itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+    
+      <div class="sidebar-btn-wrapper" style="position:static">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+    
+  </div>
+
+  
+</aside>
+
+          
+        </div>
+        <footer id="footer" class="wow fadeInUp">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div class="outer">
+    <div id="footer-info">
+      
+      <div>
+        <span class="icon-copyright"></span>
+        2022-2024
+        <span class="footer-info-sep"></span>
+        *月遇丛雲花遇風*
+      </div>
+      
+        <div>
+          基于&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+          Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+        </div>
+      
+      
+        <div>
+          <span class="icon-brush"></span>
+          103.3k
+          &nbsp;|&nbsp;
+          <span class="icon-coffee"></span>
+          07:53
+        </div>
+      
+      
+        <div>
+          <span class="icon-eye"></span>
+          <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+          &nbsp;|&nbsp;
+          <span class="icon-user"></span>
+          <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+        </div>
+      
+    </div>
+  </div>
+</footer>
+
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
+        </div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93"><span class="toc-number">1.</span> <span class="toc-text"> 形式语言与自动机期末复习总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-%E7%BB%AA%E8%AE%BA"><span class="toc-number">1.0.1.</span> <span class="toc-text"> 第一章 绪论</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E6%AF%8D%E8%A1%A8"><span class="toc-number">1.0.1.1.</span> <span class="toc-text"> 字母表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E8%AF%81%E6%98%8E"><span class="toc-number">1.0.1.2.</span> <span class="toc-text"> 递归证明</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E6%96%87%E6%B3%95"><span class="toc-number">1.0.2.</span> <span class="toc-text"> 第二章 文法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0-dfa-nfa"><span class="toc-number">1.0.3.</span> <span class="toc-text"> 第三章 DFA NFA</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%CE%B5-nfa-fa"><span class="toc-number">1.0.3.1.</span> <span class="toc-text"> ε-NFA FA</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E6%96%87%E6%B3%95dfa%E6%9E%84%E9%80%A0"><span class="toc-number">1.0.3.2.</span> <span class="toc-text"> 线性文法DFA构造：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%CE%B5-nfa%E8%BD%ACdfa"><span class="toc-number">1.0.3.3.</span> <span class="toc-text"> ε-NFA转DFA</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0-re"><span class="toc-number">1.0.4.</span> <span class="toc-text"> 第四章 RE</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#re%E5%88%B0fa%E7%9A%84%E7%AD%89%E4%BB%B7%E5%8F%98%E6%8D%A2%E5%BD%92%E7%BA%B3%E6%9E%84%E9%80%A0%E6%B3%95"><span class="toc-number">1.0.4.1.</span> <span class="toc-text"> RE到FA的等价变换：归纳构造法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dfa%E8%BD%AC%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-number">1.0.4.2.</span> <span class="toc-text"> DFA转正则表达式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0-%E6%AD%A3%E5%88%99%E8%AF%AD%E8%A8%80%E7%9A%84%E5%B0%81%E9%97%AD%E6%80%A7"><span class="toc-number">1.0.5.</span> <span class="toc-text"> 第五章 正则语言的封闭性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#dfa%E6%9E%81%E5%B0%8F%E5%8C%96"><span class="toc-number">1.0.5.1.</span> <span class="toc-text"> DFA极小化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A3%E5%88%99%E8%AF%AD%E8%A8%80%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="toc-number">1.0.5.2.</span> <span class="toc-text"> 正则语言的性质</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%B5%E5%BC%95%E7%90%86"><span class="toc-number">1.0.5.3.</span> <span class="toc-text"> 泵引理</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AD%89%E4%BB%B7%E6%80%A7%E5%88%A4%E6%96%AD"><span class="toc-number">1.0.5.3.1.</span> <span class="toc-text"> 等价性判断</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E7%AB%A0-%E4%B8%8A%E4%B8%8B%E6%96%87%E6%97%A0%E5%85%B3%E8%AF%AD%E8%A8%80"><span class="toc-number">1.0.6.</span> <span class="toc-text"> 第六章 上下文无关语言</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B6%88%E9%99%A4%E6%97%A0%E7%94%A8%E7%AC%A6%E5%8F%B7"><span class="toc-number">1.0.6.1.</span> <span class="toc-text"> 消除无用符号：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%BB%CE%B5%E4%BA%A7%E7%94%9F%E5%BC%8F"><span class="toc-number">1.0.6.2.</span> <span class="toc-text"> 去ε产生式：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%AE%9A%E4%B9%89"><span class="toc-number">1.0.7.</span> <span class="toc-text"> 一些定义</span></a></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="*月遇丛雲花遇風*" class="lazyload">
+  <div class="sidebar-author-name">*月遇丛雲花遇風*</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">15</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=1027600674@qq.com itemprop="url" target="_blank" aria-label="email"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/t3uk1 itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    <div class="site-search">
+      <div class="reimu-popup popup">
+        <div class="reimu-search">
+          <div class="reimu-search-input-icon"></div>
+          <div class="reimu-search-input" id="reimu-search-input"></div>
+          <div class="popup-btn-close"></div>
+        </div>
+        <div class="reimu-results">
+          <div id="reimu-stats"></div>
+          <div id="reimu-hits"></div>
+          <div id="reimu-pagination" class="reimu-pagination"></div>
+        </div>
+      </div>
+    </div>
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+<script type="module" data-pjax>
+  import PhotoSwipeLightbox from "https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.js";
+  
+  const pswp = () => {
+    if (_$$('.article-entry a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-entry',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.js")
+      }).init();
+    }
+    if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-gallery',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.js")
+      }).init();
+    }
+    window.lightboxStatus = 'done';
+    window.removeEventListener('lightbox:ready', pswp);
+  }
+  if(window.lightboxStatus === 'ready') {
+    pswp()
+  } else {
+    window.addEventListener('lightbox:ready', pswp);
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/generator_search.js"></script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.4/dist/index.umd.js"></script>
+
+  <script>
+    firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+
+  <script data-pjax>
+    quicklink.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div>
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.2.4' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --></body>
+  </html>
+

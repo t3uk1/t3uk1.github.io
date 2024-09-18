@@ -1,0 +1,843 @@
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  data-theme="dark" >
+  <head>
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};</script>
+  
+  
+  <title>
+    JS学习笔记 |
+    
+    T3uk1 の 庭院
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+<link rel="stylesheet" href="/css/loader.css">
+
+  <meta name="description" content="JS学习笔记 当时学前端课写的一点js笔记，搬运一下。   JS的特点   1.简单性(小程序、无须编译、解释性、弱数据类型)   2.安全性( Browser无法访问本地硬盘数据&#x2F;写入到数据库)   3.动态性（JS可以直接对用户提交的信息作出回应）   4.跨平台性（支持JS的Browser）    JS基础  JS可以放置的地方： JavaScript代码放置有4种情形:   (1)头部">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS学习笔记">
+<meta property="og:url" content="https://t3uk1.github.io/2023/01/02/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="T3uk1 の 庭院">
+<meta property="og:description" content="JS学习笔记 当时学前端课写的一点js笔记，搬运一下。   JS的特点   1.简单性(小程序、无须编译、解释性、弱数据类型)   2.安全性( Browser无法访问本地硬盘数据&#x2F;写入到数据库)   3.动态性（JS可以直接对用户提交的信息作出回应）   4.跨平台性（支持JS的Browser）    JS基础  JS可以放置的地方： JavaScript代码放置有4种情形:   (1)头部">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-01-02T03:45:14.000Z">
+<meta property="article:modified_time" content="2024-08-19T10:23:21.717Z">
+<meta property="article:author" content="*月遇丛雲花遇風*">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="T3uk1 の 庭院" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css">
+
+  
+  
+  
+  
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"></script>
+
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/wowjs@1.1.3/css/libs/animate.css">
+
+    
+<script src="https://npm.webcache.cn/wowjs@1.1.3/dist/wow.min.js"></script>
+
+    <script>
+      new WOW({
+        offset: 0,
+        mobile: true,
+        live: false
+      }).init();
+    </script>
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff6e6b" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z" fill="#fd0d00" />
+          <path d="M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95" fill="#fd0d00" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/">首页</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/archives">归档</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/about">关于</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/friend">友链</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      <img fetchpriority="high" src="/images/banner.jpg" alt="JS学习笔记">
+    
+  
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <div id="logo-wrap">
+        
+          
+          
+            <a href="/" id="logo">
+              <h1>JS学习笔记</h1>
+            </a>
+          
+        
+      </div>
+      
+        
+        <h2 id="subtitle-wrap">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content" class="outer">
+          
+          <section id="main"><article id="post-JS学习笔记" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    <div class="article-meta">
+      <div class="article-date wow slideInLeft">
+  <a href="/2023/01/02/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="article-date-link">
+    <time datetime="2023-01-02T03:45:14.000Z" itemprop="datePublished">2023-01-02</time>
+    <time style="display: none;" id="post-update-time">2024-08-19</time>
+  </a>
+</div>
+
+      
+  <div class="article-category wow slideInLeft">
+    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+  </div>
+
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <h1 id="js学习笔记"><a class="markdownIt-Anchor" href="#js学习笔记"></a> JS学习笔记</h1>
+<p>当时学前端课写的一点js笔记，搬运一下。</p>
+<!-- toc -->
+<h5 id="js的特点"><a class="markdownIt-Anchor" href="#js的特点"></a> JS的特点</h5>
+<ul>
+<li>
+<p>1.简单性(小程序、无须编译、解释性、<u>弱数据类型</u>)</p>
+</li>
+<li>
+<p>2.安全性( Browser无法访问本地硬盘数据/写入到数据库)</p>
+</li>
+<li>
+<p>3.动态性（JS可以直接对用户提交的信息作出回应）</p>
+</li>
+<li>
+<p>4.跨平台性（支持JS的Browser）</p>
+</li>
+</ul>
+<h4 id="js基础"><a class="markdownIt-Anchor" href="#js基础"></a> JS基础</h4>
+<h5 id="js可以放置的地方"><a class="markdownIt-Anchor" href="#js可以放置的地方"></a> JS可以放置的地方：</h5>
+<p>JavaScript代码放置有4种情形:</p>
+<ul>
+<li>
+<p>(1)头部</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>调用head中定义的JavaScript函数<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">function</span> <span class="title function_">message</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="title function_">alert</span>(<span class="string">&quot;调用head中定义的JavaScript函数！&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">&#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>JS脚本插入在头部时，JavaScript通常需要定义为函数格式，格式：</p>
+<p>function 函数名(参数1,参数2,…，参数n){函数体语句;}。</p>
+</blockquote>
+</li>
+<li>
+<p>(2主体</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span> &gt;</span></span><br><span class="line">  alert(“JS放置在主体中，直接运行！”);</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>JS脚本插入在主体时，JavaScript语句能够被立即执行。<u>也可以定义成函数，但必须引用才能执行。</u></p>
+</blockquote>
+</li>
+<li>
+<p>(3)单独的js文件</p>
+<p>导入js文件：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span> <span class="attr">src</span>=<span class="string">&quot;demo.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>js文件内部：</p>
+<p>在单独js文件内写js不需要包上scripts标签</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*-- demo.js */</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">message</span>(<span class="params"></span>) &#123;</span><br><span class="line">   <span class="title function_">alert</span>(<span class="string">&quot;调用外部js文件中的函数！&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在html中使用：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">“btnCallJS”</span> <span class="attr">type</span>=<span class="string">“button”</span> <span class="attr">onclick</span>=<span class="string">“message();</span>&quot; <span class="attr">value</span>=<span class="string">&quot;调用外部js文件的JavaScript函数&quot;</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>(4)直接在事件处理代码中</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">onclick</span>=<span class="string">&quot;alert(&#x27;直接在事件处理代码中加入JavaScript代码&#x27;)&quot;</span> <span class="attr">value</span>=<span class="string">&quot;直接调用JavaScript代码&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="js引用"><a class="markdownIt-Anchor" href="#js引用"></a> JS引用</h5>
+<p>引用外部js文件：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>, <span class="attr">src</span>=<span class="string">“外部JS文件”</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>html中引用js的函数（如在点击按钮后）：</p>
+<p>如下面就是在按钮上引用js函数，在onclick参数后引用js函数名</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">button</span> <span class="attr">value</span>=<span class="string">test</span> <span class="attr">onclick</span>=<span class="string">&quot;TestJS()&quot;</span>&gt;</span> </span><br></pre></td></tr></table></figure>
+<p>js语句：发送给浏览器的命令，这些命令的作用是告诉浏览器要做的事情。</p>
+<p>多个语句构成语句块，用花括号包住</p>
+<h5 id="js消息对话框"><a class="markdownIt-Anchor" href="#js消息对话框"></a> JS消息对话框</h5>
+<ul>
+<li>
+<p>警告框： alert (message）</p>
+<p>弹出警告信息，需要确认</p>
+<p>确定按钮必须响应，否则屏蔽一切操作。告警信息为纯文本信息或字符串，不能含有HTML标记。</p>
+</li>
+<li>
+<p>确认框：confirm (message)</p>
+<p>可以选择确认或取消，返回值为bool值</p>
+</li>
+<li>
+<p>提示框</p>
+<p>prompt (text, defaultText)： 第一个参数为提示信息，第二个参数为默认输入</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">disp_prompt</span>(<span class="params"></span>) &#123;</span><br><span class="line">   <span class="keyword">var</span> name=<span class="title function_">prompt</span>(<span class="string">&quot;请输入您的姓名&quot;</span>,<span class="string">&quot;李田所&quot;</span>);</span><br><span class="line">   <span class="keyword">if</span> (name!=<span class="literal">null</span> &amp;&amp; name!=<span class="string">&quot;&quot;</span>) </span><br><span class="line">   &#123;</span><br><span class="line">   <span class="variable language_">document</span>.<span class="title function_">write</span>(<span class="string">&quot;您好，&quot;</span> + name + <span class="string">&quot;!&quot;</span>); </span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h6 id="js注释"><a class="markdownIt-Anchor" href="#js注释"></a> JS注释</h6>
+<p>js的注释规则和c基本相同，在此不多赘述</p>
+<h5 id="js标识符"><a class="markdownIt-Anchor" href="#js标识符"></a> JS标识符</h5>
+<p>标识符是计算机语言中用来表示变量名、函数名等的有效字符序列，简单来说，标识符就是一个名字</p>
+<p>JavaScript关于标识符的规定如下：</p>
+<p>(1)必须使用字母或者下划线开始。</p>
+<p>(2)必须使用英文字母、数字、下划线组成，不能出现空格或制表符。</p>
+<p>(3)不能使用JavaScript关键字与JavaScript保留字。</p>
+<p>(4)不能使用JavaScript语言内部的单词，比如Infinity，NaN，undefined等。</p>
+<p>(5)==大小写敏感，==如name和Name是不同的两个标识符。</p>
+<h5 id="js数据类型"><a class="markdownIt-Anchor" href="#js数据类型"></a> JS数据类型</h5>
+<p>JavaScript中的数据类型可分为<strong>字符型、数值型、布尔型、Null、Undefined和对象</strong>六种类型。</p>
+<ul>
+<li>Null : null,表示空,不是0，0是有值的。</li>
+<li>Undefined：变量创建后未赋值（数字：NaN；字符串：Undefined；Boolean:false） 。</li>
+</ul>
+<p>数据类型之间可以通过函数进行转换，转换函数如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Nnumber</span>(value)  <span class="comment">//把值转换成数字（整型或浮点数）</span></span><br><span class="line"><span class="title class_">String</span>(value)  <span class="comment">//把值转换成字符串</span></span><br><span class="line"><span class="title class_">Boolean</span>(value)  <span class="comment">//把值转换成Boolean类型</span></span><br></pre></td></tr></table></figure>
+<h5 id="js运算符"><a class="markdownIt-Anchor" href="#js运算符"></a> JS运算符</h5>
+<p>JS运算符中不同的地方：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">==，！=    <span class="comment">//只比较数值，不比较类型</span></span><br><span class="line"></span><br><span class="line">===, !==    <span class="comment">//比较数值和类型</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>一些特殊的比较关系运算</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">null</span>== <span class="literal">undefined</span>    <span class="comment">//true</span></span><br><span class="line"><span class="title class_">NaN</span><span class="string">&quot; == NaN    //false</span></span><br><span class="line"><span class="string">false == 0    //true</span></span><br><span class="line"><span class="string">null == 0    //false</span></span><br><span class="line"><span class="string">NaN != NaN    //true</span></span><br><span class="line"><span class="string">true == 1    //true</span></span><br><span class="line"><span class="string">undefined == 0    //false</span></span><br><span class="line"><span class="string">NaN == NaN    //false</span></span><br><span class="line"><span class="string">true == 2    //false</span></span><br><span class="line"><span class="string">5 == NaN    //false</span></span><br><span class="line"><span class="string">&quot;</span><span class="number">5</span><span class="string">&quot; == 5    //true</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>位移运算符</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;    <span class="comment">//有符号右移</span></span><br><span class="line">&gt;&gt;&gt;   <span class="comment">//无符号右移</span></span><br><span class="line">    </span><br><span class="line">两者区别提现在负数操作中</span><br><span class="line">对正数进行操作时：</span><br><span class="line"><span class="number">10</span>&gt;&gt;<span class="number">1</span></span><br><span class="line"><span class="comment">/*结果:5*/</span></span><br><span class="line"><span class="number">10</span>&gt;&gt;&gt;<span class="number">1</span></span><br><span class="line"><span class="comment">/*结果:5*/</span></span><br><span class="line"></span><br><span class="line">对负数进行操作时：</span><br><span class="line">-<span class="number">2</span>&gt;&gt;<span class="number">1</span></span><br><span class="line"><span class="comment">/*结果:-1*/</span></span><br><span class="line">-<span class="number">2</span>&gt;&gt;&gt;<span class="number">1</span></span><br><span class="line"><span class="comment">/*结果:2147483647*/</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>条件运算符，表达式：</p>
+<p>格式：变量=布尔表达式 ? 真值表达式 : 假值表达式</p>
+<blockquote>
+<p>和c基本一样（</p>
+</blockquote>
+</li>
+<li>
+<p>新建对象：new</p>
+</li>
+<li>
+<p>删除对象：delete</p>
+</li>
+<li>
+<p>类型运算符：typeof()</p>
+</li>
+</ul>
+<h5 id="js程序控制结构"><a class="markdownIt-Anchor" href="#js程序控制结构"></a> JS程序控制结构</h5>
+<ul>
+<li>
+<p>顺序结构</p>
+</li>
+<li>
+<p>分支结构：if、if…else if…else  if…else…、switch</p>
+</li>
+<li>
+<p>循环：for、while、do…while（与c中的循环结构相同）</p>
+<p>for - in循环：该循环用来对<u>数组或对象的属性</u>进行操作</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (变量 <span class="keyword">in</span> 对象)&#123;</span><br><span class="line">    执行代码； </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="js常用系统函数"><a class="markdownIt-Anchor" href="#js常用系统函数"></a> JS常用系统函数</h4>
+<ul>
+<li>
+<p>eval（字符串表达式）</p>
+<p>返回值：表达式的值或undefined</p>
+</li>
+<li>
+<p>escape(字符串)：返回字符串的编码</p>
+<p>可以对空格、标点符号及其他非ASCII字母表的字符进行编码，除了以下字符：“* @ - _ + . / ”</p>
+</li>
+<li>
+<p>unescape (string)：返回字符串ASCII码</p>
+<p>参数string包含形如“<u>%xx</u>”的字符的字符串，此处xx为两位十六进制数值。</p>
+</li>
+<li>
+<p>parseFloat(string)：返回实数</p>
+</li>
+<li>
+<p>parseInt(numbestring , radix)：将不同进制的数字转化为十进制Int类型，radix为进制</p>
+</li>
+<li>
+<p>isNaN(testValue)：判断是否为数值</p>
+</li>
+</ul>
+<h5 id="js自定义函数"><a class="markdownIt-Anchor" href="#js自定义函数"></a> JS自定义函数</h5>
+<p>基本语法：function functionName(参数1， 参数2， 参数3 …) {  函数主体  }</p>
+<blockquote>
+<p>注：</p>
+<p>不能在其他语句或其自身中嵌套function语句，也就是说，每个函数声明都是独立的。</p>
+<p>由于js是弱类型脚本语言，函数的参数没有类型检查和类型限制，要求编程者自查。</p>
+</blockquote>
+<p>每一个函数体内都内置地存在着一个对象<mark>arguments</mark>，它是一个类似数组的对象，通过它可以查看函数当前有几个传递来的参数（并非定义的形式参数），各个参数的值是什么。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">sum</span>(<span class="params">x,y</span>)&#123;<span class="keyword">return</span> x*y;&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">showMessage</span>(<span class="params">mess</span>)&#123;<span class="title function_">alert</span>(mess);&#125;  <span class="comment">//输出函数args的信息</span></span><br></pre></td></tr></table></figure>
+<h4 id="js函数变量作用域"><a class="markdownIt-Anchor" href="#js函数变量作用域"></a> JS函数变量作用域</h4>
+<ul>
+<li>
+<p>局部变量：局部变量是指在函数内部声明的变量，只能在一段程序中发挥作用的变量；</p>
+</li>
+<li>
+<p>全局变量：全局变量是指在函数之外声明的变量，在整个JavaScript代码中都可以发挥作用的变量，全局变量的生命周期从声明开始，在页面关闭时结束。</p>
+</li>
+<li>
+<p>局部变量和全局变量可以重名，在函数体中，局部变量的优先级高于全局变量，同名的全局变量被隐藏</p>
+<blockquote>
+<p>注： 专用于函数体内部的变量一定要用<strong>var</strong>关键字声明，否则该变量将被定义成全局变量，如果函数体外部有同名的变量，可能导致该全局变量被修改。</p>
+</blockquote>
+</li>
+<li>
+<p>pycharm中Python文件使用外部js：</p>
+<blockquote>
+<p>文件 &gt; 设置 &gt; Plugins &gt; 安装Node.js</p>
+<p>​		设置node环境变量：</p>
+<p>​				设置 &gt; Language &amp; Frameworks &gt; Node.js &gt; Node interpreter中路径改为nodejs的安装路径 &gt; 重启即可运行js程序和使用npm</p>
+</blockquote>
+<ul>
+<li>安装第三方库：npm install xxx
+<ul>
+<li>常用解密库：‘crypto-js’  (npm install crypto-js)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>​</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <blockquote class="article-copyright">
+    <p><strong>本文作者：</strong>*月遇丛雲花遇風* @ T3uk1 の 庭院</p>
+    <p><strong>本文链接：</strong><a href="https://t3uk1.github.io/2023/01/02/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">https://t3uk1.github.io/2023/01/02/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</a></p>
+    <p><strong>本文标题：</strong>JS学习笔记</p>
+    
+    
+    <p><strong>本文版权：</strong>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><span class="icon-creative-commons"></span>BY-NC-SA</a> 许可协议。转载请注明出处！</p>
+  </blockquote>
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+    
+  <nav id="article-nav" class="wow fadeInUp">
+    
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          
+          
+            <img data-src="/covers/QQ图片20211103201656.jpg" data-sizes="auto" alt="计算机网络复习笔记" class="lazyload">
+          
+        
+        <a href="/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/"></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">
+          
+            计算机网络复习笔记
+          
+        </h3>
+      </div>
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="/covers/QQ图片20220202221113.jpg" data-sizes="auto" alt="HTML &amp; CSS学习笔记" class="lazyload">
+        
+      
+      <a href="/2023/01/01/HTML-CSS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          HTML &amp; CSS学习笔记
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+  
+</article>
+
+
+
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrap wow fadeInRight wrap-sticky">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text"> JS学习笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#js%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-number">1.0.0.0.1.</span> <span class="toc-text"> JS的特点</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#js%E5%9F%BA%E7%A1%80"><span class="toc-number">1.0.0.1.</span> <span class="toc-text"> JS基础</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#js%E5%8F%AF%E4%BB%A5%E6%94%BE%E7%BD%AE%E7%9A%84%E5%9C%B0%E6%96%B9"><span class="toc-number">1.0.0.1.1.</span> <span class="toc-text"> JS可以放置的地方：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#js%E5%BC%95%E7%94%A8"><span class="toc-number">1.0.0.1.2.</span> <span class="toc-text"> JS引用</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#js%E6%B6%88%E6%81%AF%E5%AF%B9%E8%AF%9D%E6%A1%86"><span class="toc-number">1.0.0.1.3.</span> <span class="toc-text"> JS消息对话框</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#js%E6%B3%A8%E9%87%8A"><span class="toc-number">1.0.0.1.3.1.</span> <span class="toc-text"> JS注释</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#js%E6%A0%87%E8%AF%86%E7%AC%A6"><span class="toc-number">1.0.0.1.4.</span> <span class="toc-text"> JS标识符</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#js%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.0.0.1.5.</span> <span class="toc-text"> JS数据类型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#js%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">1.0.0.1.6.</span> <span class="toc-text"> JS运算符</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#js%E7%A8%8B%E5%BA%8F%E6%8E%A7%E5%88%B6%E7%BB%93%E6%9E%84"><span class="toc-number">1.0.0.1.7.</span> <span class="toc-text"> JS程序控制结构</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#js%E5%B8%B8%E7%94%A8%E7%B3%BB%E7%BB%9F%E5%87%BD%E6%95%B0"><span class="toc-number">1.0.0.2.</span> <span class="toc-text"> JS常用系统函数</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#js%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0"><span class="toc-number">1.0.0.2.1.</span> <span class="toc-text"> JS自定义函数</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#js%E5%87%BD%E6%95%B0%E5%8F%98%E9%87%8F%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-number">1.0.0.3.</span> <span class="toc-text"> JS函数变量作用域</span></a></li></ol></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="*月遇丛雲花遇風*" class="lazyload">
+  <div class="sidebar-author-name">*月遇丛雲花遇風*</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">15</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=1027600674@qq.com itemprop="url" target="_blank" aria-label="email"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/t3uk1 itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+    
+      <div class="sidebar-btn-wrapper" style="position:static">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+    
+  </div>
+
+  
+</aside>
+
+          
+        </div>
+        <footer id="footer" class="wow fadeInUp">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div class="outer">
+    <div id="footer-info">
+      
+      <div>
+        <span class="icon-copyright"></span>
+        2022-2024
+        <span class="footer-info-sep"></span>
+        *月遇丛雲花遇風*
+      </div>
+      
+        <div>
+          基于&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+          Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+        </div>
+      
+      
+        <div>
+          <span class="icon-brush"></span>
+          103.3k
+          &nbsp;|&nbsp;
+          <span class="icon-coffee"></span>
+          07:53
+        </div>
+      
+      
+        <div>
+          <span class="icon-eye"></span>
+          <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+          &nbsp;|&nbsp;
+          <span class="icon-user"></span>
+          <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+        </div>
+      
+    </div>
+  </div>
+</footer>
+
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
+        </div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text"> JS学习笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#js%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-number">1.0.0.0.1.</span> <span class="toc-text"> JS的特点</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#js%E5%9F%BA%E7%A1%80"><span class="toc-number">1.0.0.1.</span> <span class="toc-text"> JS基础</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#js%E5%8F%AF%E4%BB%A5%E6%94%BE%E7%BD%AE%E7%9A%84%E5%9C%B0%E6%96%B9"><span class="toc-number">1.0.0.1.1.</span> <span class="toc-text"> JS可以放置的地方：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#js%E5%BC%95%E7%94%A8"><span class="toc-number">1.0.0.1.2.</span> <span class="toc-text"> JS引用</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#js%E6%B6%88%E6%81%AF%E5%AF%B9%E8%AF%9D%E6%A1%86"><span class="toc-number">1.0.0.1.3.</span> <span class="toc-text"> JS消息对话框</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#js%E6%B3%A8%E9%87%8A"><span class="toc-number">1.0.0.1.3.1.</span> <span class="toc-text"> JS注释</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#js%E6%A0%87%E8%AF%86%E7%AC%A6"><span class="toc-number">1.0.0.1.4.</span> <span class="toc-text"> JS标识符</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#js%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.0.0.1.5.</span> <span class="toc-text"> JS数据类型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#js%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">1.0.0.1.6.</span> <span class="toc-text"> JS运算符</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#js%E7%A8%8B%E5%BA%8F%E6%8E%A7%E5%88%B6%E7%BB%93%E6%9E%84"><span class="toc-number">1.0.0.1.7.</span> <span class="toc-text"> JS程序控制结构</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#js%E5%B8%B8%E7%94%A8%E7%B3%BB%E7%BB%9F%E5%87%BD%E6%95%B0"><span class="toc-number">1.0.0.2.</span> <span class="toc-text"> JS常用系统函数</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#js%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0"><span class="toc-number">1.0.0.2.1.</span> <span class="toc-text"> JS自定义函数</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#js%E5%87%BD%E6%95%B0%E5%8F%98%E9%87%8F%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-number">1.0.0.3.</span> <span class="toc-text"> JS函数变量作用域</span></a></li></ol></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="*月遇丛雲花遇風*" class="lazyload">
+  <div class="sidebar-author-name">*月遇丛雲花遇風*</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">15</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=1027600674@qq.com itemprop="url" target="_blank" aria-label="email"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/t3uk1 itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    <div class="site-search">
+      <div class="reimu-popup popup">
+        <div class="reimu-search">
+          <div class="reimu-search-input-icon"></div>
+          <div class="reimu-search-input" id="reimu-search-input"></div>
+          <div class="popup-btn-close"></div>
+        </div>
+        <div class="reimu-results">
+          <div id="reimu-stats"></div>
+          <div id="reimu-hits"></div>
+          <div id="reimu-pagination" class="reimu-pagination"></div>
+        </div>
+      </div>
+    </div>
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+<script type="module" data-pjax>
+  import PhotoSwipeLightbox from "https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.js";
+  
+  const pswp = () => {
+    if (_$$('.article-entry a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-entry',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.js")
+      }).init();
+    }
+    if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-gallery',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.js")
+      }).init();
+    }
+    window.lightboxStatus = 'done';
+    window.removeEventListener('lightbox:ready', pswp);
+  }
+  if(window.lightboxStatus === 'ready') {
+    pswp()
+  } else {
+    window.addEventListener('lightbox:ready', pswp);
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/generator_search.js"></script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.4/dist/index.umd.js"></script>
+
+  <script>
+    firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+
+  <script data-pjax>
+    quicklink.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div>
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.2.4' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --></body>
+  </html>
+

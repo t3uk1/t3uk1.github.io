@@ -1,0 +1,702 @@
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  data-theme="dark" >
+  <head>
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};</script>
+  
+  
+  <title>
+    OpenGL环境手动安装配置记录 |
+    
+    T3uk1 の 庭院
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+<link rel="stylesheet" href="/css/loader.css">
+
+  <meta name="description" content="OpenGL环境手动安装配置记录  由于一键安装时vcpkg的傻逼报错修了一晚上修不好于是综合了好几个安装教程博客手动添加库才成功跑起来  1、安装VS2019 这个直接略过  2、安装cmake https:&#x2F;&#x2F;cmake.org&#x2F;download&#x2F; 在上述网址下载对应平台安装包即可，注意在安装时关于修改系统环境变量的选项中选择添加到所有用户的PATH  3、安装Git 这个装过了，安装直接搜">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenGL环境手动安装配置记录">
+<meta property="og:url" content="https://t3uk1.github.io/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/index.html">
+<meta property="og:site_name" content="T3uk1 の 庭院">
+<meta property="og:description" content="OpenGL环境手动安装配置记录  由于一键安装时vcpkg的傻逼报错修了一晚上修不好于是综合了好几个安装教程博客手动添加库才成功跑起来  1、安装VS2019 这个直接略过  2、安装cmake https:&#x2F;&#x2F;cmake.org&#x2F;download&#x2F; 在上述网址下载对应平台安装包即可，注意在安装时关于修改系统环境变量的选项中选择添加到所有用户的PATH  3、安装Git 这个装过了，安装直接搜">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/image-20230912105714270-16985808329371.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/image-20230912105914220-16985808329372.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/image-20230912111603093-16985808329383.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/image-20230912112352987-16985808329384.png">
+<meta property="article:published_time" content="2023-10-29T11:05:36.000Z">
+<meta property="article:modified_time" content="2023-10-30T11:29:22.509Z">
+<meta property="article:author" content="*月遇丛雲花遇風*">
+<meta property="article:tag" content="openGL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://t3uk1.github.io/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/image-20230912105714270-16985808329371.png">
+  
+    <link rel="alternate" href="/atom.xml" title="T3uk1 の 庭院" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css">
+
+  
+  
+  
+  
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"></script>
+
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/wowjs@1.1.3/css/libs/animate.css">
+
+    
+<script src="https://npm.webcache.cn/wowjs@1.1.3/dist/wow.min.js"></script>
+
+    <script>
+      new WOW({
+        offset: 0,
+        mobile: true,
+        live: false
+      }).init();
+    </script>
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff6e6b" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z" fill="#fd0d00" />
+          <path d="M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95" fill="#fd0d00" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/">首页</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/archives">归档</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/about">关于</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/friend">友链</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      <img fetchpriority="high" src="/images/banner.jpg" alt="OpenGL环境手动安装配置记录">
+    
+  
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <div id="logo-wrap">
+        
+          
+          
+            <a href="/" id="logo">
+              <h1>OpenGL环境手动安装配置记录</h1>
+            </a>
+          
+        
+      </div>
+      
+        
+        <h2 id="subtitle-wrap">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content" class="outer">
+          
+          <section id="main"><article id="post-图形学" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    <div class="article-meta">
+      <div class="article-date wow slideInLeft">
+  <a href="/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/" class="article-date-link">
+    <time datetime="2023-10-29T11:05:36.000Z" itemprop="datePublished">2023-10-29</time>
+    <time style="display: none;" id="post-update-time">2023-10-30</time>
+  </a>
+</div>
+
+      
+  <div class="article-category wow slideInLeft">
+    <a class="article-category-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/">计算机图形学</a>
+  </div>
+
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <h1 id="opengl环境手动安装配置记录"><a class="markdownIt-Anchor" href="#opengl环境手动安装配置记录"></a> OpenGL环境手动安装配置记录</h1>
+<!-- toc -->
+<p><s>由于一键安装时vcpkg的傻逼报错修了一晚上修不好于是综合了好几个安装教程博客手动添加库才成功跑起来</s></p>
+<h3 id="1-安装vs2019"><a class="markdownIt-Anchor" href="#1-安装vs2019"></a> 1、安装VS2019</h3>
+<p>这个直接略过</p>
+<h3 id="2-安装cmake"><a class="markdownIt-Anchor" href="#2-安装cmake"></a> 2、安装cmake</h3>
+<p><a target="_blank" rel="noopener" href="https://cmake.org/download/">https://cmake.org/download/</a></p>
+<p>在上述网址下载对应平台安装包即可，注意在安装时关于修改系统环境变量的选项中选择添加到所有用户的PATH</p>
+<h3 id="3-安装git"><a class="markdownIt-Anchor" href="#3-安装git"></a> 3、安装Git</h3>
+<p>这个装过了，安装直接搜索网络教程就行。</p>
+<h3 id="4-安装opengl库与在vs2019的配置"><a class="markdownIt-Anchor" href="#4-安装opengl库与在vs2019的配置"></a> 4、安装OpenGL库与在VS2019的配置</h3>
+<h6 id="glfw"><a class="markdownIt-Anchor" href="#glfw"></a> GLFW</h6>
+<p><a target="_blank" rel="noopener" href="https://www.glfw.org/download.html">https://www.glfw.org/download.html</a></p>
+<p>windows端选择pre-compiled binaries，这是已经预编译的文件，可以直接使用</p>
+<p><img src="image-20230912105714270-16985808329371.png" alt="glfw下载"></p>
+<p>将下载好的文件解压，将对应文件拷贝到vs2019安装目录中的文件夹中，本机的安装目录如下，根据自己的安装情况找到对应文件夹</p>
+<img src="image-20230912105914220-16985808329372.png" alt="vs安装目录" style="zoom: 67%;">
+<p>头文件：在下载好的GLFW文件夹中，将头文件拷贝到vs目录中的include目录中的GL文件夹，若没有则先创建一个GL文件夹，这个文件夹用于专门存储OpenGL库的头文件。</p>
+<p>bin文件：将对应dll文件拷贝到vs目录下的bin文件夹中，拷贝到最小目录，注意将x86文件拷贝到x86目录下，x64文件拷贝到x64目录下。</p>
+<p>.lib文件：与bin同理，拷贝到lib目录下的文件夹中，注意x86和x64都要拷贝。</p>
+<h6 id="glew"><a class="markdownIt-Anchor" href="#glew"></a> GLEW</h6>
+<p><a target="_blank" rel="noopener" href="https://glew.sourceforge.net/">https://glew.sourceforge.net/</a></p>
+<p>下载最新版本即可，相关配置同上</p>
+<h6 id="freeglut"><a class="markdownIt-Anchor" href="#freeglut"></a> FreeGLUT</h6>
+<p><a target="_blank" rel="noopener" href="https://www.transmissionzero.co.uk/software/freeglut-devel/">https://www.transmissionzero.co.uk/software/freeglut-devel/</a></p>
+<h6 id="glad"><a class="markdownIt-Anchor" href="#glad"></a> glad</h6>
+<p><a target="_blank" rel="noopener" href="https://glad.dav1d.de/">https://glad.dav1d.de/</a></p>
+<p>API gl version直接选4.6即可，将include部分直接拷贝到vs头文件GL目录下</p>
+<p><img src="image-20230912111603093-16985808329383.png" alt="glad下载"></p>
+<h6 id="glm"><a class="markdownIt-Anchor" href="#glm"></a> glm</h6>
+<p><a target="_blank" rel="noopener" href="https://github.com/g-truc/glm/releases/tag/0.9.8.0">https://github.com/g-truc/glm/releases/tag/0.9.8.0</a></p>
+<p>解压后把子文件夹中的glm文件夹直接整个拷贝到vs目录中的include中，导入头文件的方式为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;glm/glm.hpp&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h6 id="vs中配置"><a class="markdownIt-Anchor" href="#vs中配置"></a> vs中配置</h6>
+<p>在目标目录新建一个项目</p>
+<p>进入vs2019，点击项目，管理NuGet程序包，搜索nupengl，安装两个相关的组件</p>
+<p>链接配置：运行前，将几个dll文件拷贝到系统文件夹（C:\Windows\SysWOW64   C:\Windows\System32）</p>
+<p>右键项目，点进属性-&gt;连接器-&gt;输入-&gt;附加依赖项</p>
+<p><img src="image-20230912112352987-16985808329384.png" alt="vs2019中对项目添加依赖项"></p>
+<p>将 freeglut.lib;glew32.lib;glfw3.lib;OpenGL32.lib;复制到附加依赖项中。</p>
+<ul>
+<li>
+<p>Debug时可以正常运行但Release模式无法正常执行？</p>
+<p>在项目设置中配置为Release的菜单中再导入一次上面的依赖项即可</p>
+</li>
+</ul>
+<p><em><strong>注意一定要执行上面的操作，否则会报无法解析外部符号的错误</strong></em></p>
+<p>保存设置，基本配置就差不多了，使用的时候只需导入对应头文件即可。</p>
+<p>注意：</p>
+<ul>
+<li>
+<p>导入glad的时候只导入头文件运行的话会出现未识别的外部符号问题，因此要将glad.c文件导入到项目中。</p>
+</li>
+<li>
+<p>若出现 #error : OpenGL header already included,remove this include, glad already provides it报错，将glad头文件的导入放在其他所有OpenGL库导入的前面即可解决。</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <blockquote class="article-copyright">
+    <p><strong>本文作者：</strong>*月遇丛雲花遇風* @ T3uk1 の 庭院</p>
+    <p><strong>本文链接：</strong><a href="https://t3uk1.github.io/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/">https://t3uk1.github.io/2023/10/29/%E5%9B%BE%E5%BD%A2%E5%AD%A6/</a></p>
+    <p><strong>本文标题：</strong>OpenGL环境手动安装配置记录</p>
+    
+    
+    <p><strong>本文版权：</strong>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><span class="icon-creative-commons"></span>BY-NC-SA</a> 许可协议。转载请注明出处！</p>
+  </blockquote>
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openGL/" rel="tag">openGL</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+    
+  <nav id="article-nav" class="wow fadeInUp">
+    
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          
+          
+            <img data-src="/covers/QQ图片20211219112939.jpg" data-sizes="auto" alt="Git的绑定与连接" class="lazyload">
+          
+        
+        <a href="/2023/10/29/Git%E7%9A%84%E7%BB%91%E5%AE%9A%E4%B8%8E%E8%BF%9E%E6%8E%A5/"></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">
+          
+            Git的绑定与连接
+          
+        </h3>
+      </div>
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="/covers/ec43126fgy1gwg9veeogtj224r1i9u0y.jpg" data-sizes="auto" alt="计算机网络复习笔记" class="lazyload">
+        
+      
+      <a href="/2023/07/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          计算机网络复习笔记
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+  
+</article>
+
+
+
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrap wow fadeInRight wrap-sticky">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#opengl%E7%8E%AF%E5%A2%83%E6%89%8B%E5%8A%A8%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E8%AE%B0%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text"> OpenGL环境手动安装配置记录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85vs2019"><span class="toc-number">1.0.1.</span> <span class="toc-text"> 1、安装VS2019</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85cmake"><span class="toc-number">1.0.2.</span> <span class="toc-text"> 2、安装cmake</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AE%89%E8%A3%85git"><span class="toc-number">1.0.3.</span> <span class="toc-text"> 3、安装Git</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%AE%89%E8%A3%85opengl%E5%BA%93%E4%B8%8E%E5%9C%A8vs2019%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-number">1.0.4.</span> <span class="toc-text"> 4、安装OpenGL库与在VS2019的配置</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#glfw"><span class="toc-number">1.0.4.0.0.1.</span> <span class="toc-text"> GLFW</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#glew"><span class="toc-number">1.0.4.0.0.2.</span> <span class="toc-text"> GLEW</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#freeglut"><span class="toc-number">1.0.4.0.0.3.</span> <span class="toc-text"> FreeGLUT</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#glad"><span class="toc-number">1.0.4.0.0.4.</span> <span class="toc-text"> glad</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#glm"><span class="toc-number">1.0.4.0.0.5.</span> <span class="toc-text"> glm</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#vs%E4%B8%AD%E9%85%8D%E7%BD%AE"><span class="toc-number">1.0.4.0.0.6.</span> <span class="toc-text"> vs中配置</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="*月遇丛雲花遇風*" class="lazyload">
+  <div class="sidebar-author-name">*月遇丛雲花遇風*</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">15</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=1027600674@qq.com itemprop="url" target="_blank" aria-label="email"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/t3uk1 itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+    
+      <div class="sidebar-btn-wrapper" style="position:static">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+    
+  </div>
+
+  
+</aside>
+
+          
+        </div>
+        <footer id="footer" class="wow fadeInUp">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div class="outer">
+    <div id="footer-info">
+      
+      <div>
+        <span class="icon-copyright"></span>
+        2022-2024
+        <span class="footer-info-sep"></span>
+        *月遇丛雲花遇風*
+      </div>
+      
+        <div>
+          基于&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+          Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+        </div>
+      
+      
+        <div>
+          <span class="icon-brush"></span>
+          103.3k
+          &nbsp;|&nbsp;
+          <span class="icon-coffee"></span>
+          07:53
+        </div>
+      
+      
+        <div>
+          <span class="icon-eye"></span>
+          <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+          &nbsp;|&nbsp;
+          <span class="icon-user"></span>
+          <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+        </div>
+      
+    </div>
+  </div>
+</footer>
+
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
+        </div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#opengl%E7%8E%AF%E5%A2%83%E6%89%8B%E5%8A%A8%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E8%AE%B0%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text"> OpenGL环境手动安装配置记录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85vs2019"><span class="toc-number">1.0.1.</span> <span class="toc-text"> 1、安装VS2019</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85cmake"><span class="toc-number">1.0.2.</span> <span class="toc-text"> 2、安装cmake</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AE%89%E8%A3%85git"><span class="toc-number">1.0.3.</span> <span class="toc-text"> 3、安装Git</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%AE%89%E8%A3%85opengl%E5%BA%93%E4%B8%8E%E5%9C%A8vs2019%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-number">1.0.4.</span> <span class="toc-text"> 4、安装OpenGL库与在VS2019的配置</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#glfw"><span class="toc-number">1.0.4.0.0.1.</span> <span class="toc-text"> GLFW</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#glew"><span class="toc-number">1.0.4.0.0.2.</span> <span class="toc-text"> GLEW</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#freeglut"><span class="toc-number">1.0.4.0.0.3.</span> <span class="toc-text"> FreeGLUT</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#glad"><span class="toc-number">1.0.4.0.0.4.</span> <span class="toc-text"> glad</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#glm"><span class="toc-number">1.0.4.0.0.5.</span> <span class="toc-text"> glm</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#vs%E4%B8%AD%E9%85%8D%E7%BD%AE"><span class="toc-number">1.0.4.0.0.6.</span> <span class="toc-text"> vs中配置</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="*月遇丛雲花遇風*" class="lazyload">
+  <div class="sidebar-author-name">*月遇丛雲花遇風*</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">15</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=1027600674@qq.com itemprop="url" target="_blank" aria-label="email"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/t3uk1 itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    <div class="site-search">
+      <div class="reimu-popup popup">
+        <div class="reimu-search">
+          <div class="reimu-search-input-icon"></div>
+          <div class="reimu-search-input" id="reimu-search-input"></div>
+          <div class="popup-btn-close"></div>
+        </div>
+        <div class="reimu-results">
+          <div id="reimu-stats"></div>
+          <div id="reimu-hits"></div>
+          <div id="reimu-pagination" class="reimu-pagination"></div>
+        </div>
+      </div>
+    </div>
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+<script type="module" data-pjax>
+  import PhotoSwipeLightbox from "https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.js";
+  
+  const pswp = () => {
+    if (_$$('.article-entry a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-entry',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.js")
+      }).init();
+    }
+    if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-gallery',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.js")
+      }).init();
+    }
+    window.lightboxStatus = 'done';
+    window.removeEventListener('lightbox:ready', pswp);
+  }
+  if(window.lightboxStatus === 'ready') {
+    pswp()
+  } else {
+    window.addEventListener('lightbox:ready', pswp);
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/generator_search.js"></script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.4/dist/index.umd.js"></script>
+
+  <script>
+    firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+
+  <script data-pjax>
+    quicklink.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div>
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.2.4' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --></body>
+  </html>
+

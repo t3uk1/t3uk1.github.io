@@ -1,0 +1,696 @@
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  data-theme="dark" >
+  <head>
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};</script>
+  
+  
+  <title>
+    gdb调试原理 |
+    
+    T3uk1 の 庭院
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+<link rel="stylesheet" href="/css/loader.css">
+
+  <meta name="description" content="gdb调试原理 用了这么久gdb了，想到竟然没有了解过gdb调试的原理，故在此记录学习。   gdb与被调试程序的关系 1gdb .&#x2F;file 在我们使用上述指令启动gdb调试一个程序，最终进入调试界面等待用户输入gdb命令的这个过程中，在操作系统中发生了一些复杂的事。 首先系统会启动gdb进程，gdb进程会使用fork()系统调用创建一个子进程，这个子进程会做两件事，见下图：  1、调用系统函">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gdb调试原理">
+<meta property="og:url" content="https://t3uk1.github.io/2024/08/16/gdb%E8%B0%83%E8%AF%95%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="T3uk1 の 庭院">
+<meta property="og:description" content="gdb调试原理 用了这么久gdb了，想到竟然没有了解过gdb调试的原理，故在此记录学习。   gdb与被调试程序的关系 1gdb .&#x2F;file 在我们使用上述指令启动gdb调试一个程序，最终进入调试界面等待用户输入gdb命令的这个过程中，在操作系统中发生了一些复杂的事。 首先系统会启动gdb进程，gdb进程会使用fork()系统调用创建一个子进程，这个子进程会做两件事，见下图：  1、调用系统函">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t3uk1.github.io/2024/08/16/gdb%E8%B0%83%E8%AF%95%E5%8E%9F%E7%90%86/image-20240818144824375.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/08/16/gdb%E8%B0%83%E8%AF%95%E5%8E%9F%E7%90%86/image-20240818150005550.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/08/16/gdb%E8%B0%83%E8%AF%95%E5%8E%9F%E7%90%86/image-20240818150431702.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/08/16/gdb%E8%B0%83%E8%AF%95%E5%8E%9F%E7%90%86/image-20240818151803591.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/08/16/gdb%E8%B0%83%E8%AF%95%E5%8E%9F%E7%90%86/image-20240818153220233.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/08/16/gdb%E8%B0%83%E8%AF%95%E5%8E%9F%E7%90%86/image-20240818153532936.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/08/16/gdb%E8%B0%83%E8%AF%95%E5%8E%9F%E7%90%86/image-20240818154029983.png">
+<meta property="article:published_time" content="2024-08-16T03:45:14.000Z">
+<meta property="article:modified_time" content="2024-08-19T09:23:19.061Z">
+<meta property="article:author" content="*月遇丛雲花遇風*">
+<meta property="article:tag" content="gdb">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://t3uk1.github.io/2024/08/16/gdb%E8%B0%83%E8%AF%95%E5%8E%9F%E7%90%86/image-20240818144824375.png">
+  
+    <link rel="alternate" href="/atom.xml" title="T3uk1 の 庭院" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css">
+
+  
+  
+  
+  
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"></script>
+
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/wowjs@1.1.3/css/libs/animate.css">
+
+    
+<script src="https://npm.webcache.cn/wowjs@1.1.3/dist/wow.min.js"></script>
+
+    <script>
+      new WOW({
+        offset: 0,
+        mobile: true,
+        live: false
+      }).init();
+    </script>
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff6e6b" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z" fill="#fd0d00" />
+          <path d="M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95" fill="#fd0d00" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/">首页</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/archives">归档</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/about">关于</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/friend">友链</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      <img fetchpriority="high" src="/images/banner.jpg" alt="gdb调试原理">
+    
+  
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <div id="logo-wrap">
+        
+          
+          
+            <a href="/" id="logo">
+              <h1>gdb调试原理</h1>
+            </a>
+          
+        
+      </div>
+      
+        
+        <h2 id="subtitle-wrap">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content" class="outer">
+          
+          <section id="main"><article id="post-gdb调试原理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    <div class="article-meta">
+      <div class="article-date wow slideInLeft">
+  <a href="/2024/08/16/gdb%E8%B0%83%E8%AF%95%E5%8E%9F%E7%90%86/" class="article-date-link">
+    <time datetime="2024-08-16T03:45:14.000Z" itemprop="datePublished">2024-08-16</time>
+    <time style="display: none;" id="post-update-time">2024-08-19</time>
+  </a>
+</div>
+
+      
+  <div class="article-category wow slideInLeft">
+    <a class="article-category-link" href="/categories/gdb/">gdb</a>
+  </div>
+
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <h1 id="gdb调试原理"><a class="markdownIt-Anchor" href="#gdb调试原理"></a> gdb调试原理</h1>
+<p>用了这么久gdb了，想到竟然没有了解过gdb调试的原理，故在此记录学习。</p>
+<!-- toc -->
+<h2 id="gdb与被调试程序的关系"><a class="markdownIt-Anchor" href="#gdb与被调试程序的关系"></a> gdb与被调试程序的关系</h2>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb ./file</span><br></pre></td></tr></table></figure>
+<p>在我们使用上述指令启动gdb调试一个程序，最终进入调试界面等待用户输入gdb命令的这个过程中，在操作系统中发生了一些复杂的事。</p>
+<p>首先系统会启动gdb进程，gdb进程会使用fork()系统调用创建一个子进程，这个子进程会做两件事，见下图：</p>
+<ul>
+<li>1、调用系统函数ptrace(PTRACE_TRACEME, [其他参数])；</li>
+<li>用execv加载并执行可执行程序file，这样被调试程序就在子进程中开始执行了</li>
+</ul>
+<p><img src="image-20240818144824375.png" alt="image-20240818144824375"></p>
+<h3 id="ptrace函数"><a class="markdownIt-Anchor" href="#ptrace函数"></a> ptrace函数</h3>
+<p>gdb有强大的调试能力离不开ptrace系统调用函数，ptrace的函数原型如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/ptrace.h&gt;</span></span></span><br><span class="line"><span class="type">long</span> <span class="title function_">ptrace</span><span class="params">(<span class="keyword">enum</span> __ptrace_request request, <span class="type">pid_t</span> pid, <span class="type">void</span> *addr, <span class="type">void</span> *data)</span>;</span><br></pre></td></tr></table></figure>
+<p>先看看ptrace简介：</p>
+<p><img src="image-20240818150005550.png" alt="image-20240818150005550"></p>
+<p>在简介中，<strong>tracer</strong>为调试程序，在gdb调试关系中对应的是gdb进程，<strong>tracee</strong>为被调试程序。</p>
+<p>ptrace系统函数是Linux内核提供的一个用于进程跟踪的系统调用，通过它，gdb进程可以读写被调试进程的指令空间、数据空间、堆栈和寄存器的值，且<strong>gdb进程接管被调试进程的所有信</strong>号，系统向被调试进程发送的所有信号都会被gdb进程捕获到，这样一来被调试进程就被gdb控制了，达到调试的目的。</p>
+<img src="image-20240818150431702.png" alt="image-20240818150431702" style="zoom:50%;">
+<h3 id="gdbattach是如何实现的"><a class="markdownIt-Anchor" href="#gdbattach是如何实现的"></a> gdb.attach是如何实现的？</h3>
+<p>我们经常使用gdb.attach()的方式调试一个正在运行的进程，那么它的原理是什么呢？</p>
+<p>首先回到上面提到的ptrace函数，它的第一个参数是一个枚举类型的值，其中重要的有两个：<code>PTRACE_TRACEME</code>和<code>PTRACE_ATTACH</code></p>
+<p>在上面的被调试程序从头开始执行的情况中，是子进程调用ptrace函数并使用<code>PTRACE_TRACEME</code>参数，表示请求让gdb调试自己。</p>
+<p>而对于要调试正在执行的进程B来说，需要在gdb这个父进程中调用ptrace函数，使用的是<code>PTRACE_ATTACH</code>参数。此时gdb会attach（绑定）到正在执行的进程B中，即gdb将进程B<strong>收养成为自己的子进程</strong>，那么对于进程B来说，它的操作等同于它自己进行了一次<code>PTRACE_TRACEME</code>操作。然后gdb进程会发送<code>SIG_STOP</code>信号给子进程B，子进程B接收到这个信号会暂停执行进入到<code>TASK_STOPED</code>状态，表示已经准备好被调试了。</p>
+<p><img src="image-20240818151803591.png" alt="image-20240818151803591"></p>
+<p>因此，不论是调试一个新程序还是一个正在执行的进程，通过ptrace系统调用，最终的结果都是：gdb是父进程，被调试程序是子进程，gdb父进程接管子进程的所有信号，并可以查看、修改子进程的内部信息，包括堆栈和寄存器等。</p>
+<h2 id="gdb如何实现断点"><a class="markdownIt-Anchor" href="#gdb如何实现断点"></a> gdb如何实现断点</h2>
+<p>首先给定下面的程序test.c：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">1</span>;</span><br><span class="line">    <span class="type">int</span> b = <span class="number">2</span>;</span><br><span class="line">    <span class="type">int</span> c = a + b;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;c = %d \n&quot;</span>, c);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>假设在gdb调试的过程中我们执行下面的断点指令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(gdb) break 5</span><br></pre></td></tr></table></figure>
+<p><img src="image-20240818153220233.png" alt="image-20240818153220233"></p>
+<p>左边的代码对应右边的汇编指令，当执行断点指令break 5的时候，会执行下面的操作：</p>
+<ul>
+<li>将第5行源码对应的汇编代码存储到断点链表中</li>
+<li>将第5行源码对应的汇编代码处替换为INT3中断指令</li>
+</ul>
+<p><img src="image-20240818153532936.png" alt="image-20240818153532936"></p>
+<p>然后当程序运行到INT3中断指令的时候，gdb会在断点链表中查找，发现链表中存储了这行对应的代码，说明这里被设置了断点，因此接下来执行2个操作：</p>
+<ul>
+<li>将INT3断点替换为断点链表中这行对应的代码</li>
+<li>将PC指针回退一步，即设置为指向被断点的那一行</li>
+</ul>
+<p><img src="image-20240818154029983.png" alt="image-20240818154029983"></p>
+<p>那么这个时候下一条要执行的指令就是汇编指令的第10行，即源码第5行。从调试者的角度来看，效果就是程序在第5行的地方被断下来了，接下来就可以使用其他指令进行debug了。</p>
+<h5 id="参考资料"><a class="markdownIt-Anchor" href="#参考资料"></a> 参考资料</h5>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/sewain/articles/14131927.html">https://www.cnblogs.com/sewain/articles/14131927.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <blockquote class="article-copyright">
+    <p><strong>本文作者：</strong>*月遇丛雲花遇風* @ T3uk1 の 庭院</p>
+    <p><strong>本文链接：</strong><a href="https://t3uk1.github.io/2024/08/16/gdb%E8%B0%83%E8%AF%95%E5%8E%9F%E7%90%86/">https://t3uk1.github.io/2024/08/16/gdb%E8%B0%83%E8%AF%95%E5%8E%9F%E7%90%86/</a></p>
+    <p><strong>本文标题：</strong>gdb调试原理</p>
+    
+    
+    <p><strong>本文版权：</strong>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><span class="icon-creative-commons"></span>BY-NC-SA</a> 许可协议。转载请注明出处！</p>
+  </blockquote>
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gdb/" rel="tag">gdb</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+    
+  <nav id="article-nav" class="wow fadeInUp">
+    
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          
+          
+            <img data-src="/covers/89821912_p0_master1200.jpg" data-sizes="auto" alt="HTTP协议笔记" class="lazyload">
+          
+        
+        <a href="/2024/08/25/HTTP%E5%8D%8F%E8%AE%AE%E7%AC%94%E8%AE%B0/"></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">
+          
+            HTTP协议笔记
+          
+        </h3>
+      </div>
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="/covers/QQ图片20211103201723.jpg" data-sizes="auto" alt="protobuf的安装与使用" class="lazyload">
+        
+      
+      <a href="/2024/08/01/protobuf%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          protobuf的安装与使用
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+  
+</article>
+
+
+
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrap wow fadeInRight wrap-sticky">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#gdb%E8%B0%83%E8%AF%95%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text"> gdb调试原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#gdb%E4%B8%8E%E8%A2%AB%E8%B0%83%E8%AF%95%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">1.1.</span> <span class="toc-text"> gdb与被调试程序的关系</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ptrace%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.1.</span> <span class="toc-text"> ptrace函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gdbattach%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84"><span class="toc-number">1.1.2.</span> <span class="toc-text"> gdb.attach是如何实现的？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gdb%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E6%96%AD%E7%82%B9"><span class="toc-number">1.2.</span> <span class="toc-text"> gdb如何实现断点</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.2.0.0.1.</span> <span class="toc-text"> 参考资料</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="*月遇丛雲花遇風*" class="lazyload">
+  <div class="sidebar-author-name">*月遇丛雲花遇風*</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">15</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=1027600674@qq.com itemprop="url" target="_blank" aria-label="email"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/t3uk1 itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+    
+      <div class="sidebar-btn-wrapper" style="position:static">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+    
+  </div>
+
+  
+</aside>
+
+          
+        </div>
+        <footer id="footer" class="wow fadeInUp">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div class="outer">
+    <div id="footer-info">
+      
+      <div>
+        <span class="icon-copyright"></span>
+        2022-2024
+        <span class="footer-info-sep"></span>
+        *月遇丛雲花遇風*
+      </div>
+      
+        <div>
+          基于&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+          Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+        </div>
+      
+      
+        <div>
+          <span class="icon-brush"></span>
+          103.3k
+          &nbsp;|&nbsp;
+          <span class="icon-coffee"></span>
+          07:53
+        </div>
+      
+      
+        <div>
+          <span class="icon-eye"></span>
+          <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+          &nbsp;|&nbsp;
+          <span class="icon-user"></span>
+          <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+        </div>
+      
+    </div>
+  </div>
+</footer>
+
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
+        </div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#gdb%E8%B0%83%E8%AF%95%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text"> gdb调试原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#gdb%E4%B8%8E%E8%A2%AB%E8%B0%83%E8%AF%95%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">1.1.</span> <span class="toc-text"> gdb与被调试程序的关系</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ptrace%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.1.</span> <span class="toc-text"> ptrace函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gdbattach%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84"><span class="toc-number">1.1.2.</span> <span class="toc-text"> gdb.attach是如何实现的？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gdb%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E6%96%AD%E7%82%B9"><span class="toc-number">1.2.</span> <span class="toc-text"> gdb如何实现断点</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.2.0.0.1.</span> <span class="toc-text"> 参考资料</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="*月遇丛雲花遇風*" class="lazyload">
+  <div class="sidebar-author-name">*月遇丛雲花遇風*</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">15</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=1027600674@qq.com itemprop="url" target="_blank" aria-label="email"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/t3uk1 itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    <div class="site-search">
+      <div class="reimu-popup popup">
+        <div class="reimu-search">
+          <div class="reimu-search-input-icon"></div>
+          <div class="reimu-search-input" id="reimu-search-input"></div>
+          <div class="popup-btn-close"></div>
+        </div>
+        <div class="reimu-results">
+          <div id="reimu-stats"></div>
+          <div id="reimu-hits"></div>
+          <div id="reimu-pagination" class="reimu-pagination"></div>
+        </div>
+      </div>
+    </div>
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+<script type="module" data-pjax>
+  import PhotoSwipeLightbox from "https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.js";
+  
+  const pswp = () => {
+    if (_$$('.article-entry a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-entry',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.js")
+      }).init();
+    }
+    if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-gallery',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.js")
+      }).init();
+    }
+    window.lightboxStatus = 'done';
+    window.removeEventListener('lightbox:ready', pswp);
+  }
+  if(window.lightboxStatus === 'ready') {
+    pswp()
+  } else {
+    window.addEventListener('lightbox:ready', pswp);
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/generator_search.js"></script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.4/dist/index.umd.js"></script>
+
+  <script>
+    firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+
+  <script data-pjax>
+    quicklink.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div>
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.2.4' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --></body>
+  </html>
+

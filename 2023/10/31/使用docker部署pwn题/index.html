@@ -1,0 +1,750 @@
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  data-theme="dark" >
+  <head>
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};</script>
+  
+  
+  <title>
+    使用docker部署pwn题 |
+    
+    T3uk1 の 庭院
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+<link rel="stylesheet" href="/css/loader.css">
+
+  <meta name="description" content="使用docker部署pwn题  本文的配置过程不一定是规范的，不过至少我按照下面的流程做是能够正常部署的。如有缺漏或错误请见谅。  Step 0 准备好要用的题目文件 示例代码pwn.c 123456789101112131415161718192021222324252627282930#include &lt;stdio.h&gt;#include &lt;stdlib.h&gt;#incl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用docker部署pwn题">
+<meta property="og:url" content="https://t3uk1.github.io/2023/10/31/%E4%BD%BF%E7%94%A8docker%E9%83%A8%E7%BD%B2pwn%E9%A2%98/index.html">
+<meta property="og:site_name" content="T3uk1 の 庭院">
+<meta property="og:description" content="使用docker部署pwn题  本文的配置过程不一定是规范的，不过至少我按照下面的流程做是能够正常部署的。如有缺漏或错误请见谅。  Step 0 准备好要用的题目文件 示例代码pwn.c 123456789101112131415161718192021222324252627282930#include &lt;stdio.h&gt;#include &lt;stdlib.h&gt;#incl">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E4%BD%BF%E7%94%A8docker%E9%83%A8%E7%BD%B2pwn%E9%A2%98/image-20230913150652699.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E4%BD%BF%E7%94%A8docker%E9%83%A8%E7%BD%B2pwn%E9%A2%98/image-20230913164033738.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E4%BD%BF%E7%94%A8docker%E9%83%A8%E7%BD%B2pwn%E9%A2%98/image-20230913165053078.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E4%BD%BF%E7%94%A8docker%E9%83%A8%E7%BD%B2pwn%E9%A2%98/image-20230913232458703.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E4%BD%BF%E7%94%A8docker%E9%83%A8%E7%BD%B2pwn%E9%A2%98/image-20230913232548016.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E4%BD%BF%E7%94%A8docker%E9%83%A8%E7%BD%B2pwn%E9%A2%98/image-20230913232616321.png">
+<meta property="og:image" content="https://t3uk1.github.io/2023/10/31/%E4%BD%BF%E7%94%A8docker%E9%83%A8%E7%BD%B2pwn%E9%A2%98/image-20231016233521857.png">
+<meta property="article:published_time" content="2023-10-31T02:34:50.000Z">
+<meta property="article:modified_time" content="2023-10-31T02:44:41.459Z">
+<meta property="article:author" content="*月遇丛雲花遇風*">
+<meta property="article:tag" content="pwn">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://t3uk1.github.io/2023/10/31/%E4%BD%BF%E7%94%A8docker%E9%83%A8%E7%BD%B2pwn%E9%A2%98/image-20230913150652699.png">
+  
+    <link rel="alternate" href="/atom.xml" title="T3uk1 の 庭院" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css">
+
+  
+  
+  
+  
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"></script>
+
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/wowjs@1.1.3/css/libs/animate.css">
+
+    
+<script src="https://npm.webcache.cn/wowjs@1.1.3/dist/wow.min.js"></script>
+
+    <script>
+      new WOW({
+        offset: 0,
+        mobile: true,
+        live: false
+      }).init();
+    </script>
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff6e6b" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z" fill="#fd0d00" />
+          <path d="M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95" fill="#fd0d00" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/">首页</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/archives">归档</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/about">关于</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/friend">友链</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      <img fetchpriority="high" src="/images/banner.jpg" alt="使用docker部署pwn题">
+    
+  
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <div id="logo-wrap">
+        
+          
+          
+            <a href="/" id="logo">
+              <h1>使用docker部署pwn题</h1>
+            </a>
+          
+        
+      </div>
+      
+        
+        <h2 id="subtitle-wrap">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content" class="outer">
+          
+          <section id="main"><article id="post-使用docker部署pwn题" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    <div class="article-meta">
+      <div class="article-date wow slideInLeft">
+  <a href="/2023/10/31/%E4%BD%BF%E7%94%A8docker%E9%83%A8%E7%BD%B2pwn%E9%A2%98/" class="article-date-link">
+    <time datetime="2023-10-31T02:34:50.000Z" itemprop="datePublished">2023-10-31</time>
+    <time style="display: none;" id="post-update-time">2023-10-31</time>
+  </a>
+</div>
+
+      
+  <div class="article-category wow slideInLeft">
+    <a class="article-category-link" href="/categories/CTF/">CTF</a><a class="article-category-link" href="/categories/CTF/pwn/">pwn</a>
+  </div>
+
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <h1 id="使用docker部署pwn题"><a class="markdownIt-Anchor" href="#使用docker部署pwn题"></a> 使用docker部署pwn题</h1>
+<!-- toc -->
+<p>本文的配置过程不一定是规范的，不过至少我按照下面的流程做是能够正常部署的。如有缺漏或错误请见谅。</p>
+<h2 id="step-0-准备好要用的题目文件"><a class="markdownIt-Anchor" href="#step-0-准备好要用的题目文件"></a> Step 0 准备好要用的题目文件</h2>
+<p>示例代码pwn.c</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="comment">//对应的基本头文件</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">initialize</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    setbuf(<span class="built_in">stdin</span>, <span class="literal">NULL</span>);</span><br><span class="line">    setbuf(<span class="built_in">stdout</span>, <span class="literal">NULL</span>);</span><br><span class="line">    setbuf(<span class="built_in">stderr</span>, <span class="literal">NULL</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//初始化，可以解决在远程连接时不会自动输出前面的内容的问题</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">g1ft</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;W0w, you have found Yuyuko&#x27;s food!&quot;</span>);</span><br><span class="line">    system(<span class="string">&quot;/bin/sh&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">char</span> s[<span class="number">40</span>];</span><br><span class="line">    initialize();</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Yuyuko sama lose her food.&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Can you find it?&quot;</span>);</span><br><span class="line">    read(<span class="number">0</span>, s, <span class="number">0x100</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Zannen desu ne.&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Wish you can find it next time.&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gcc -o ./pwn -g -fno-stack-protector -no-pie ./pwn.c</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">-fno-stack-protector 关闭canary</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">-no-pie 关闭PIE保护</span></span><br></pre></td></tr></table></figure>
+<h2 id="step-1-docker安装"><a class="markdownIt-Anchor" href="#step-1-docker安装"></a> Step 1 Docker安装</h2>
+<p>首先sudo apt update 一下</p>
+<p>安装docker：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install docker.io      </span><br></pre></td></tr></table></figure>
+<p>检查安装情况：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl status docker</span><br></pre></td></tr></table></figure>
+<p>出现如下图所示的状态说明成功安装</p>
+<p><img src="image-20230913150652699.png" alt="install docker"></p>
+<h2 id="step-2-安装并配置ctf_xinted"><a class="markdownIt-Anchor" href="#step-2-安装并配置ctf_xinted"></a> Step 2 安装并配置ctf_xinted</h2>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/Eadom/ctf_xinetd.git</span><br></pre></td></tr></table></figure>
+<p>将代码克隆下来后，可能需要修改一下Dockerfile。</p>
+<p>具体来说，包含换源、在运行路径末尾添加斜杠等操作以防止某些错误的发生</p>
+<p>下面提供一个本次使用的Dockerfile：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:jammy</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> sed -i <span class="string">&#x27;s@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g&#x27;</span> /etc/apt/sources.list &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    apt-get update &amp;&amp; apt-get -y dist-upgrade &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    apt-get install -y lib32z1 xinetd</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> useradd -m ctf</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /home/ctf/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">cp</span> -R /lib*/ /home/ctf/ &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">cp</span> -R /usr/lib*/ /home/ctf/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">mkdir</span> /home/ctf/dev/ &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">mknod</span> /home/ctf/dev/null c 1 3 &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">mknod</span> /home/ctf/dev/zero c 1 5 &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">mknod</span> /home/ctf/dev/random c 1 8 &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">mknod</span> /home/ctf/dev/urandom c 1 9 &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">chmod</span> 666 /home/ctf/dev/*</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">mkdir</span> /home/ctf/bin/ &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">cp</span> /bin/sh /home/ctf/bin/ &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">cp</span> /bin/ls /home/ctf/bin/ &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">cp</span> /bin/cat /home/ctf/bin/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./ctf.xinetd /etc/xinetd.d/ctf</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./start.sh /start.sh</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">echo</span> <span class="string">&quot;Blocked by ctf_xinetd&quot;</span> &gt; /etc/banner_fail</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">chmod</span> +x /start.sh</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./bin/ /home/ctf/</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">chown</span> -R root:ctf /home/ctf &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">chmod</span> -R 755 /home/ctf</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;/start.sh&quot;</span>]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">9999</span></span><br></pre></td></tr></table></figure>
+<h2 id="step-3-使用docker部署题目"><a class="markdownIt-Anchor" href="#step-3-使用docker部署题目"></a> Step 3 使用Docker部署题目</h2>
+<ul>
+<li>注意：关于docker的操作要使用sudo</li>
+</ul>
+<p>导入ubuntu</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker pull ubuntu:jammy</span><br></pre></td></tr></table></figure>
+<p>构建Docker镜像：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ./ctf_xinetd   #进入ctf_xinted目录下才能执行下面的指令</span><br><span class="line">sudo docker build ./ -t $name</span><br></pre></td></tr></table></figure>
+<p>创建容器：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run -d -p 9999:9999 $name</span><br></pre></td></tr></table></figure>
+<p>出现如下就应该成功了：</p>
+<p><img src="image-20230913164033738.png" alt="docker run"></p>
+<p>连接到靶机：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc localhost 9999</span><br></pre></td></tr></table></figure>
+<p>将外部文件导入到Docker中：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker pull $filename</span><br></pre></td></tr></table></figure>
+<p>将外部文件复制到Docker容器中：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker cp ctf_xinetd/Dockerfile a68f4951ca21:/</span><br></pre></td></tr></table></figure>
+<p>查看镜像中的容器：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker ps</span><br></pre></td></tr></table></figure>
+<p><img src="image-20230913165053078.png" alt="docker ps"></p>
+<p>操作容器：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker exec -it a68f4951ca21  bash</span><br></pre></td></tr></table></figure>
+<p>将题目部署到远程</p>
+<p>注册dockerhub账号，其中username作为将要使用的镜像源的名字</p>
+<p><img src="image-20230913232458703.png" alt="docker name"></p>
+<p>创建存储库：Repositories-&gt;Create repository</p>
+<p><img src="image-20230913232548016.png" alt="docker repository"></p>
+<p><img src="image-20230913232616321.png" alt="image-20230913232616321"></p>
+<p>镜像源名称格式（推荐）：小写英文，中间用-分割</p>
+<p>创建完成后，在虚拟机操作</p>
+<p><strong>首先要登录到dockerhub：</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker login</span><br></pre></td></tr></table></figure>
+<p>输入对应已经注册的dockerhub账号的用户名和密码</p>
+<p>build</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo docker build ./ -t $username/所用镜像名</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">sudo</span> docker build ./ -t t3uk1/yuyukos-food</span></span><br></pre></td></tr></table></figure>
+<p>将本地内容传到docker</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker push t3uk1/yuyukos-food</span><br></pre></td></tr></table></figure>
+<p>运行容器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run -d -p 9999:9999 t3uk1/yuyukos-food</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">参数解析：</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将容器的9999端口绑定到主机9999端口，前面的是主机端口，后面的是容器对应端口</span></span><br></pre></td></tr></table></figure>
+<p>ctf_xinted/bin中的两个文件分别是题目对应可执行文件和flag.txt</p>
+<p>在ctf_xinted文档中对应设置如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">service ctf</span><br><span class="line">&#123;</span><br><span class="line">    disable = no</span><br><span class="line">    socket_type = stream</span><br><span class="line">    protocol    = tcp</span><br><span class="line">    wait        = no</span><br><span class="line">    user        = root</span><br><span class="line">    type        = UNLISTED</span><br><span class="line">    port        = 9999</span><br><span class="line">    bind        = 0.0.0.0</span><br><span class="line">    server      = /usr/sbin/chroot</span><br><span class="line">    # replace helloworld to your program</span><br><span class="line">    server_args = --userspec=1000:1000 /home/ctf ./pwn</span><br><span class="line">    banner_fail = /etc/banner_fail</span><br><span class="line">    # safety options</span><br><span class="line">    per_source	= 10 # the maximum instances of this service per source IP address</span><br><span class="line">    rlimit_cpu	= 20 # the maximum number of CPU seconds that the service may use</span><br><span class="line">    #rlimit_as  = 1024M # the Address Space resource limit for the service</span><br><span class="line">    #access_times = 2:00-9:00 12:00-24:00</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>push成功之后应该就能远程访问了</p>
+<p>测试:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc localhost 9999 #前面设置的端口是9999</span><br></pre></td></tr></table></figure>
+<p>docker查看标签：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo docker image ls</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="built_in">sudo</span> docker image <span class="built_in">rm</span> xxx</span></span><br></pre></td></tr></table></figure>
+<p>docker查看容器情况：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo docker container ls</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="built_in">sudo</span> docker container <span class="built_in">rm</span> xxx</span></span><br></pre></td></tr></table></figure>
+<h2 id="设置题目动态flag的方法"><a class="markdownIt-Anchor" href="#设置题目动态flag的方法"></a> *设置题目动态flag的方法</h2>
+<p>对于每一个创建的动态实例，每次创建的环境变量$FLAG是不同的，因此我们可以将这个环境变量作为题目flag的内容。</p>
+<p>一种实现方式是更改**<u>start.sh</u>**文件，在执行start命令前将$FLAG写入flag文件然后将 $ FLAG取消环境变量。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/sh</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Add your startup script</span></span><br><span class="line">echo $FLAG &gt; /home/ctf/flag</span><br><span class="line">chmod 644 /home/ctf/flag</span><br><span class="line">unset FLAG</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">DO NOT DELETE</span></span><br><span class="line">/etc/init.d/xinetd start</span><br><span class="line">sleep infinity</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>在Aurora靶场格式化设置动态flag</p>
+<p>Whale-&gt;设置flag格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; &quot;Aurora&#123;&quot;+uuid.uuid4()|string+&quot;&#125;&quot; &#125;&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="其他问题"><a class="markdownIt-Anchor" href="#其他问题"></a> 其他问题</h2>
+<h3 id="在指定glibc版本编译文件"><a class="markdownIt-Anchor" href="#在指定glibc版本编译文件"></a> 在指定glibc版本编译文件</h3>
+<p>以ubuntu18为例</p>
+<p>运行docker容器：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run -it -v &lt;本地绝对路径&gt;:/mnt/ ubuntu:bionic </span><br><span class="line">sudo docker run -it -v /home/yuyuko/mypwn/challenges/ret2libc/:/mnt/ ubuntu:bionic </span><br></pre></td></tr></table></figure>
+<p>安装gcc：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apt update</span><br><span class="line">apt-get install gcc</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">gcc编译</span></span><br></pre></td></tr></table></figure>
+<h3 id="将文件在docker容器与本机中互相传输"><a class="markdownIt-Anchor" href="#将文件在docker容器与本机中互相传输"></a> 将文件在docker容器与本机中互相传输</h3>
+<p>本机传输到docker容器：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo docker cp &lt;本地文件绝对路径&gt; &lt;容器名称/容器id&gt;:/</span><br><span class="line">sudo docker cp /home/yuyuko/mypwn/challenges/ret2libc/pwn.c 1e239edbeed0:/</span><br></pre></td></tr></table></figure>
+<p>docker容器传输到本机：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo docker cp &lt;容器名称/容器id&gt;:/  &lt;本地文件绝对路径&gt;</span><br><span class="line">sudo docker cp  1e239edbeed0:/pwn /home/yuyuko/mypwn/challenges/ret2libc/</span><br></pre></td></tr></table></figure>
+<h3 id="从docker编译的文件复制到本机后patch不成功"><a class="markdownIt-Anchor" href="#从docker编译的文件复制到本机后patch不成功"></a> 从docker编译的文件复制到本机后patch不成功</h3>
+<p>原因：编译的时候权限是在docker中的root</p>
+<p>首先更改群组：</p>
+<p><img src="image-20231016233521857.png" alt="chown"></p>
+<p>在当前群组(yuyuko)权限下chmod</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 755 ./pwn </span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <blockquote class="article-copyright">
+    <p><strong>本文作者：</strong>*月遇丛雲花遇風* @ T3uk1 の 庭院</p>
+    <p><strong>本文链接：</strong><a href="https://t3uk1.github.io/2023/10/31/%E4%BD%BF%E7%94%A8docker%E9%83%A8%E7%BD%B2pwn%E9%A2%98/">https://t3uk1.github.io/2023/10/31/%E4%BD%BF%E7%94%A8docker%E9%83%A8%E7%BD%B2pwn%E9%A2%98/</a></p>
+    <p><strong>本文标题：</strong>使用docker部署pwn题</p>
+    
+    
+    <p><strong>本文版权：</strong>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><span class="icon-creative-commons"></span>BY-NC-SA</a> 许可协议。转载请注明出处！</p>
+  </blockquote>
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+    
+  <nav id="article-nav" class="wow fadeInUp">
+    
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          
+          
+            <img data-src="/covers/QQ图片20220222181627.jpg" data-sizes="auto" alt="DASCTF × CBCTF-Pwn WP" class="lazyload">
+          
+        
+        <a href="/2023/10/31/DASCTF-%C3%97-CBCTF-Pwn-WP/"></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">
+          
+            DASCTF × CBCTF-Pwn WP
+          
+        </h3>
+      </div>
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="/covers/bg.jpg" data-sizes="auto" alt="记第一次出Pwn题——AuroraCTF2023第一批Pwn" class="lazyload">
+        
+      
+      <a href="/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          记第一次出Pwn题——AuroraCTF2023第一批Pwn
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+  
+</article>
+
+
+
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrap wow fadeInRight wrap-sticky">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8docker%E9%83%A8%E7%BD%B2pwn%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text"> 使用docker部署pwn题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#step-0-%E5%87%86%E5%A4%87%E5%A5%BD%E8%A6%81%E7%94%A8%E7%9A%84%E9%A2%98%E7%9B%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.</span> <span class="toc-text"> Step 0 准备好要用的题目文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step-1-docker%E5%AE%89%E8%A3%85"><span class="toc-number">1.2.</span> <span class="toc-text"> Step 1 Docker安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step-2-%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AEctf_xinted"><span class="toc-number">1.3.</span> <span class="toc-text"> Step 2 安装并配置ctf_xinted</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step-3-%E4%BD%BF%E7%94%A8docker%E9%83%A8%E7%BD%B2%E9%A2%98%E7%9B%AE"><span class="toc-number">1.4.</span> <span class="toc-text"> Step 3 使用Docker部署题目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E9%A2%98%E7%9B%AE%E5%8A%A8%E6%80%81flag%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">1.5.</span> <span class="toc-text"> *设置题目动态flag的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E9%97%AE%E9%A2%98"><span class="toc-number">1.6.</span> <span class="toc-text"> 其他问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E6%8C%87%E5%AE%9Aglibc%E7%89%88%E6%9C%AC%E7%BC%96%E8%AF%91%E6%96%87%E4%BB%B6"><span class="toc-number">1.6.1.</span> <span class="toc-text"> 在指定glibc版本编译文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%86%E6%96%87%E4%BB%B6%E5%9C%A8docker%E5%AE%B9%E5%99%A8%E4%B8%8E%E6%9C%AC%E6%9C%BA%E4%B8%AD%E4%BA%92%E7%9B%B8%E4%BC%A0%E8%BE%93"><span class="toc-number">1.6.2.</span> <span class="toc-text"> 将文件在docker容器与本机中互相传输</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8Edocker%E7%BC%96%E8%AF%91%E7%9A%84%E6%96%87%E4%BB%B6%E5%A4%8D%E5%88%B6%E5%88%B0%E6%9C%AC%E6%9C%BA%E5%90%8Epatch%E4%B8%8D%E6%88%90%E5%8A%9F"><span class="toc-number">1.6.3.</span> <span class="toc-text"> 从docker编译的文件复制到本机后patch不成功</span></a></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="*月遇丛雲花遇風*" class="lazyload">
+  <div class="sidebar-author-name">*月遇丛雲花遇風*</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">15</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=1027600674@qq.com itemprop="url" target="_blank" aria-label="email"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/t3uk1 itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+    
+      <div class="sidebar-btn-wrapper" style="position:static">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+    
+  </div>
+
+  
+</aside>
+
+          
+        </div>
+        <footer id="footer" class="wow fadeInUp">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div class="outer">
+    <div id="footer-info">
+      
+      <div>
+        <span class="icon-copyright"></span>
+        2022-2024
+        <span class="footer-info-sep"></span>
+        *月遇丛雲花遇風*
+      </div>
+      
+        <div>
+          基于&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+          Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+        </div>
+      
+      
+        <div>
+          <span class="icon-brush"></span>
+          103.3k
+          &nbsp;|&nbsp;
+          <span class="icon-coffee"></span>
+          07:53
+        </div>
+      
+      
+        <div>
+          <span class="icon-eye"></span>
+          <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+          &nbsp;|&nbsp;
+          <span class="icon-user"></span>
+          <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+        </div>
+      
+    </div>
+  </div>
+</footer>
+
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
+        </div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8docker%E9%83%A8%E7%BD%B2pwn%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text"> 使用docker部署pwn题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#step-0-%E5%87%86%E5%A4%87%E5%A5%BD%E8%A6%81%E7%94%A8%E7%9A%84%E9%A2%98%E7%9B%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.</span> <span class="toc-text"> Step 0 准备好要用的题目文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step-1-docker%E5%AE%89%E8%A3%85"><span class="toc-number">1.2.</span> <span class="toc-text"> Step 1 Docker安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step-2-%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AEctf_xinted"><span class="toc-number">1.3.</span> <span class="toc-text"> Step 2 安装并配置ctf_xinted</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step-3-%E4%BD%BF%E7%94%A8docker%E9%83%A8%E7%BD%B2%E9%A2%98%E7%9B%AE"><span class="toc-number">1.4.</span> <span class="toc-text"> Step 3 使用Docker部署题目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E9%A2%98%E7%9B%AE%E5%8A%A8%E6%80%81flag%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">1.5.</span> <span class="toc-text"> *设置题目动态flag的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E9%97%AE%E9%A2%98"><span class="toc-number">1.6.</span> <span class="toc-text"> 其他问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E6%8C%87%E5%AE%9Aglibc%E7%89%88%E6%9C%AC%E7%BC%96%E8%AF%91%E6%96%87%E4%BB%B6"><span class="toc-number">1.6.1.</span> <span class="toc-text"> 在指定glibc版本编译文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%86%E6%96%87%E4%BB%B6%E5%9C%A8docker%E5%AE%B9%E5%99%A8%E4%B8%8E%E6%9C%AC%E6%9C%BA%E4%B8%AD%E4%BA%92%E7%9B%B8%E4%BC%A0%E8%BE%93"><span class="toc-number">1.6.2.</span> <span class="toc-text"> 将文件在docker容器与本机中互相传输</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8Edocker%E7%BC%96%E8%AF%91%E7%9A%84%E6%96%87%E4%BB%B6%E5%A4%8D%E5%88%B6%E5%88%B0%E6%9C%AC%E6%9C%BA%E5%90%8Epatch%E4%B8%8D%E6%88%90%E5%8A%9F"><span class="toc-number">1.6.3.</span> <span class="toc-text"> 从docker编译的文件复制到本机后patch不成功</span></a></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="*月遇丛雲花遇風*" class="lazyload">
+  <div class="sidebar-author-name">*月遇丛雲花遇風*</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">15</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=1027600674@qq.com itemprop="url" target="_blank" aria-label="email"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/t3uk1 itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    <div class="site-search">
+      <div class="reimu-popup popup">
+        <div class="reimu-search">
+          <div class="reimu-search-input-icon"></div>
+          <div class="reimu-search-input" id="reimu-search-input"></div>
+          <div class="popup-btn-close"></div>
+        </div>
+        <div class="reimu-results">
+          <div id="reimu-stats"></div>
+          <div id="reimu-hits"></div>
+          <div id="reimu-pagination" class="reimu-pagination"></div>
+        </div>
+      </div>
+    </div>
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+<script type="module" data-pjax>
+  import PhotoSwipeLightbox from "https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.js";
+  
+  const pswp = () => {
+    if (_$$('.article-entry a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-entry',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.js")
+      }).init();
+    }
+    if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-gallery',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.js")
+      }).init();
+    }
+    window.lightboxStatus = 'done';
+    window.removeEventListener('lightbox:ready', pswp);
+  }
+  if(window.lightboxStatus === 'ready') {
+    pswp()
+  } else {
+    window.addEventListener('lightbox:ready', pswp);
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/generator_search.js"></script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.4/dist/index.umd.js"></script>
+
+  <script>
+    firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+
+  <script data-pjax>
+    quicklink.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div>
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.2.4' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --></body>
+  </html>
+

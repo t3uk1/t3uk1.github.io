@@ -6,7 +6,7 @@
   <link href="https://t3uk1.github.io/atom.xml" rel="self"/>
   
   <link href="https://t3uk1.github.io/"/>
-  <updated>2024-09-18T09:16:12.870Z</updated>
+  <updated>2024-10-11T03:57:36.583Z</updated>
   <id>https://t3uk1.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用docker编译指定glibc版本的ELF文件</title>
+    <link href="https://t3uk1.github.io/2024/10/11/%E4%BD%BF%E7%94%A8docker%E7%BC%96%E8%AF%91%E6%8C%87%E5%AE%9Aglibc%E7%89%88%E6%9C%AC%E7%9A%84ELF%E6%96%87%E4%BB%B6/"/>
+    <id>https://t3uk1.github.io/2024/10/11/%E4%BD%BF%E7%94%A8docker%E7%BC%96%E8%AF%91%E6%8C%87%E5%AE%9Aglibc%E7%89%88%E6%9C%AC%E7%9A%84ELF%E6%96%87%E4%BB%B6/</id>
+    <published>2024-10-11T03:56:55.000Z</published>
+    <updated>2024-10-11T03:57:36.583Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;使用docker编译指定glibc版本的elf文件&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#使用docker编译指定glibc版本的elf文件&quot;&gt;&lt;/a&gt;</summary>
+        
+      
+    
+    
+    
+    <category term="docker" scheme="https://t3uk1.github.io/categories/docker/"/>
+    
+    
+    <category term="docker" scheme="https://t3uk1.github.io/tags/docker/"/>
+    
+  </entry>
   
   <entry>
     <title>Fiddler使用</title>
@@ -532,35 +557,6 @@
     
     
     <category term="hexo" scheme="https://t3uk1.github.io/tags/hexo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Git的绑定与连接</title>
-    <link href="https://t3uk1.github.io/2023/10/29/Git%E7%9A%84%E7%BB%91%E5%AE%9A%E4%B8%8E%E8%BF%9E%E6%8E%A5/"/>
-    <id>https://t3uk1.github.io/2023/10/29/Git%E7%9A%84%E7%BB%91%E5%AE%9A%E4%B8%8E%E8%BF%9E%E6%8E%A5/</id>
-    <published>2023-10-29T12:20:40.000Z</published>
-    <updated>2023-10-30T08:43:19.415Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;git的绑定与连接&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#git的绑定与连接&quot;&gt;&lt;/a&gt; Git的绑定与连接&lt;/h1&gt;
-&lt;!-- toc --&gt;
-&lt;h2 id=&quot;配置git的user&quot;&gt;&lt;a</summary>
-        
-      
-    
-    
-    
-    <category term="Git" scheme="https://t3uk1.github.io/categories/Git/"/>
-    
-    
-    <category term="github" scheme="https://t3uk1.github.io/tags/github/"/>
-    
-    <category term="SSH连接" scheme="https://t3uk1.github.io/tags/SSH%E8%BF%9E%E6%8E%A5/"/>
     
   </entry>
   

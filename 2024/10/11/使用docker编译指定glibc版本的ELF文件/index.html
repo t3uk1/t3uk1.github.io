@@ -1,0 +1,726 @@
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  data-theme="dark" >
+  <head>
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};</script>
+  
+  
+  <title>
+    使用docker编译指定glibc版本的ELF文件 |
+    
+    T3uk1 の 庭院
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+<link rel="stylesheet" href="/css/loader.css">
+
+  <meta name="description" content="使用docker编译指定glibc版本的ELF文件 众所周知，随着glibc版本的更新，修复了很多漏洞，因此要复现某些漏洞需要在指定版本的glibc下编译文件才能成功。为了实现这一目的，使用docker拉取不同版本的ubuntu镜像并在容器内编译得到文件是其中一个方法。  0x01 docker换源 首先我们需要拉取指定版本ubuntu的镜像，但是在这之前我们需要换源，否则会以为连不上docke">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用docker编译指定glibc版本的ELF文件">
+<meta property="og:url" content="https://t3uk1.github.io/2024/10/11/%E4%BD%BF%E7%94%A8docker%E7%BC%96%E8%AF%91%E6%8C%87%E5%AE%9Aglibc%E7%89%88%E6%9C%AC%E7%9A%84ELF%E6%96%87%E4%BB%B6/index.html">
+<meta property="og:site_name" content="T3uk1 の 庭院">
+<meta property="og:description" content="使用docker编译指定glibc版本的ELF文件 众所周知，随着glibc版本的更新，修复了很多漏洞，因此要复现某些漏洞需要在指定版本的glibc下编译文件才能成功。为了实现这一目的，使用docker拉取不同版本的ubuntu镜像并在容器内编译得到文件是其中一个方法。  0x01 docker换源 首先我们需要拉取指定版本ubuntu的镜像，但是在这之前我们需要换源，否则会以为连不上docke">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-10-11T03:56:55.000Z">
+<meta property="article:modified_time" content="2024-10-11T03:57:36.583Z">
+<meta property="article:author" content="*月遇丛雲花遇風*">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="T3uk1 の 庭院" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css">
+
+  
+  
+  
+  
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"></script>
+
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/wowjs@1.1.3/css/libs/animate.css">
+
+    
+<script src="https://npm.webcache.cn/wowjs@1.1.3/dist/wow.min.js"></script>
+
+    <script>
+      new WOW({
+        offset: 0,
+        mobile: true,
+        live: false
+      }).init();
+    </script>
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff6e6b" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z" fill="#fd0d00" />
+          <path d="M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95" fill="#fd0d00" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/">首页</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/archives">归档</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/about">关于</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/friend">友链</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      <img fetchpriority="high" src="/images/banner.jpg" alt="使用docker编译指定glibc版本的ELF文件">
+    
+  
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <div id="logo-wrap">
+        
+          
+          
+            <a href="/" id="logo">
+              <h1>使用docker编译指定glibc版本的ELF文件</h1>
+            </a>
+          
+        
+      </div>
+      
+        
+        <h2 id="subtitle-wrap">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content" class="outer">
+          
+          <section id="main"><article id="post-使用docker编译指定glibc版本的ELF文件" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    <div class="article-meta">
+      <div class="article-date wow slideInLeft">
+  <a href="/2024/10/11/%E4%BD%BF%E7%94%A8docker%E7%BC%96%E8%AF%91%E6%8C%87%E5%AE%9Aglibc%E7%89%88%E6%9C%AC%E7%9A%84ELF%E6%96%87%E4%BB%B6/" class="article-date-link">
+    <time datetime="2024-10-11T03:56:55.000Z" itemprop="datePublished">2024-10-11</time>
+    <time style="display: none;" id="post-update-time">2024-10-11</time>
+  </a>
+</div>
+
+      
+  <div class="article-category wow slideInLeft">
+    <a class="article-category-link" href="/categories/docker/">docker</a>
+  </div>
+
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <h1 id="使用docker编译指定glibc版本的elf文件"><a class="markdownIt-Anchor" href="#使用docker编译指定glibc版本的elf文件"></a> 使用docker编译指定glibc版本的ELF文件</h1>
+<p>众所周知，随着glibc版本的更新，修复了很多漏洞，因此要复现某些漏洞需要在指定版本的glibc下编译文件才能成功。为了实现这一目的，使用docker拉取不同版本的ubuntu镜像并在容器内编译得到文件是其中一个方法。</p>
+<h2 id="0x01-docker换源"><a class="markdownIt-Anchor" href="#0x01-docker换源"></a> 0x01 docker换源</h2>
+<p>首先我们需要拉取指定版本ubuntu的镜像，但是在这之前我们需要换源，否则会以为连不上docker镜像地址的网络问题导致拉取失败</p>
+<p>比如这种<s>喜闻乐见</s>的报错：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Error response from daemon: Get &quot;https:/registry-1.docker,io/v2/&quot;: net/http: request canceled while waiting for conection (client.Timeout exceeded while a</span><br><span class="line">waiting headers)</span><br></pre></td></tr></table></figure>
+<p>由于网上的很多国内镜像源替换了也经常拉取失败，这里用了hzgg的镜像源，还是挺稳定的</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://blog.hz2016.com/2024/09/%e3%80%90theonlymirror%e3%80%91%e5%9f%ba%e4%ba%8e%e5%8f%8d%e5%90%91%e4%bb%a3%e7%90%86%e7%9a%84%e9%95%9c%e5%83%8f%e6%ba%90/">https://blog.hz2016.com/2024/09/【theonlymirror】基于反向代理的镜像源/</a></p>
+</blockquote>
+<p>在kali中替换：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gedit /etc/docker/daemon.json</span><br></pre></td></tr></table></figure>
+<p>把下面的内容写到上面的文件中：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;registry-mirrors&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;https://mirrors.0e7.cn&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>然后重启守护进程和docker服务：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br><span class="line">sudo service docker restart</span><br></pre></td></tr></table></figure>
+<h2 id="0x02-拉取指定版本的ubuntu镜像"><a class="markdownIt-Anchor" href="#0x02-拉取指定版本的ubuntu镜像"></a> 0x02 拉取指定版本的ubuntu镜像</h2>
+<p>在拉取之前，首先要确定ubuntu版本号和glibc版本的对应关系，不指定版本号默认拉取最新版本的ubuntu镜像(ubuntu:latest)</p>
+<p>下面是几个常用版本的对应关系：</p>
+<table>
+<thead>
+<tr>
+<th>Ubuntu版本</th>
+<th>别名</th>
+<th>glibc版本</th>
+<th>拉取镜像格式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>16.04</td>
+<td>Xenial Xerus</td>
+<td>2.23</td>
+<td>ubuntu:xenial</td>
+</tr>
+<tr>
+<td>18.04</td>
+<td>Bionic Beaver</td>
+<td>2.27</td>
+<td>ubuntu:bionic</td>
+</tr>
+<tr>
+<td>20.04</td>
+<td>Focal Fossa</td>
+<td>2.31</td>
+<td>ubuntu:focal</td>
+</tr>
+<tr>
+<td>22.04</td>
+<td>Jammy Jellyfish</td>
+<td>2.35</td>
+<td>ubuntu:jammy</td>
+</tr>
+</tbody>
+</table>
+<p>更多对应关系见下面链接：</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://blog.lmshao.com/linux-glibc-version.html">https://blog.lmshao.com/linux-glibc-version.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zhengmx100/article/details/78352773">https://blog.csdn.net/zhengmx100/article/details/78352773</a></p>
+</blockquote>
+<p>下面举例拉取一个镜像到本地：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull ubuntu:jammy</span><br></pre></td></tr></table></figure>
+<p>这条命令将ubuntu22.04的镜像拉取到本地。</p>
+<blockquote>
+<p>在docker build的过程中，如果本地没有对应的镜像，会先拉取对应的镜像，如果出现网络问题那么镜像构建就会失败卡在这一步，因此推荐先将镜像拉取到本地。</p>
+</blockquote>
+<p>拉取后查看一下本地的镜像情况：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker images</span></span><br><span class="line">REPOSITORY   TAG         IMAGE ID       CREATED         SIZE</span><br><span class="line">...</span><br><span class="line">ubuntu       jammy       97271d29cb79   4 weeks ago     77.9MB</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h2 id="0x03-进入容器并编译文件"><a class="markdownIt-Anchor" href="#0x03-进入容器并编译文件"></a> 0x03 进入容器并编译文件</h2>
+<h3 id="使用镜像启动容器"><a class="markdownIt-Anchor" href="#使用镜像启动容器"></a> 使用镜像启动容器：</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -itd --name ubuntu-xenial ubuntu:xenial</span><br></pre></td></tr></table></figure>
+<p>上面这条指令的参数解释：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-i：这个选项代表“交互式”，允许你与容器的标准输入（STDIN）进行交互。</span><br><span class="line">-t：这个选项代表“伪终端”，它分配一个伪终端并连接到容器的标准输入，这样你就可以像使用终端一样与容器进行交互。</span><br><span class="line">-d：这个选项代表“分离模式”，意味着容器将在后台运行，不会阻塞你的命令行界面。</span><br><span class="line">--name 为容器命名为指定名称</span><br></pre></td></tr></table></figure>
+<p>此外常用参数还有<code>-p</code>指定端口映射，这里并不需要通信因此没有设置。</p>
+<p>执行这条指令后会创建一个容器在后台，可以查看容器状态：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker ps</span></span><br><span class="line">CONTAINER ID   IMAGE           COMMAND       CREATED         STATUS         PORTS     NAMES</span><br><span class="line">aa1cdd4015a7   ubuntu:xenial   &quot;/bin/bash&quot;   4 seconds ago   Up 3 seconds             ubuntu-xenial</span><br></pre></td></tr></table></figure>
+<h3 id="进入ubuntu容器"><a class="markdownIt-Anchor" href="#进入ubuntu容器"></a> 进入ubuntu容器：</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it CONTAINER_ID /bin/bash</span><br></pre></td></tr></table></figure>
+<p>然后查看当前glibc版本：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@aa1cdd4015a7:/# ldd --version</span><br><span class="line">ldd (Ubuntu GLIBC 2.23-0ubuntu11.3) 2.23</span><br><span class="line">Copyright (C) 2016 Free Software Foundation, Inc.</span><br><span class="line">This is free software; see the source for copying conditions.  There is NO</span><br><span class="line">warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span><br><span class="line">Written by Roland McGrath and Ulrich Drepper.</span><br></pre></td></tr></table></figure>
+<p>glibc版本为2.23，说明在这个容器中编译的文件依赖的glibc版本为2.23</p>
+<h3 id="编译文件"><a class="markdownIt-Anchor" href="#编译文件"></a> 编译文件</h3>
+<p>新容器里是没有gcc的，要先安装，在安装前要先apt update：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt update</span><br><span class="line">apt install gcc</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在apt update的时候出现了网络问题：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Err:1 http://mirrors.ustc.edu.cn/ubuntu xenial InRelease</span><br><span class="line">  Temporary failure resolving <span class="string">&#x27;mirrors.ustc.edu.cn&#x27;</span></span><br><span class="line">Err:2 http://mirrors.ustc.edu.cn/ubuntu xenial-updates InRelease</span><br><span class="line">  Temporary failure resolving <span class="string">&#x27;mirrors.ustc.edu.cn&#x27;</span></span><br><span class="line">Err:3 http://mirrors.ustc.edu.cn/ubuntu xenial-backports InRelease</span><br><span class="line">  Temporary failure resolving <span class="string">&#x27;mirrors.ustc.edu.cn&#x27;</span></span><br><span class="line">Err:4 http://mirrors.ustc.edu.cn/ubuntu xenial-security InRelease</span><br><span class="line">  Temporary failure resolving <span class="string">&#x27;mirrors.ustc.edu.cn&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>原因是DNS解析出错，在主机<code>/etc/docker/daemon.json</code>中配置DNS服务器即可解决：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;dns&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;192.168.0.1&quot;</span><span class="punctuation">,</span> <span class="string">&quot;8.8.8.8&quot;</span><span class="punctuation">,</span> <span class="string">&quot;8.8.4.4&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>将要编译的c文件拷贝到容器：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker cp ./vuln.c CONTAINER_ID:/home</span><br></pre></td></tr></table></figure>
+<p>然后在容器中编译文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@760a888f8799:/home# gcc vuln.c -o vuln</span><br><span class="line">root@760a888f8799:/home# <span class="built_in">ls</span></span><br><span class="line">vuln  vuln.c</span><br></pre></td></tr></table></figure>
+<p>最后将编译好的文件拷贝出来：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker cp CONTAINER_ID:/home/vuln ./vuln</span><br></pre></td></tr></table></figure>
+<p>这样就能获得在不同版本glibc下编译的ELF文件了</p>
+<h2 id="0xff-参考链接"><a class="markdownIt-Anchor" href="#0xff-参考链接"></a> 0xFF 参考链接</h2>
+<p><a target="_blank" rel="noopener" href="https://blog.hz2016.com/2024/09/%e3%80%90theonlymirror%e3%80%91%e5%9f%ba%e4%ba%8e%e5%8f%8d%e5%90%91%e4%bb%a3%e7%90%86%e7%9a%84%e9%95%9c%e5%83%8f%e6%ba%90/">https://blog.hz2016.com/2024/09/【theonlymirror】基于反向代理的镜像源/</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.lmshao.com/linux-glibc-version.html">https://blog.lmshao.com/linux-glibc-version.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zhengmx100/article/details/78352773">https://blog.csdn.net/zhengmx100/article/details/78352773</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.hz2016.com/2024/09/%e3%80%90theonlymirror%e3%80%91%e5%9f%ba%e4%ba%8e%e5%8f%8d%e5%90%91%e4%bb%a3%e7%90%86%e7%9a%84%e9%95%9c%e5%83%8f%e6%ba%90/">https://blog.hz2016.com/2024/09/【theonlymirror】基于反向代理的镜像源/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <blockquote class="article-copyright">
+    <p><strong>本文作者：</strong>*月遇丛雲花遇風* @ T3uk1 の 庭院</p>
+    
+    <p><strong>本文标题：</strong>使用docker编译指定glibc版本的ELF文件</p>
+    
+    
+    <p><strong>本文版权：</strong>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><span class="icon-creative-commons"></span>BY-NC-SA</a> 许可协议。转载请注明出处！</p>
+  </blockquote>
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+    
+  <nav id="article-nav" class="wow fadeInUp">
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="/covers/wallhaven-zxg9lw.png" data-sizes="auto" alt="Fiddler使用" class="lazyload">
+        
+      
+      <a href="/2024/09/18/Fiddler%E4%BD%BF%E7%94%A8/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          Fiddler使用
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+  
+</article>
+
+
+
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrap wow fadeInRight wrap-sticky">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8docker%E7%BC%96%E8%AF%91%E6%8C%87%E5%AE%9Aglibc%E7%89%88%E6%9C%AC%E7%9A%84elf%E6%96%87%E4%BB%B6"><span class="toc-number">1.</span> <span class="toc-text"> 使用docker编译指定glibc版本的ELF文件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-docker%E6%8D%A2%E6%BA%90"><span class="toc-number">1.1.</span> <span class="toc-text"> 0x01 docker换源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-%E6%8B%89%E5%8F%96%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%AC%E7%9A%84ubuntu%E9%95%9C%E5%83%8F"><span class="toc-number">1.2.</span> <span class="toc-text"> 0x02 拉取指定版本的ubuntu镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-%E8%BF%9B%E5%85%A5%E5%AE%B9%E5%99%A8%E5%B9%B6%E7%BC%96%E8%AF%91%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.</span> <span class="toc-text"> 0x03 进入容器并编译文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E9%95%9C%E5%83%8F%E5%90%AF%E5%8A%A8%E5%AE%B9%E5%99%A8"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 使用镜像启动容器：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E5%85%A5ubuntu%E5%AE%B9%E5%99%A8"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 进入ubuntu容器：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 编译文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0xff-%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">1.4.</span> <span class="toc-text"> 0xFF 参考链接</span></a></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="*月遇丛雲花遇風*" class="lazyload">
+  <div class="sidebar-author-name">*月遇丛雲花遇風*</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">27</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">17</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">26</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=1027600674@qq.com itemprop="url" target="_blank" aria-label="email"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/t3uk1 itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+    
+      <div class="sidebar-btn-wrapper" style="position:static">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+    
+  </div>
+
+  
+</aside>
+
+          
+        </div>
+        <footer id="footer" class="wow fadeInUp">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div class="outer">
+    <div id="footer-info">
+      
+      <div>
+        <span class="icon-copyright"></span>
+        2022-2024
+        <span class="footer-info-sep"></span>
+        *月遇丛雲花遇風*
+      </div>
+      
+        <div>
+          基于&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+          Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+        </div>
+      
+      
+        <div>
+          <span class="icon-brush"></span>
+          105.9k
+          &nbsp;|&nbsp;
+          <span class="icon-coffee"></span>
+          08:03
+        </div>
+      
+      
+        <div>
+          <span class="icon-eye"></span>
+          <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+          &nbsp;|&nbsp;
+          <span class="icon-user"></span>
+          <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+        </div>
+      
+    </div>
+  </div>
+</footer>
+
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
+        </div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8docker%E7%BC%96%E8%AF%91%E6%8C%87%E5%AE%9Aglibc%E7%89%88%E6%9C%AC%E7%9A%84elf%E6%96%87%E4%BB%B6"><span class="toc-number">1.</span> <span class="toc-text"> 使用docker编译指定glibc版本的ELF文件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-docker%E6%8D%A2%E6%BA%90"><span class="toc-number">1.1.</span> <span class="toc-text"> 0x01 docker换源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-%E6%8B%89%E5%8F%96%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%AC%E7%9A%84ubuntu%E9%95%9C%E5%83%8F"><span class="toc-number">1.2.</span> <span class="toc-text"> 0x02 拉取指定版本的ubuntu镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-%E8%BF%9B%E5%85%A5%E5%AE%B9%E5%99%A8%E5%B9%B6%E7%BC%96%E8%AF%91%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.</span> <span class="toc-text"> 0x03 进入容器并编译文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E9%95%9C%E5%83%8F%E5%90%AF%E5%8A%A8%E5%AE%B9%E5%99%A8"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 使用镜像启动容器：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E5%85%A5ubuntu%E5%AE%B9%E5%99%A8"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 进入ubuntu容器：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 编译文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0xff-%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">1.4.</span> <span class="toc-text"> 0xFF 参考链接</span></a></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="*月遇丛雲花遇風*" class="lazyload">
+  <div class="sidebar-author-name">*月遇丛雲花遇風*</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">27</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">17</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">26</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=1027600674@qq.com itemprop="url" target="_blank" aria-label="email"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/t3uk1 itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    <div class="site-search">
+      <div class="reimu-popup popup">
+        <div class="reimu-search">
+          <div class="reimu-search-input-icon"></div>
+          <div class="reimu-search-input" id="reimu-search-input"></div>
+          <div class="popup-btn-close"></div>
+        </div>
+        <div class="reimu-results">
+          <div id="reimu-stats"></div>
+          <div id="reimu-hits"></div>
+          <div id="reimu-pagination" class="reimu-pagination"></div>
+        </div>
+      </div>
+    </div>
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+<script type="module" data-pjax>
+  import PhotoSwipeLightbox from "https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.js";
+  
+  const pswp = () => {
+    if (_$$('.article-entry a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-entry',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.js")
+      }).init();
+    }
+    if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-gallery',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.js")
+      }).init();
+    }
+    window.lightboxStatus = 'done';
+    window.removeEventListener('lightbox:ready', pswp);
+  }
+  if(window.lightboxStatus === 'ready') {
+    pswp()
+  } else {
+    window.addEventListener('lightbox:ready', pswp);
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/generator_search.js"></script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.4/dist/index.umd.js"></script>
+
+  <script>
+    firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+
+  <script data-pjax>
+    quicklink.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div>
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.2.4' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --></body>
+  </html>
+

@@ -6,7 +6,7 @@
   <link href="https://t3uk1.github.io/atom.xml" rel="self"/>
   
   <link href="https://t3uk1.github.io/"/>
-  <updated>2024-10-11T03:57:36.583Z</updated>
+  <updated>2024-10-26T11:11:17.986Z</updated>
   <id>https://t3uk1.github.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Windows安装WSL的问题记录</title>
+    <link href="https://t3uk1.github.io/2024/10/15/Windows%E5%AE%89%E8%A3%85WSL%E7%9A%84%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/"/>
+    <id>https://t3uk1.github.io/2024/10/15/Windows%E5%AE%89%E8%A3%85WSL%E7%9A%84%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/</id>
+    <published>2024-10-15T11:06:15.000Z</published>
+    <updated>2024-10-26T11:11:17.986Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;windows安装wsl的问题记录&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#windows安装wsl的问题记录&quot;&gt;&lt;/a&gt; Windows安装WSL的问题记录&lt;/h1&gt;
+&lt;h2 id=&quot;安装升级为wsl2&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="wsl" scheme="https://t3uk1.github.io/categories/wsl/"/>
+    
+    
+    <category term="wsl" scheme="https://t3uk1.github.io/tags/wsl/"/>
+    
+  </entry>
   
   <entry>
     <title>使用docker编译指定glibc版本的ELF文件</title>
@@ -530,33 +556,6 @@
     <category term="hexo" scheme="https://t3uk1.github.io/tags/hexo/"/>
     
     <category term="algolia" scheme="https://t3uk1.github.io/tags/algolia/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>hexo博客搭建记录</title>
-    <link href="https://t3uk1.github.io/2023/10/29/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/"/>
-    <id>https://t3uk1.github.io/2023/10/29/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/</id>
-    <published>2023-10-29T12:25:01.000Z</published>
-    <updated>2023-10-30T11:29:06.842Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;hexo博客搭建记录&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#hexo博客搭建记录&quot;&gt;&lt;/a&gt; hexo博客搭建记录&lt;/h1&gt;
-&lt;p&gt;目录跳转：&lt;/p&gt;
-&lt;!-- toc</summary>
-        
-      
-    
-    
-    
-    <category term="hexo" scheme="https://t3uk1.github.io/categories/hexo/"/>
-    
-    
-    <category term="hexo" scheme="https://t3uk1.github.io/tags/hexo/"/>
     
   </entry>
   

@@ -68,6 +68,36 @@
   </entry>
   
   <entry>
+    <title>selenium初探</title>
+    <link href="https://t3uk1.github.io/2024/10/05/selenium%E5%88%9D%E6%8E%A2/"/>
+    <id>https://t3uk1.github.io/2024/10/05/selenium%E5%88%9D%E6%8E%A2/</id>
+    <published>2024-10-05T14:36:22.000Z</published>
+    <updated>2024-11-16T14:37:24.637Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;selenium初探&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#selenium初探&quot;&gt;&lt;/a&gt; Selenium初探&lt;/h1&gt;
+&lt;h2 id=&quot;开始一个简单的实例&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="爬虫" scheme="https://t3uk1.github.io/categories/%E7%88%AC%E8%99%AB/"/>
+    
+    
+    <category term="python" scheme="https://t3uk1.github.io/tags/python/"/>
+    
+    <category term="爬虫" scheme="https://t3uk1.github.io/tags/%E7%88%AC%E8%99%AB/"/>
+    
+    <category term="selenium" scheme="https://t3uk1.github.io/tags/selenium/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Fiddler使用</title>
     <link href="https://t3uk1.github.io/2024/09/18/Fiddler%E4%BD%BF%E7%94%A8/"/>
     <id>https://t3uk1.github.io/2024/09/18/Fiddler%E4%BD%BF%E7%94%A8/</id>
@@ -528,34 +558,6 @@
     
     
     <category term="hexo" scheme="https://t3uk1.github.io/tags/hexo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>hexo主题配置--reimu</title>
-    <link href="https://t3uk1.github.io/2023/10/29/hexo%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE-reimu/"/>
-    <id>https://t3uk1.github.io/2023/10/29/hexo%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE-reimu/</id>
-    <published>2023-10-29T13:56:29.000Z</published>
-    <updated>2024-09-18T15:43:39.467Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;hexo主题配置reimu&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#hexo主题配置reimu&quot;&gt;&lt;/a&gt; hexo主题配置–reimu&lt;/h1&gt;
-&lt;p&gt;本文配置过程主要参考主题开发者的博客：&lt;a</summary>
-        
-      
-    
-    
-    
-    <category term="hexo" scheme="https://t3uk1.github.io/categories/hexo/"/>
-    
-    
-    <category term="hexo" scheme="https://t3uk1.github.io/tags/hexo/"/>
-    
-    <category term="algolia" scheme="https://t3uk1.github.io/tags/algolia/"/>
     
   </entry>
   

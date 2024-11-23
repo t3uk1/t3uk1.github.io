@@ -42,6 +42,39 @@
   </entry>
   
   <entry>
+    <title>关于windows和linux使用的换行符差异导致sh脚本文件无法运行的问题</title>
+    <link href="https://t3uk1.github.io/2024/11/15/%E5%85%B3%E4%BA%8Ewindows%E5%92%8Clinux%E4%BD%BF%E7%94%A8%E7%9A%84%E6%8D%A2%E8%A1%8C%E7%AC%A6%E5%B7%AE%E5%BC%82%E5%AF%BC%E8%87%B4sh%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%E6%97%A0%E6%B3%95%E8%BF%90%E8%A1%8C%E7%9A%84%E9%97%AE%E9%A2%98/"/>
+    <id>https://t3uk1.github.io/2024/11/15/%E5%85%B3%E4%BA%8Ewindows%E5%92%8Clinux%E4%BD%BF%E7%94%A8%E7%9A%84%E6%8D%A2%E8%A1%8C%E7%AC%A6%E5%B7%AE%E5%BC%82%E5%AF%BC%E8%87%B4sh%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%E6%97%A0%E6%B3%95%E8%BF%90%E8%A1%8C%E7%9A%84%E9%97%AE%E9%A2%98/</id>
+    <published>2024-11-15T03:45:14.000Z</published>
+    <updated>2024-11-23T14:30:37.426Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;关于windows和linux使用的换行符差异导致sh脚本文件无法运行的问题&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#关于windows和linux使用的换行符差异导致sh脚本文件无法运行的问题&quot;&gt;&lt;/a&gt;</summary>
+        
+      
+    
+    
+    
+    <category term="shell" scheme="https://t3uk1.github.io/categories/shell/"/>
+    
+    
+    <category term="windows" scheme="https://t3uk1.github.io/tags/windows/"/>
+    
+    <category term="linux" scheme="https://t3uk1.github.io/tags/linux/"/>
+    
+    <category term="shell" scheme="https://t3uk1.github.io/tags/shell/"/>
+    
+    <category term="LF" scheme="https://t3uk1.github.io/tags/LF/"/>
+    
+    <category term="CRLF" scheme="https://t3uk1.github.io/tags/CRLF/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Windows安装WSL的问题记录</title>
     <link href="https://t3uk1.github.io/2024/10/15/Windows%E5%AE%89%E8%A3%85WSL%E7%9A%84%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/"/>
     <id>https://t3uk1.github.io/2024/10/15/Windows%E5%AE%89%E8%A3%85WSL%E7%9A%84%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/</id>
@@ -530,33 +563,6 @@
     <category term="pwn" scheme="https://t3uk1.github.io/tags/pwn/"/>
     
     <category term="docker" scheme="https://t3uk1.github.io/tags/docker/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>记第一次出Pwn题——AuroraCTF2023第一批Pwn</title>
-    <link href="https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/"/>
-    <id>https://t3uk1.github.io/2023/10/31/%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BAPwn%E9%A2%98%E2%80%94%E2%80%94AuroraCTF2023%E7%AC%AC%E4%B8%80%E6%89%B9Pwn/</id>
-    <published>2023-10-31T02:28:19.000Z</published>
-    <updated>2023-10-31T02:49:02.954Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;记第一次出pwn题auroractf2023第一批pwn&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#记第一次出pwn题auroractf2023第一批pwn&quot;&gt;&lt;/a&gt;</summary>
-        
-      
-    
-    
-    
-    <category term="CTF" scheme="https://t3uk1.github.io/categories/CTF/"/>
-    
-    <category term="pwn" scheme="https://t3uk1.github.io/categories/CTF/pwn/"/>
-    
-    
-    <category term="pwn" scheme="https://t3uk1.github.io/tags/pwn/"/>
     
   </entry>
   

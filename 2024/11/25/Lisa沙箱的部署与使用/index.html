@@ -1,0 +1,714 @@
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  data-theme="dark" >
+  <head>
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};</script>
+  
+  
+  <title>
+    Lisa沙箱的部署与使用 |
+    
+    T3uk1 の 庭院
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+<link rel="stylesheet" href="/css/loader.css">
+
+  <meta name="description" content="Lisa沙箱的部署与使用 LiSa（Linux Sandbox for Automated Malware Analysis）是一个基于Docker的开源工具，专为自动化分析不同CPU架构下的Linux恶意软件而设计。它融合了QEMU虚拟化技术，支持x86_64、i386、arm、mips、aarch64等多种架构，并采用Radare2进行静态分析。此外，通过SystemTap实现动态行为分析，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lisa沙箱的部署与使用">
+<meta property="og:url" content="https://t3uk1.github.io/2024/11/25/Lisa%E6%B2%99%E7%AE%B1%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="T3uk1 の 庭院">
+<meta property="og:description" content="Lisa沙箱的部署与使用 LiSa（Linux Sandbox for Automated Malware Analysis）是一个基于Docker的开源工具，专为自动化分析不同CPU架构下的Linux恶意软件而设计。它融合了QEMU虚拟化技术，支持x86_64、i386、arm、mips、aarch64等多种架构，并采用Radare2进行静态分析。此外，通过SystemTap实现动态行为分析，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t3uk1.github.io/2024/11/25/Lisa%E6%B2%99%E7%AE%B1%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20241130182607495.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/11/25/Lisa%E6%B2%99%E7%AE%B1%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20241130182948732.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/11/25/Lisa%E6%B2%99%E7%AE%B1%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20241130224015701.png">
+<meta property="og:image" content="https://t3uk1.github.io/2024/11/25/Lisa%E6%B2%99%E7%AE%B1%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20241130230515786.png">
+<meta property="article:published_time" content="2024-11-25T15:05:58.000Z">
+<meta property="article:modified_time" content="2024-11-30T15:06:21.314Z">
+<meta property="article:author" content="*月遇丛雲花遇風*">
+<meta property="article:tag" content="sandbox">
+<meta property="article:tag" content="恶意软件分析">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://t3uk1.github.io/2024/11/25/Lisa%E6%B2%99%E7%AE%B1%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20241130182607495.png">
+  
+    <link rel="alternate" href="/atom.xml" title="T3uk1 の 庭院" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css">
+
+  
+  
+  
+  
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"></script>
+
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/wowjs@1.1.3/css/libs/animate.css">
+
+    
+<script src="https://npm.webcache.cn/wowjs@1.1.3/dist/wow.min.js"></script>
+
+    <script>
+      new WOW({
+        offset: 0,
+        mobile: true,
+        live: false
+      }).init();
+    </script>
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff6e6b" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z" fill="#fd0d00" />
+          <path d="M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95" fill="#fd0d00" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/">首页</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/archives">归档</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/about">关于</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="/friend">友链</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      <img fetchpriority="high" src="/images/banner.jpg" alt="Lisa沙箱的部署与使用">
+    
+  
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <div id="logo-wrap">
+        
+          
+          
+            <a href="/" id="logo">
+              <h1>Lisa沙箱的部署与使用</h1>
+            </a>
+          
+        
+      </div>
+      
+        
+        <h2 id="subtitle-wrap">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content" class="outer">
+          
+          <section id="main"><article id="post-Lisa沙箱的部署与使用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    <div class="article-meta">
+      <div class="article-date wow slideInLeft">
+  <a href="/2024/11/25/Lisa%E6%B2%99%E7%AE%B1%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/" class="article-date-link">
+    <time datetime="2024-11-25T15:05:58.000Z" itemprop="datePublished">2024-11-25</time>
+    <time style="display: none;" id="post-update-time">2024-11-30</time>
+  </a>
+</div>
+
+      
+  <div class="article-category wow slideInLeft">
+    <a class="article-category-link" href="/categories/sandbox/">sandbox</a>
+  </div>
+
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <h1 id="lisa沙箱的部署与使用"><a class="markdownIt-Anchor" href="#lisa沙箱的部署与使用"></a> Lisa沙箱的部署与使用</h1>
+<p>LiSa（Linux Sandbox for Automated Malware Analysis）是一个基于Docker的开源工具，专为自动化分析不同CPU架构下的Linux恶意软件而设计。它融合了QEMU虚拟化技术，支持x86_64、i386、arm、mips、aarch64等多种架构，并采用<strong>Radare2进行静态分析</strong>。此外，通过<strong>SystemTap实现动态行为分析</strong>，捕捉系统调用、文件操作、进程树、以及DNS、HTTP、Telnet和IRC等网络通信的细节。LiSa还具备扩展能力，允许添加新的分析模块，且支持通过REST API和前端界面交互。</p>
+<h2 id="快速开始"><a class="markdownIt-Anchor" href="#快速开始"></a> 快速开始</h2>
+<p>Lisa沙箱的构建其实比较简单，按照docker的配置走就行。</p>
+<p><s>但是真有这么简单就好了（</s></p>
+<p>存在从git上clone下来的项目的python依赖和docker镜像拉取的源中的pip版本不对等问题，这些下面细说</p>
+<h3 id="安装docker和docker-compose"><a class="markdownIt-Anchor" href="#安装docker和docker-compose"></a> 安装docker和docker-compose</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install docker.io</span><br><span class="line">sudo apt install docker-compose</span><br></pre></td></tr></table></figure>
+<h3 id="获取lisa项目"><a class="markdownIt-Anchor" href="#获取lisa项目"></a> 获取Lisa项目</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/danieluhricek/lisa</span><br><span class="line">cd lisa</span><br></pre></td></tr></table></figure>
+<h3 id="构建"><a class="markdownIt-Anchor" href="#构建"></a> 构建</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker-compose build</span><br></pre></td></tr></table></figure>
+<h3 id="docker-compose构建过程中可能遇到的问题"><a class="markdownIt-Anchor" href="#docker-compose构建过程中可能遇到的问题"></a> docker-compose构建过程中可能遇到的问题</h3>
+<h4 id="网络问题"><a class="markdownIt-Anchor" href="#网络问题"></a> 网络问题：</h4>
+<p>配置DNS：</p>
+<p><code>/etc/docker/daemon.json</code>中添加：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;dns&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;8.8.8.8&quot;</span><span class="punctuation">,</span><span class="string">&quot;8.8.4.4&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<h4 id="构建的过程中在pip-install步骤报错celery522版本找不到"><a class="markdownIt-Anchor" href="#构建的过程中在pip-install步骤报错celery522版本找不到"></a> 构建的过程中在pip install步骤报错celery5.2.2版本找不到</h4>
+<p>在<code>lisa/docker/api/Dockerfile</code>, <code>lisa/docker/tests/Dockerfile</code>,<code>lisa/docker/worker/Dockerfile</code>三个Dockerfile中用到的requirements.txt中包含celery，分别是构建lisa-api，lisa-tests和lisa-worker三个镜像的Dockerfile。</p>
+<ul>
+<li>
+<p>问题原因：这几个Dockerfile拉取的源镜像是python3.6-slim，而这个版本python的pip中找不到celery的5.2.2版本</p>
+</li>
+<li>
+<p>解决方法：直接将requirements.txt的celery版本更改为支持的5.1.2版本</p>
+</li>
+</ul>
+<h4 id="构建nginx镜像的问题"><a class="markdownIt-Anchor" href="#构建nginx镜像的问题"></a> 构建nginx镜像的问题</h4>
+<p><code>lisa/docker/nginx/Dockerfile</code>中用到了npm和yarn</p>
+<p>如果执行yarn相关命令报错了，需要先更新npm，在Dockerfile的yarn命令前面添加下面指令：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">RUN</span><span class="language-bash"> npm update</span></span><br></pre></td></tr></table></figure>
+<p>如果npm执行太慢了，需要考虑换源或者使用软路由的方式加速。</p>
+<h3 id="运行沙箱默认访问位置httplocalhost4242"><a class="markdownIt-Anchor" href="#运行沙箱默认访问位置httplocalhost4242"></a> 运行沙箱（默认访问位置：<a target="_blank" rel="noopener" href="http://localhost:4242">http://localhost:4242</a>）</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker-compose up</span><br></pre></td></tr></table></figure>
+<p>如果配置正常的话，运行这条命令就可以跑起来沙箱服务了</p>
+<h4 id="执行docker-compose-up报错keyerror-containerconfig"><a class="markdownIt-Anchor" href="#执行docker-compose-up报错keyerror-containerconfig"></a> 执行docker-compose up报错KeyError: ‘ContainerConfig’</h4>
+<p>当前已经存在这个服务，需要先关闭再启动</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo docker-compose down</span><br><span class="line">sudo docker-compose up</span><br></pre></td></tr></table></figure>
+<h2 id="使用lisa分析恶意软件"><a class="markdownIt-Anchor" href="#使用lisa分析恶意软件"></a> 使用Lisa分析恶意软件</h2>
+<p>启动Lisa服务后再浏览器访问前端界面如下，可以在Submit file处上传要分析的二进制文件，提交后等待一段时间就能得到结果。<img src="image-20241130182607495.png" alt="image-20241130182607495"></p>
+<h3 id="分析失败的情况"><a class="markdownIt-Anchor" href="#分析失败的情况"></a> 分析失败的情况</h3>
+<h4 id="静态分析报错"><a class="markdownIt-Anchor" href="#静态分析报错"></a> 静态分析报错</h4>
+<p>报错记录如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;/usr/local/lib/python3.6/site-packages/celery/app/trace.py&quot;, line 450, in trace_task</span><br><span class="line">    R = retval = fun(*args, **kwargs)</span><br><span class="line">  File &quot;/usr/local/lib/python3.6/site-packages/celery/app/trace.py&quot;, line 731, in __protected_call__</span><br><span class="line">    return self.run(*args, **kwargs)</span><br><span class="line">  File &quot;/home/lisa/lisa/web_api/tasks.py&quot;, line 80, in full_analysis</span><br><span class="line">    master.run()</span><br><span class="line">  File &quot;/home/lisa/lisa/analysis/top_level.py&quot;, line 69, in run</span><br><span class="line">    sub_output = analyzer.run_analysis()</span><br><span class="line">  File &quot;/home/lisa/lisa/analysis/static_analysis.py&quot;, line 34, in run_analysis</span><br><span class="line">    self._r2_info()</span><br><span class="line">  File &quot;/home/lisa/lisa/analysis/static_analysis.py&quot;, line 62, in _r2_info</span><br><span class="line">    &#x27;min_opsize&#x27;: info[&#x27;bin&#x27;][&#x27;minopsz&#x27;],</span><br><span class="line">KeyError: &#x27;minopsz&#x27;</span><br></pre></td></tr></table></figure>
+<p>这个报错说明在<code>lisa/analysis/static_analysis.py</code>中的字典出现了KeyError。</p>
+<p><img src="image-20241130182948732.png" alt="image-20241130182948732"></p>
+<p>这里是在调用radare2进行静态分析的时候，将执行<code>ij</code>命令的结果以字典的形式保存在info中。</p>
+<p>我们获取最新版本的radare2分析目标文件，执行ij命令:</p>
+<p><img src="image-20241130224015701.png" alt="image-20241130224015701"></p>
+<p>发现返回的结果中并没有minopsz和maxopsz这两项，说明在这里是不需要这两项的，直接在源码中将其注释即可。</p>
+<p>修改并重新部署后可以正常分析。</p>
+<h4 id="动态分析eof报错"><a class="markdownIt-Anchor" href="#动态分析eof报错"></a> 动态分析EOF报错</h4>
+<p>报错文本：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;/usr/local/lib/python3.6/site-packages/pexpect/spawnbase.py&quot;, line 150, in read_nonblocking</span><br><span class="line">    s = os.read(self.child_fd, size)</span><br><span class="line">OSError: [Errno 5] Input/output error</span><br><span class="line"></span><br><span class="line">During handling of the above exception, another exception occurred:</span><br><span class="line"></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;/usr/local/lib/python3.6/site-packages/pexpect/expect.py&quot;, line 99, in expect_loop</span><br><span class="line">    incoming = spawn.read_nonblocking(spawn.maxread, timeout)</span><br><span class="line">  File &quot;/usr/local/lib/python3.6/site-packages/pexpect/pty_spawn.py&quot;, line 465, in read_nonblocking</span><br><span class="line">    return super(spawn, self).read_nonblocking(size)</span><br><span class="line">  File &quot;/usr/local/lib/python3.6/site-packages/pexpect/spawnbase.py&quot;, line 155, in read_nonblocking</span><br><span class="line">    raise EOF(&#x27;End Of File (EOF). Exception style platform.&#x27;)</span><br><span class="line">pexpect.exceptions.EOF: End Of File (EOF). Exception style platform.</span><br><span class="line"></span><br><span class="line">During handling of the above exception, another exception occurred:</span><br><span class="line"></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;/usr/local/lib/python3.6/site-packages/celery/app/trace.py&quot;, line 450, in trace_task</span><br><span class="line">    R = retval = fun(*args, **kwargs)</span><br><span class="line">  File &quot;/usr/local/lib/python3.6/site-packages/celery/app/trace.py&quot;, line 731, in __protected_call__</span><br><span class="line">    return self.run(*args, **kwargs)</span><br><span class="line">  File &quot;/home/lisa/lisa/web_api/tasks.py&quot;, line 80, in full_analysis</span><br><span class="line">    master.run()</span><br><span class="line">  File &quot;/home/lisa/lisa/analysis/top_level.py&quot;, line 69, in run</span><br><span class="line">    sub_output = analyzer.run_analysis()</span><br><span class="line">  File &quot;/home/lisa/lisa/analysis/dynamic_analysis.py&quot;, line 36, in run_analysis</span><br><span class="line">    self._vm.start_vm()</span><br><span class="line">  File &quot;/home/lisa/lisa/core/qemu_guest.py&quot;, line 100, in start_vm</span><br><span class="line">    self._proc.expect(&#x27;login: &#x27;)</span><br><span class="line">  File &quot;/usr/local/lib/python3.6/site-packages/pexpect/spawnbase.py&quot;, line 321, in expect</span><br><span class="line">    timeout, searchwindowsize, async)</span><br><span class="line">  File &quot;/usr/local/lib/python3.6/site-packages/pexpect/spawnbase.py&quot;, line 345, in expect_list</span><br><span class="line">    return exp.expect_loop(timeout)</span><br><span class="line">  File &quot;/usr/local/lib/python3.6/site-packages/pexpect/expect.py&quot;, line 105, in expect_loop</span><br><span class="line">    return self.eof(e)</span><br><span class="line">  File &quot;/usr/local/lib/python3.6/site-packages/pexpect/expect.py&quot;, line 50, in eof</span><br><span class="line">    raise EOF(msg)</span><br><span class="line">pexpect.exceptions.EOF: End Of File (EOF). Exception style platform.</span><br><span class="line">&lt;pexpect.pty_spawn.spawn object at 0x7f9d13b992e8&gt;</span><br><span class="line">command: /home/lisa/images/arm/run.sh</span><br><span class="line">args: [b&#x27;/home/lisa/images/arm/run.sh&#x27;, b&#x27;/home/lisa/data/storage/cfb05bad-8616-4129-8fc5-6b257b6cd42c/rootfs&#x27;]</span><br><span class="line">buffer (last 100 chars): &#x27;&#x27;</span><br><span class="line">before (last 100 chars): &quot;&gt; &lt;new-size&gt;&#x27;\r\n(note that this will lose data if you make the image smaller than it currently is).\r\n&quot;</span><br><span class="line">after: &lt;class &#x27;pexpect.exceptions.EOF&#x27;&gt;</span><br><span class="line">match: None</span><br><span class="line">match_index: None</span><br><span class="line">exitstatus: None</span><br><span class="line">flag_eof: True</span><br><span class="line">pid: 30</span><br><span class="line">child_fd: 13</span><br><span class="line">closed: False</span><br><span class="line">timeout: 70</span><br><span class="line">delimiter: &lt;class &#x27;pexpect.exceptions.EOF&#x27;&gt;</span><br><span class="line">logfile: &lt;_io.TextIOWrapper name=&#x27;/home/lisa/data/storage/cfb05bad-8616-4129-8fc5-6b257b6cd42c/machine.log&#x27; mode=&#x27;w&#x27; encoding=&#x27;utf-8&#x27;&gt;</span><br><span class="line">logfile_read: None</span><br><span class="line">logfile_send: None</span><br><span class="line">maxread: 2000</span><br><span class="line">ignorecase: False</span><br><span class="line">searchwindowsize: None</span><br><span class="line">delaybeforesend: 0.05</span><br><span class="line">delayafterclose: 0.1</span><br><span class="line">delayafterterminate: 0.1</span><br><span class="line">searcher: searcher_re:</span><br><span class="line">    0: re.compile(&quot;login: &quot;)</span><br></pre></td></tr></table></figure>
+<p>这里是容器中的qemu-system执行出问题了。</p>
+<p>根据后半部分报错内容提示，pexpect期望获取&quot;login:  &quot;的输出，但是却得到EOF；当启动qemu-system的时候，第一行输出就是提示登录输入的&quot;login:  &quot;，这说明qemu-system没有正常启动</p>
+<p>在分析记录中提交过mips架构和arm架构的程序，发现mips架构可以正常分析得到Report，而arm架构的程序分析失败，因此可能是qemu-system-arm执行出错。</p>
+<p>在Lisa中对于不同架构的qemu，有对应的启动脚本</p>
+<p>在Dockerfile中的这行指出了启动脚本的位置：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/danieluhricek/linux-images/archive/v1.<span class="number">0.1</span>.tar.gz -q -O - | tar xz -C /home/lisa \</span><br></pre></td></tr></table></figure>
+<p>在报错内容的这几行中可以看到出错命令以及相关的参数：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">command: /home/lisa/images/arm/run.sh</span><br><span class="line">args: [b&#x27;/home/lisa/images/arm/run.sh&#x27;, b&#x27;/home/lisa/data/storage/cfb05bad-8616-4129-8fc5-6b257b6cd42c/rootfs&#x27;]</span><br></pre></td></tr></table></figure>
+<p>执行的是<code>/home/lisa/images/arm/run.sh</code>，参数为<code>/home/lisa/data/storage/cfb05bad-8616-4129-8fc5-6b257b6cd42c/rootfs'</code></p>
+<p><a target="_blank" rel="noopener" href="http://xn--workerrun-vl6no9dd5l1ka221dducuv1at4kkkqdqb703hp3yci0zema6727b0haq9p.sh">那我们先进入正在运行的worker容器中并执行run.sh</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo docker exec -it 55a1df875252 /bin/bash</span><br><span class="line">cd /home/lisa/images/arm/</span><br><span class="line">./run.sh /home/lisa/data/storage/cfb05bad-8616-4129-8fc5-6b257b6cd42c/rootfs</span><br></pre></td></tr></table></figure>
+<p>执行后报错，报错内容如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">root@55a1df875252:/home/lisa/images/arm# ./run.sh /home/lisa/data/storage/ce124145-1222-440f-b27f-b7a20b52350a/rootfsALSA lib confmisc.c:767:(parse_card) cannot find card &#x27;0&#x27;</span><br><span class="line">ALSA lib conf.c:4745:(_snd_config_evaluate) function snd_func_card_driver returned error: No such file or directory</span><br><span class="line">ALSA lib confmisc.c:392:(snd_func_concat) error evaluating strings</span><br><span class="line">ALSA lib conf.c:4745:(_snd_config_evaluate) function snd_func_concat returned error: No such file or directory</span><br><span class="line">ALSA lib confmisc.c:1246:(snd_func_refer) error evaluating name</span><br><span class="line">ALSA lib conf.c:4745:(_snd_config_evaluate) function snd_func_refer returned error: No such file or directory</span><br><span class="line">ALSA lib conf.c:5233:(snd_config_expand) Evaluate error: No such file or directory</span><br><span class="line">ALSA lib pcm.c:2660:(snd_pcm_open_noupdate) Unknown PCM default</span><br><span class="line">alsa: Could not initialize DAC</span><br><span class="line">alsa: Failed to open `default&#x27;:</span><br><span class="line">alsa: Reason: No such file or directory</span><br><span class="line">ALSA lib confmisc.c:767:(parse_card) cannot find card &#x27;0&#x27;</span><br><span class="line">ALSA lib conf.c:4745:(_snd_config_evaluate) function snd_func_card_driver returned error: No such file or directory</span><br><span class="line">ALSA lib confmisc.c:392:(snd_func_concat) error evaluating strings</span><br><span class="line">ALSA lib conf.c:4745:(_snd_config_evaluate) function snd_func_concat returned error: No such file or directory</span><br><span class="line">ALSA lib confmisc.c:1246:(snd_func_refer) error evaluating name</span><br><span class="line">ALSA lib conf.c:4745:(_snd_config_evaluate) function snd_func_refer returned error: No such file or directory</span><br><span class="line">ALSA lib conf.c:5233:(snd_config_expand) Evaluate error: No such file or directory</span><br><span class="line">ALSA lib pcm.c:2660:(snd_pcm_open_noupdate) Unknown PCM default</span><br><span class="line">alsa: Could not initialize DAC</span><br><span class="line">alsa: Failed to open `default&#x27;:</span><br><span class="line">alsa: Reason: No such file or directory</span><br><span class="line">audio: Failed to create voice `lm4549.out&#x27;</span><br><span class="line">qemu-system-arm: Invalid SD card size: 60 MiB</span><br><span class="line">SD card size has to be a power of 2, e.g. 64 MiB.</span><br><span class="line">You can resize disk images with &#x27;qemu-img resize &lt;imagefile&gt; &lt;new-size&gt;&#x27;</span><br><span class="line">(note that this will lose data if you make the image smaller than it currently is).</span><br></pre></td></tr></table></figure>
+<p>看来这就是导致qemu-system启动失败的原因。</p>
+<p>从报错内容来看，这里有两个错误，一个是ALSA库相关的声卡错误，另一个是容器sd卡的size问题</p>
+<p>声卡问题可以通过设置 QEMU_AUDIO_DRV 环境变量来告诉 QEMU 使用不同的音频后端（例如可以将其设置为“none”以表示“丢弃来自客户的音频输出”）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export QEMU_AUDIO_DRV=none</span><br></pre></td></tr></table></figure>
+<p>看了一眼在run.sh中是有QEMU_AUDIO_DRV=none这句的，可能是没有配置成功</p>
+<p>SD卡size问题解决：</p>
+<p>这里的问题是qemu-system-arm支持的虚拟镜像的大小必须要是2的整数次幂大小，当前使用的镜像大小不符合导致崩溃。</p>
+<p>使用qemu-img更改镜像大小可以解决：</p>
+<p>首先安装qemu-img：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install qemu-img</span><br></pre></td></tr></table></figure>
+<p>然后更改镜像大小：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qemu-img resize &lt;imagefile&gt; &lt;new-size&gt;</span><br></pre></td></tr></table></figure>
+<p>为了对每个arm架构的镜像都执行这个操作，要直接修改run.sh的内容：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/sh</span></span><br><span class="line"></span><br><span class="line">ABSPATH=$(readlink -f &quot;$0&quot;)</span><br><span class="line">DIRPATH=$(dirname &quot;$ABSPATH&quot;)</span><br><span class="line">ROOTFS=$1</span><br><span class="line">KERNEL=$DIRPATH/images/zImage</span><br><span class="line">DTB=$DIRPATH/images/vexpress-v2p-ca9.dtb</span><br><span class="line">QEMU_AUDIO_DRV=none</span><br><span class="line">qemu-img resize $ROOTFS 64M   # add this line</span><br><span class="line"></span><br><span class="line">qemu-system-arm -M vexpress-a9 -smp 1 -m 256 -kernel $KERNEL -dtb $DTB -drive file=$ROOTFS,if=sd,format=raw -append &quot;console=ttyAMA0 root=/dev/mmcblk0&quot; -nographic -net nic,model=lan9118 -net user</span><br></pre></td></tr></table></figure>
+<p>其中$ROOTFS就是目标镜像，要使用qemu-img resize更改镜像大小。</p>
+<p>修改后再次运行run.sh并指定参数，可以正常启动qemu-system，问题解决，再次上传arm架构的文件能够输出报告了。</p>
+<p><img src="image-20241130230515786.png" alt="image-20241130230515786"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <blockquote class="article-copyright">
+    <p><strong>本文作者：</strong>*月遇丛雲花遇風* @ T3uk1 の 庭院</p>
+    
+    <p><strong>本文标题：</strong>Lisa沙箱的部署与使用</p>
+    
+    
+    <p><strong>本文版权：</strong>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><span class="icon-creative-commons"></span>BY-NC-SA</a> 许可协议。转载请注明出处！</p>
+  </blockquote>
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sandbox/" rel="tag">sandbox</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/" rel="tag">恶意软件分析</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+    
+  <nav id="article-nav" class="wow fadeInUp">
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="/covers/QQ图片20220222181627.jpg" data-sizes="auto" alt="docker镜像与容器的导入和导出" class="lazyload">
+        
+      
+      <a href="/2024/11/15/docker%E9%95%9C%E5%83%8F%E4%B8%8E%E5%AE%B9%E5%99%A8%E7%9A%84%E5%AF%BC%E5%85%A5%E5%92%8C%E5%AF%BC%E5%87%BA/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          docker镜像与容器的导入和导出
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+  
+</article>
+
+
+
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrap wow fadeInRight wrap-sticky">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#lisa%E6%B2%99%E7%AE%B1%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text"> Lisa沙箱的部署与使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B"><span class="toc-number">1.1.</span> <span class="toc-text"> 快速开始</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85docker%E5%92%8Cdocker-compose"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 安装docker和docker-compose</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96lisa%E9%A1%B9%E7%9B%AE"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 获取Lisa项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 构建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-compose%E6%9E%84%E5%BB%BA%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%8F%AF%E8%83%BD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.4.</span> <span class="toc-text"> docker-compose构建过程中可能遇到的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.4.1.</span> <span class="toc-text"> 网络问题：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA%E7%9A%84%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%9C%A8pip-install%E6%AD%A5%E9%AA%A4%E6%8A%A5%E9%94%99celery522%E7%89%88%E6%9C%AC%E6%89%BE%E4%B8%8D%E5%88%B0"><span class="toc-number">1.1.4.2.</span> <span class="toc-text"> 构建的过程中在pip install步骤报错celery5.2.2版本找不到</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9E%84%E5%BB%BAnginx%E9%95%9C%E5%83%8F%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.4.3.</span> <span class="toc-text"> 构建nginx镜像的问题</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%B2%99%E7%AE%B1%E9%BB%98%E8%AE%A4%E8%AE%BF%E9%97%AE%E4%BD%8D%E7%BD%AEhttplocalhost4242"><span class="toc-number">1.1.5.</span> <span class="toc-text"> 运行沙箱（默认访问位置：http:&#x2F;&#x2F;localhost:4242）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%A7%E8%A1%8Cdocker-compose-up%E6%8A%A5%E9%94%99keyerror-containerconfig"><span class="toc-number">1.1.5.1.</span> <span class="toc-text"> 执行docker-compose up报错KeyError: ‘ContainerConfig’</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8lisa%E5%88%86%E6%9E%90%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6"><span class="toc-number">1.2.</span> <span class="toc-text"> 使用Lisa分析恶意软件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E5%A4%B1%E8%B4%A5%E7%9A%84%E6%83%85%E5%86%B5"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 分析失败的情况</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90%E6%8A%A5%E9%94%99"><span class="toc-number">1.2.1.1.</span> <span class="toc-text"> 静态分析报错</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%88%86%E6%9E%90eof%E6%8A%A5%E9%94%99"><span class="toc-number">1.2.1.2.</span> <span class="toc-text"> 动态分析EOF报错</span></a></li></ol></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="*月遇丛雲花遇風*" class="lazyload">
+  <div class="sidebar-author-name">*月遇丛雲花遇風*</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">32</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">21</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">37</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=1027600674@qq.com itemprop="url" target="_blank" aria-label="email"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/t3uk1 itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+    
+      <div class="sidebar-btn-wrapper" style="position:static">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+    
+  </div>
+
+  
+</aside>
+
+          
+        </div>
+        <footer id="footer" class="wow fadeInUp">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div class="outer">
+    <div id="footer-info">
+      
+      <div>
+        <span class="icon-copyright"></span>
+        2022-2024
+        <span class="footer-info-sep"></span>
+        *月遇丛雲花遇風*
+      </div>
+      
+        <div>
+          基于&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+          Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+        </div>
+      
+      
+        <div>
+          <span class="icon-brush"></span>
+          110.2k
+          &nbsp;|&nbsp;
+          <span class="icon-coffee"></span>
+          08:20
+        </div>
+      
+      
+        <div>
+          <span class="icon-eye"></span>
+          <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+          &nbsp;|&nbsp;
+          <span class="icon-user"></span>
+          <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+        </div>
+      
+    </div>
+  </div>
+</footer>
+
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
+        </div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#lisa%E6%B2%99%E7%AE%B1%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text"> Lisa沙箱的部署与使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B"><span class="toc-number">1.1.</span> <span class="toc-text"> 快速开始</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85docker%E5%92%8Cdocker-compose"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 安装docker和docker-compose</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96lisa%E9%A1%B9%E7%9B%AE"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 获取Lisa项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 构建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-compose%E6%9E%84%E5%BB%BA%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%8F%AF%E8%83%BD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.4.</span> <span class="toc-text"> docker-compose构建过程中可能遇到的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.4.1.</span> <span class="toc-text"> 网络问题：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA%E7%9A%84%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%9C%A8pip-install%E6%AD%A5%E9%AA%A4%E6%8A%A5%E9%94%99celery522%E7%89%88%E6%9C%AC%E6%89%BE%E4%B8%8D%E5%88%B0"><span class="toc-number">1.1.4.2.</span> <span class="toc-text"> 构建的过程中在pip install步骤报错celery5.2.2版本找不到</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9E%84%E5%BB%BAnginx%E9%95%9C%E5%83%8F%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.4.3.</span> <span class="toc-text"> 构建nginx镜像的问题</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%B2%99%E7%AE%B1%E9%BB%98%E8%AE%A4%E8%AE%BF%E9%97%AE%E4%BD%8D%E7%BD%AEhttplocalhost4242"><span class="toc-number">1.1.5.</span> <span class="toc-text"> 运行沙箱（默认访问位置：http:&#x2F;&#x2F;localhost:4242）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%A7%E8%A1%8Cdocker-compose-up%E6%8A%A5%E9%94%99keyerror-containerconfig"><span class="toc-number">1.1.5.1.</span> <span class="toc-text"> 执行docker-compose up报错KeyError: ‘ContainerConfig’</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8lisa%E5%88%86%E6%9E%90%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6"><span class="toc-number">1.2.</span> <span class="toc-text"> 使用Lisa分析恶意软件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E5%A4%B1%E8%B4%A5%E7%9A%84%E6%83%85%E5%86%B5"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 分析失败的情况</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90%E6%8A%A5%E9%94%99"><span class="toc-number">1.2.1.1.</span> <span class="toc-text"> 静态分析报错</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%88%86%E6%9E%90eof%E6%8A%A5%E9%94%99"><span class="toc-number">1.2.1.2.</span> <span class="toc-text"> 动态分析EOF报错</span></a></li></ol></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="*月遇丛雲花遇風*" class="lazyload">
+  <div class="sidebar-author-name">*月遇丛雲花遇風*</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">32</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">21</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">37</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=1027600674@qq.com itemprop="url" target="_blank" aria-label="email"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/t3uk1 itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    <div class="site-search">
+      <div class="reimu-popup popup">
+        <div class="reimu-search">
+          <div class="reimu-search-input-icon"></div>
+          <div class="reimu-search-input" id="reimu-search-input"></div>
+          <div class="popup-btn-close"></div>
+        </div>
+        <div class="reimu-results">
+          <div id="reimu-stats"></div>
+          <div id="reimu-hits"></div>
+          <div id="reimu-pagination" class="reimu-pagination"></div>
+        </div>
+      </div>
+    </div>
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+<script type="module" data-pjax>
+  import PhotoSwipeLightbox from "https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.js";
+  
+  const pswp = () => {
+    if (_$$('.article-entry a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-entry',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.js")
+      }).init();
+    }
+    if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-gallery',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.js")
+      }).init();
+    }
+    window.lightboxStatus = 'done';
+    window.removeEventListener('lightbox:ready', pswp);
+  }
+  if(window.lightboxStatus === 'ready') {
+    pswp()
+  } else {
+    window.addEventListener('lightbox:ready', pswp);
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/generator_search.js"></script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.4/dist/index.umd.js"></script>
+
+  <script>
+    firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+
+  <script data-pjax>
+    quicklink.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div>
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.2.4' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --></body>
+  </html>
+

@@ -6,7 +6,7 @@
   <link href="https://t3uk1.github.io/atom.xml" rel="self"/>
   
   <link href="https://t3uk1.github.io/"/>
-  <updated>2024-11-16T16:24:15.348Z</updated>
+  <updated>2024-11-30T15:06:21.314Z</updated>
   <id>https://t3uk1.github.io/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Lisa沙箱的部署与使用</title>
+    <link href="https://t3uk1.github.io/2024/11/25/Lisa%E6%B2%99%E7%AE%B1%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/"/>
+    <id>https://t3uk1.github.io/2024/11/25/Lisa%E6%B2%99%E7%AE%B1%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/</id>
+    <published>2024-11-25T15:05:58.000Z</published>
+    <updated>2024-11-30T15:06:21.314Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;lisa沙箱的部署与使用&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#lisa沙箱的部署与使用&quot;&gt;&lt;/a&gt; Lisa沙箱的部署与使用&lt;/h1&gt;
+&lt;p&gt;LiSa（Linux Sandbox for Automated Malware</summary>
+        
+      
+    
+    
+    
+    <category term="sandbox" scheme="https://t3uk1.github.io/categories/sandbox/"/>
+    
+    
+    <category term="sandbox" scheme="https://t3uk1.github.io/tags/sandbox/"/>
+    
+    <category term="恶意软件分析" scheme="https://t3uk1.github.io/tags/%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/"/>
+    
+  </entry>
   
   <entry>
     <title>docker镜像与容器的导入和导出</title>
@@ -533,36 +561,6 @@
     
     
     <category term="pwn" scheme="https://t3uk1.github.io/tags/pwn/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用docker部署pwn题</title>
-    <link href="https://t3uk1.github.io/2023/10/31/%E4%BD%BF%E7%94%A8docker%E9%83%A8%E7%BD%B2pwn%E9%A2%98/"/>
-    <id>https://t3uk1.github.io/2023/10/31/%E4%BD%BF%E7%94%A8docker%E9%83%A8%E7%BD%B2pwn%E9%A2%98/</id>
-    <published>2023-10-31T02:34:50.000Z</published>
-    <updated>2023-10-31T02:44:41.459Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;使用docker部署pwn题&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#使用docker部署pwn题&quot;&gt;&lt;/a&gt; 使用docker部署pwn题&lt;/h1&gt;
-&lt;!-- toc</summary>
-        
-      
-    
-    
-    
-    <category term="CTF" scheme="https://t3uk1.github.io/categories/CTF/"/>
-    
-    <category term="pwn" scheme="https://t3uk1.github.io/categories/CTF/pwn/"/>
-    
-    
-    <category term="pwn" scheme="https://t3uk1.github.io/tags/pwn/"/>
-    
-    <category term="docker" scheme="https://t3uk1.github.io/tags/docker/"/>
     
   </entry>
   

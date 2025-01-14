@@ -38,7 +38,7 @@
 <meta property="og:image" content="https://t3uk1.github.io/2024/11/25/Lisa%E6%B2%99%E7%AE%B1%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20241130224015701.png">
 <meta property="og:image" content="https://t3uk1.github.io/2024/11/25/Lisa%E6%B2%99%E7%AE%B1%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20241130230515786.png">
 <meta property="article:published_time" content="2024-11-25T15:05:58.000Z">
-<meta property="article:modified_time" content="2025-01-14T03:51:29.445Z">
+<meta property="article:modified_time" content="2025-01-14T04:08:37.364Z">
 <meta property="article:author" content="*月遇丛雲花遇風*">
 <meta property="article:tag" content="sandbox">
 <meta property="article:tag" content="恶意软件分析">
@@ -317,6 +317,8 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/sh</span></span><br><span class="line"></span><br><span class="line">ABSPATH=$(readlink -f &quot;$0&quot;)</span><br><span class="line">DIRPATH=$(dirname &quot;$ABSPATH&quot;)</span><br><span class="line">ROOTFS=$1</span><br><span class="line">KERNEL=$DIRPATH/images/zImage</span><br><span class="line">DTB=$DIRPATH/images/vexpress-v2p-ca9.dtb</span><br><span class="line">QEMU_AUDIO_DRV=none</span><br><span class="line">qemu-img resize $ROOTFS 64M   # add this line</span><br><span class="line"></span><br><span class="line">qemu-system-arm -M vexpress-a9 -smp 1 -m 256 -kernel $KERNEL -dtb $DTB -drive file=$ROOTFS,if=sd,format=raw -append &quot;console=ttyAMA0 root=/dev/mmcblk0&quot; -nographic -net nic,model=lan9118 -net user</span><br></pre></td></tr></table></figure>
 <p>对于没有文本编辑工具的容器，<a target="_blank" rel="noopener" href="http://xn--echorun-nw3ky87jyxam55annaolt41bmq7citeg4byy7z.sh">直接用下面echo的形式替换掉run.sh</a>：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">echo &#x27;#!/bin/sh</span><br><span class="line">ABSPATH=$(readlink -f &quot;$0&quot;)</span><br><span class="line">DIRPATH=$(dirname &quot;$ABSPATH&quot;)</span><br><span class="line">ROOTFS=$1</span><br><span class="line">KERNEL=$DIRPATH/images/zImage</span><br><span class="line">DTB=$DIRPATH/images/vexpress-v2p-ca9.dtb</span><br><span class="line">QEMU_AUDIO_DRV=none</span><br><span class="line">qemu-img resize $ROOTFS 64M   # add this line</span><br><span class="line"></span><br><span class="line">qemu-system-arm -M vexpress-a9 -smp 1 -m 256 -kernel $KERNEL -dtb $DTB -drive file=$ROOTFS,if=sd,format=raw -append &quot;console=ttyAMA0 root=/dev/mmcblk0&quot; -nographic -net nic,model=lan9118 -net user&#x27; &gt; run.sh</span><br></pre></td></tr></table></figure>
+<p>注意替换了之后要修改执行权限：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod a+x run.sh</span><br></pre></td></tr></table></figure>
 <p>其中$ROOTFS就是目标镜像，要使用qemu-img resize更改镜像大小。</p>
 <p>修改后再次运行run.sh并指定参数，可以正常启动qemu-system，问题解决，再次上传arm架构的文件能够输出报告了。</p>
 <p><img src="image-20241130230515786.png" alt="image-20241130230515786"></p>
@@ -356,7 +358,7 @@
       
         
         
-          <img data-src="/covers/wallhaven-zxg9lw.png" data-sizes="auto" alt="docker镜像与容器的导入和导出" class="lazyload">
+          <img data-src="/covers/QQ图片20211014222135.jpg" data-sizes="auto" alt="docker镜像与容器的导入和导出" class="lazyload">
         
       
       <a href="/2024/11/15/docker%E9%95%9C%E5%83%8F%E4%B8%8E%E5%AE%B9%E5%99%A8%E7%9A%84%E5%AF%BC%E5%85%A5%E5%92%8C%E5%AF%BC%E5%87%BA/"></a>
